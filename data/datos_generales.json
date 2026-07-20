@@ -1,0 +1,270 @@
+{
+  "registro_maestro": {
+    "taxonKey": 2440735,
+    "uuid_gbif_dataset": "d7dddbf4-2cf0-4f39-9b2a-bb099caae36c",
+    "nombre_cientifico": "Balaenoptera musculus",
+    "autoridad_taxonomica": "Linnaeus, 1758",
+    "estatus_taxonomico": "ACCEPTED",
+    "nombres_comunes": {
+      "es": "Ballena Azul",
+      "en": "Blue Whale",
+      "fr": "Baleine bleue",
+      "de": "Blauwal"
+    }
+  },
+  "vistas_interactivas": {
+    "biometria": {
+      "titulo": "Biometría, Morfología y Clasificación Científica",
+      "fuentes_oficiales": [
+        "GBIF Backbone Taxonomy API",
+        "NOAA Fisheries Species Profile"
+      ],
+      "taxonomia_completa": {
+        "reino": "Animalia",
+        "phylum": "Chordata",
+        "subphylum": "Vertebrata",
+        "clase": "Mammalia",
+        "subclase": "Theria",
+        "infraclase": "Eutheria",
+        "orden": "Artiodactyla",
+        "infraorden": "Cetacea",
+        "parvorden": "Mysticeti",
+        "familia": "Balaenopteridae",
+        "genero": "Balaenoptera",
+        "especie": "Balaenoptera musculus"
+      },
+      "subespecies_reconocidas": [
+        {
+          "nombre_cientifico": "Balaenoptera musculus musculus",
+          "nombre_comun": "Ballena azul del Norte",
+          "distribucion": "Atlántico Norte y Pacífico Norte"
+        },
+        {
+          "nombre_cientifico": "Balaenoptera musculus intermedia",
+          "nombre_comun": "Ballena azul Antártica",
+          "distribucion": "Océano Antártico (Es la subespecie de mayor tamaño)"
+        },
+        {
+          "nombre_cientifico": "Balaenoptera musculus brevicauda",
+          "nombre_comun": "Ballena azul pigmea",
+          "distribucion": "Océano Índico y Pacífico Sur"
+        },
+        {
+          "nombre_cientifico": "Balaenoptera musculus indica",
+          "nombre_comun": "Ballena azul del Índico Norte",
+          "distribucion": "Océano Índico Septentrional"
+        }
+      ],
+      "dimensiones_y_peso": {
+        "peso_maximo_libras": 330000,
+        "peso_maximo_toneladas_metricas": 150,
+        "peso_promedio_adulto_toneladas": 100,
+        "longitud_maxima_pies": 110,
+        "longitud_maxima_metros": 33.5,
+        "longitud_promedio_metros": 24,
+        "dimorfismo_sexual": "Las hembras son más grandes y pesadas que los machos de la misma edad"
+      },
+      "caracteristicas_fisicas": {
+        "coloracion_piel": "Moteado gris azulado. Bajo el agua se aprecia azul brillante y claro",
+        "patron_moteado": "Único e irrepetible para cada individuo (funciona como huella dactilar)",
+        "aleta_dorsal": "Muy pequeña y falcada, ubicada en el último tercio del cuerpo",
+        "aletas_pectorales": "Cortas y delgadas, miden un 10% de la longitud total",
+        "pliegues_ventrales": "Entre 55 y 88 surcos que van desde la mandíbula hasta el ombligo",
+        "barbas": "Estructuras de queratina negra, miden hasta 1 metro de largo, con 270 a 395 láminas por lado"
+      },
+      "anatomia_interna": {
+        "peso_corazon_kg": 180,
+        "peso_lengua_toneladas": 2.7,
+        "capacidad_pulmonar_litros": 5000
+      },
+      "sinonimos_historicos": [
+        "Balaena musculus Linnaeus, 1758",
+        "Rorqualus musculus F.Cuvier, 1836",
+        "Sibbaldus musculus (Linnaeus, 1758)",
+        "Balaena maximus",
+        "Balaenoptera boops"
+      ]
+    },
+    "dieta": {
+      "titulo": "Alimentación, Comportamiento y Dinámica Trófica",
+      "fuentes_oficiales": [
+        "NOAA Fisheries Behavioral Research",
+        "SeaLifeBase Ecology Section"
+      ],
+      "alimentacion_y_dieta": {
+        "presa_principal_cientifico": "Euphausiacea",
+        "presa_principal_comun": "Krill",
+        "especies_krill_consumidas": [
+          "Euphausia superba (Antártico)",
+          "Euphausia pacifica (Pacífico)",
+          "Thysanoessa inermis (Atlántico)"
+        ],
+        "consumo_diario_krill_libras": 8000,
+        "consumo_diario_krill_toneladas": 4.0,
+        "calorias_diarias_estimadas": 1500000,
+        "mecanismo_captura": "Alimentación por embestida extrema (Lunge feeding)",
+        "proceso_filtracion": "Abre la boca expandiendo sus pliegues ventrales, traga toneladas de agua cargada de krill y expulsa el agua con la lengua, atrapando el krill en los filamentos internos de sus barbas"
+      },
+      "comportamiento_social": {
+        "estructura_grupal": "Solitarias o en parejas temporales (madre-cría o parejas reproductivas)",
+        "asociaciones_masivas": "Solo se agrupan temporalmente en zonas con densidades extremas de krill",
+        "dinamica_nado": "Velocidad de crucero de 3 a 8 km/h, pero pueden alcanzar sprints de hasta 30 a 50 km/h si se sienten amenazadas"
+      },
+      "vocalizacion_y_acustica": {
+        "tipo_sonido": "Cantos, pulsos y gemidos de baja frecuencia",
+        "rango_frecuencia_hz": "10 Hz a 40 Hz (Infrasonido, inaudible para el oído humano sin equipo)",
+        "intensidad_decibelios": 188,
+        "alcance_comunicacion_km": 1600,
+        "proposito_cantos": "Navegación oceánica, cohesión social y selección de pareja durante el apareamiento"
+      },
+      "comportamiento_inmersion": {
+        "profundidad_alimentacion_metros": 100,
+        "profundidad_maxima_registrada_metros": 500,
+        "duracion_inmersion_minutos": "10 a 20 minutos por buceo",
+        "intervalo_respiracion": "Permanecen en superficie entre 1 y 5 minutos antes de volver a sumergirse, exhalando un soplado vertical de hasta 9 a 12 metros de altura"
+      }
+    },
+    "conservacion": {
+      "titulo": "Estado de Conservación, Historia de Vida y Migración",
+      "fuentes_oficiales": [
+        "SeaLifeBase Life History Matrix",
+        "NOAA Marine Mammal Protection Act (MMPA)",
+        "IUCN Red List"
+      ],
+      "ciclo_vida_y_longevidad": {
+        "esperanza_vida_promedio_anos": 85,
+        "rango_vida_anos": "80 - 90 años (máximo estimado mediante capas de cerumen del oído en 110 años)",
+        "madurez_sexual_edad_anos": {
+          "rango_general": "5 - 15 años",
+          "promedio_macho": 10,
+          "promedio_hembra": 8
+        },
+        "longitud_madurez_sexual_metros": {
+          "macho": 21.0,
+          "hembra": 23.0
+        }
+      },
+      "reproduccion_y_crianza": {
+        "intervalo_reproduccion": "Cada 2 a 3 años por hembra",
+        "periodo_gestacion_meses": 11,
+        "temporada_apareamiento": "Finales del verano hasta el otoño",
+        "temporada_partos": "Meses de invierno en aguas de baja latitud (cerca del ecuador)",
+        "datos_cria_nacimiento": {
+          "peso_nacimiento_toneladas": 2.5,
+          "longitud_nacimiento_metros": 7.0
+        },
+        "etapa_lactancia": {
+          "duracion_meses": 7,
+          "consumo_leche_diario_litros": 200,
+          "ganancia_peso_cria_diaria_kg": 90,
+          "composicion_leche": "Alta densidad grasa (35% a 50% de grasa pura)"
+        }
+      },
+      "estatus_y_amenazas": {
+        "estado_uicn": "En Peligro de Extinción (Endangered)",
+        "poblacion_mundial_estimada": "Entre 10,000 y 25,000 individuos (Frente a los más de 250,000 previos a la caza masiva)",
+        "impacto_caza_historica": "Fueron cazadas casi hasta el colapso absoluto en el siglo XX por flotas balleneras. Se estima que en la Antártida se mató al 99% de la población original",
+        "leyes_proteccion": [
+          "MMPA (Marine Mammal Protection Act de 1972)",
+          "ESA (Endangered Species Act de 1973)",
+          "Moratoria global de la Comisión Ballenera Internacional (1986)"
+        ],
+        "amenazas_actuales": [
+          "Colisiones con embarcaciones comerciales (Ship strikes) en rutas de tráfico denso",
+          "Enredo en artes de pesca comerciales (Redes de deriva y aparejos abandonados)",
+          "Contaminación acústica submarina que interrumpe su comunicación por sonar",
+          "Cambio climático que altera las corrientes oceánicas y diezma las poblaciones de krill en los polos"
+        ]
+      },
+      "patrones_migratorios": {
+        "comportamiento_estacional": "Migración anual de miles de kilómetros entre los polos y el ecuador",
+        "estacion_verano": {
+          "ubicación": "Aguas frías polares de alta latitud",
+          "actividad": "Alimentación intensiva exclusiva para acumular reservas de grasa corporal (blubber)"
+        },
+        "estacion_invierno": {
+          "ubicación": "Aguas cálidas tropicales y subtropicales de baja latitud",
+          "actividad": "Apareamiento, cortejo y nacimiento de crías (ayunan debido a la escasez de krill en el trópico)"
+        },
+        "principales_corredores_migratorios": [
+          {
+            "poblacion": "Pacífico Norte Oriental",
+            "ruta": "Viajan desde las costas de Alaska y California en verano hacia el Golfo de California (México) y el Domo de Costa Rica en invierno"
+          },
+          {
+            "poblacion": "Atlántico Norte",
+            "ruta": "Viajan desde las costas de Groenlandia e Islandia en verano hacia las aguas abiertas del Caribe y la zona del Atlántico Central en invierno"
+          },
+          {
+            "poblacion": "Hemisferio Sur",
+            "ruta": "Viajan desde las capas de hielo de la Antártida en verano hacia las costas de Australia, Sudamérica y Sudáfrica en invierno"
+          }
+        ]
+      }
+    },
+    "acustica": {
+      "titulo": "Frecuencias Acústicas y la ballena solitaria",
+      "fuentes_oficiales": [
+        "DOSITS (Discovery of Sound in the Sea)",
+        "Woods Hole Oceanographic Institution"
+      ],
+      "especies": [
+        {
+          "id": "minke",
+          "nombre_comun": "Rorcual Aliblanco (Minke)",
+          "nombre_cientifico": "Balaenoptera acutorostrata / B. bonaerensis",
+          "hertz_grafica": 1350,
+          "rango_hz": "50 Hz a 9,400 Hz (Varía drásticamente por océano)",
+          "volumen_maximo_db": 152,
+          "tipo_sonido": "Poseen 'acentos' regionales: canto 'boing' a 1.3 kHz (Pacífico), trenes de pulsos de 80-200 Hz (Atlántico), llamado 'Star Wars' hasta 9.4 kHz (Enana) y el graznido 'bio-pato' de 50-300 Hz (Antártida).",
+          "proposito": "Comunicación social. Es vital para los científicos rastrearlas acústicamente, ya que visualmente son casi indetectables en la superficie.",
+          "archivo_audio": "data/Audios/minke.mp3"
+        },
+        {
+          "id": "jorobada",
+          "nombre_comun": "Ballena Jorobada",
+          "nombre_cientifico": "Megaptera novaeangliae",
+          "hertz_grafica": 500,
+          "rango_hz": "Amplio (incluye tonos rítmicos de 500 Hz)",
+          "volumen_maximo_db": 174,
+          "tipo_sonido": "Secuencias complejas y repetitivas (cantos) con sonidos tonales y pulsados que varían cada año.",
+          "proposito": "Exhibiciones de apareamiento, jerarquía social y llamadas rítmicas de alimentación.",
+          "archivo_audio": "data/Audios/jorobada.mp3"
+        },
+        {
+          "id": "52hz",
+          "nombre_comun": "Ballena Solitaria (52 Hz)",
+          "nombre_cientifico": "Desconocido (Posible híbrido Azul/Aleta)",
+          "hertz_grafica": 52,
+          "rango_hz": "52 Hz (Frecuencia única en el mundo)",
+          "volumen_maximo_db": 186,
+          "tipo_sonido": "Pulsaciones repetitivas cortas (3-10 s) agrupadas en secuencias de 2 a 6 tonos.",
+          "proposito": "Búsqueda de contacto y cortejo, aunque sin respuesta registrada de otras ballenas.",
+          "archivo_audio": "data/Audios/52hz.mp3"
+        },
+        {
+          "id": "azul",
+          "nombre_comun": "Ballena Azul",
+          "nombre_cientifico": "Balaenoptera musculus",
+          "hertz_grafica": 27,
+          "rango_hz": "15 a 40 Hz",
+          "volumen_maximo_db": 189,
+          "tipo_sonido": "Pulsos, gruñidos y cantos de unidades largas (15-20 s) combinados con Llamadas D.",
+          "proposito": "Llamadas de contacto e identificación de poblaciones.",
+          "archivo_audio": "data/Audios/azul.mp3"
+        },
+        {
+          "id": "aleta",
+          "nombre_comun": "Ballena de Aleta",
+          "nombre_cientifico": "Balaenoptera physalus",
+          "hertz_grafica": 20,
+          "rango_hz": "Principalmente 20 Hz (con variantes de 40 Hz)",
+          "volumen_maximo_db": 190,
+          "tipo_sonido": "Llamadas estereotipadas cortas (<1 s) en dobletes o tripletes.",
+          "proposito": "Función reproductiva (20 Hz) y contexto de alimentación (40 Hz).",
+          "archivo_audio": "data/Audios/aleta.mp3"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,196 @@
+{  
+"registro\_maestro": {  
+"taxonKey": 2440735,  
+"uuid\_gbif\_dataset": "d7dddbf4-2cf0-4f39-9b2a-bb099caae36c",  
+"nombre\_cientifico": "Balaenoptera musculus",  
+"autoridad\_taxonomica": "Linnaeus, 1758",  
+"estatus\_taxonomico": "ACCEPTED",  
+"nombres\_comunes": {  
+"es": "Ballena Azul",  
+"en": "Blue Whale",  
+"fr": "Baleine bleue",  
+"de": "Blauwal"  
+}  
+},  
+"vistas\_interactivas": {  
+"biometria": {  
+"titulo": "Biometría, Morfología y Clasificación Científica",  
+"fuentes\_oficiales": \["GBIF Backbone Taxonomy API", "NOAA Fisheries Species Profile"\],  
+"taxonomia\_completa": {  
+"reino": "Animalia",  
+"phylum": "Chordata",  
+"subphylum": "Vertebrata",  
+"clase": "Mammalia",  
+"subclase": "Theria",  
+"infraclase": "Eutheria",  
+"orden": "Artiodactyla",  
+"infraorden": "Cetacea",  
+"parvorden": "Mysticeti",  
+"familia": "Balaenopteridae",  
+"genero": "Balaenoptera",  
+"especie": "Balaenoptera musculus"  
+},  
+"subespecies\_reconocidas": \[  
+{  
+"nombre\_cientifico": "Balaenoptera musculus musculus",  
+"nombre\_comun": "Ballena azul del Norte",  
+"distribucion": "Atlántico Norte y Pacífico Norte"  
+},  
+{  
+"nombre\_cientifico": "Balaenoptera musculus intermedia",  
+"nombre\_comun": "Ballena azul Antártica",  
+"distribucion": "Océano Antártico (Es la subespecie de mayor tamaño)"  
+},  
+{  
+"nombre\_cientifico": "Balaenoptera musculus brevicauda",  
+"nombre\_comun": "Ballena azul pigmea",  
+"distribucion": "Océano Índico y Pacífico Sur"  
+},  
+{  
+"nombre\_cientifico": "Balaenoptera musculus indica",  
+"nombre\_comun": "Ballena azul del Índico Norte",  
+"distribucion": "Océano Índico Septentrional"  
+}  
+\],  
+"dimensiones\_y\_peso": {  
+"peso\_maximo\_libras": 330000,  
+"peso\_maximo\_toneladas\_metricas": 150,  
+"peso\_promedio\_adulto\_toneladas": 100,  
+"longitud\_maxima\_pies": 110,  
+"longitud\_maxima\_metros": 33.5,  
+"longitud\_promedio\_metros": 24,  
+"dimorfismo\_sexual": "Las hembras son más grandes y pesadas que los machos de la misma edad"  
+},  
+"caracteristicas\_fisicas": {  
+"coloracion\_piel": "Moteado gris azulado. Bajo el agua se aprecia azul brillante y claro",  
+"patron\_moteado": "Único e irrepetible para cada individuo (funciona como huella dactilar)",  
+"aleta\_dorsal": "Muy pequeña y falcada, ubicada en el último tercio del cuerpo",  
+"aletas\_pectorales": "Cortas y delgadas, miden un 10% de la longitud total",  
+"pliegues\_ventrales": "Entre 55 y 88 surcos que van desde la mandíbula hasta el ombligo",  
+"barbas": "Estructuras de queratina negra, miden hasta 1 metro de largo, con 270 a 395 láminas por lado"  
+},  
+"anatomia\_interna": {  
+"peso\_corazon\_kg": 180,  
+"peso\_lengua\_toneladas": 2.7,  
+"capacidad\_pulmonar\_litros": 5000  
+},  
+"sinonimos\_historicos": \[  
+"Balaena musculus Linnaeus, 1758",  
+"Rorqualus musculus F.Cuvier, 1836",  
+"Sibbaldus musculus (Linnaeus, 1758)",  
+"Balaena maximus",  
+"Balaenoptera boops"  
+\]  
+},  
+"dieta": {  
+"titulo": "Alimentación, Comportamiento y Dinámica Trófica",  
+"fuentes\_oficiales": \["NOAA Fisheries Behavioral Research", "SeaLifeBase Ecology Section"\],  
+"alimentacion\_y\_dieta": {  
+"presa\_principal\_cientifico": "Euphausiacea",  
+"presa\_principal\_comun": "Krill",  
+"especies\_krill\_consumidas": \[  
+"Euphausia superba (Antártico)",  
+"Euphausia pacifica (Pacífico)",  
+"Thysanoessa inermis (Atlántico)"  
+\],  
+"consumo\_diario\_krill\_libras": 8000,  
+"consumo\_diario\_krill\_toneladas": 4.0,  
+"calorias\_diarias\_estimadas": 1500000,  
+"mecanismo\_captura": "Alimentación por embestida extrema (Lunge feeding)",  
+"proceso\_filtracion": "Abre la boca expandiendo sus pliegues ventrales, traga toneladas de agua cargada de krill y expulsa el agua con la lengua, atrapando el krill en los filamentos internos de sus barbas"  
+},  
+"comportamiento\_social": {  
+"estructura\_grupal": "Solitarias o en parejas temporales (madre-cría o parejas reproductivas)",  
+"asociaciones\_masivas": "Solo se agrupan temporalmente en zonas con densidades extremas de krill",  
+"dinamica\_nado": "Velocidad de crucero de 3 a 8 km/h, pero pueden alcanzar sprints de hasta 30 a 50 km/h si se sienten amenazadas"  
+},  
+"vocalizacion\_y\_acustica": {  
+"tipo\_sonido": "Cantos, pulsos y gemidos de baja frecuencia",  
+"rango\_frecuencia\_hz": "10 Hz a 40 Hz (Infrasonido, inaudible para el oído humano sin equipo)",  
+"intensidad\_decibelios": 188,  
+"alcance\_comunicacion\_km": 1600,  
+"proposito\_cantos": "Navegación oceánica, cohesión social y selección de pareja durante el apareamiento"  
+},  
+"comportamiento\_inmersion": {  
+"profundidad\_alimentacion\_metros": 100,  
+"profundidad\_maxima\_registrada\_metros": 500,  
+"duracion\_inmersion\_minutos": "10 a 20 minutos por buceo",  
+"intervalo\_respiracion": "Permanecen en superficie entre 1 y 5 minutos antes de volver a sumergirse, exhalando un soplado vertical de hasta 9 a 12 metros de altura"  
+}  
+},  
+"conservacion": {  
+"titulo": "Estado de Conservación, Historia de Vida y Migración",  
+"fuentes\_oficiales": \["SeaLifeBase Life History Matrix", "NOAA Marine Mammal Protection Act (MMPA)", "IUCN Red List"\],  
+"ciclo\_vida\_y\_longevidad": {  
+"esperanza\_vida\_promedio\_anos": 85,  
+"rango\_vida\_anos": "80 - 90 años (máximo estimado mediante capas de cerumen del oído en 110 años)",  
+"madurez\_sexual\_edad\_anos": {  
+"rango\_general": "5 - 15 años",  
+"promedio\_macho": 10,  
+"promedio\_hembra": 8  
+},  
+"longitud\_madurez\_sexual\_metros": {  
+"macho": 21.0,  
+"hembra": 23.0  
+}  
+},  
+"reproduccion\_y\_crianza": {  
+"intervalo\_reproduccion": "Cada 2 a 3 años por hembra",  
+"periodo\_gestacion\_meses": 11,  
+"temporada\_apareamiento": "Finales del verano hasta el otoño",  
+"temporada\_partos": "Meses de invierno en aguas de baja latitud (cerca del ecuador)",  
+"datos\_cria\_nacimiento": {  
+"peso\_nacimiento\_toneladas": 2.5,  
+"longitud\_nacimiento\_metros": 7.0  
+},  
+"etapa\_lactancia": {  
+"duracion\_meses": 7,  
+"consumo\_leche\_diario\_litros": 200,  
+"ganancia\_peso\_cria\_diaria\_kg": 90,  
+"composicion\_leche": "Alta densidad grasa (35% a 50% de grasa pura)"  
+}  
+},  
+"estatus\_y\_amenazas": {  
+"estado\_uicn": "En Peligro de Extinción (Endangered)",  
+"poblacion\_mundial\_estimada": "Entre 10,000 y 25,000 individuos (Frente a los más de 250,000 previos a la caza masiva)",  
+"impacto\_caza\_historica": "Fueron cazadas casi hasta el colapso absoluto en el siglo XX por flotas balleneras. Se estima que en la Antártida se mató al 99% de la población original",  
+"leyes\_proteccion": \[  
+"MMPA (Marine Mammal Protection Act de 1972)",  
+"ESA (Endangered Species Act de 1973)",  
+"Moratoria global de la Comisión Ballenera Internacional (1986)"  
+\],  
+"amenazas\_actuales": \[  
+"Colisiones con embarcaciones comerciales (Ship strikes) en rutas de tráfico denso",  
+"Enredo en artes de pesca comerciales (Redes de deriva y aparejos abandonados)",  
+"Contaminación acústica submarina que interrumpe su comunicación por sonar",  
+"Cambio climático que altera las corrientes oceánicas y diezma las poblaciones de krill en los polos"  
+\]  
+},  
+"patrones\_migratorios": {  
+"comportamiento\_estacional": "Migración anual de miles de kilómetros entre los polos y el ecuador",  
+"estacion\_verano": {  
+"ubicación": "Aguas frías polares de alta latitud",  
+"actividad": "Alimentación intensiva exclusiva para acumular reservas de grasa corporal (blubber)"  
+},  
+"estacion\_invierno": {  
+"ubicación": "Aguas cálidas tropicales y subtropicales de baja latitud",  
+"actividad": "Apareamiento, cortejo y nacimiento de crías (ayunan debido a la escasez de krill en el trópico)"  
+},  
+"principales\_corredores\_migratorios": \[  
+{  
+"poblacion": "Pacífico Norte Oriental",  
+"ruta": "Viajan desde las costas de Alaska y California en verano hacia el Golfo de California (México) y el Domo de Costa Rica en invierno"  
+},  
+{  
+"poblacion": "Atlántico Norte",  
+"ruta": "Viajan desde las costas de Groenlandia e Islandia en verano hacia las aguas abiertas del Caribe y la zona del Atlántico Central en invierno"  
+},  
+{  
+"poblacion": "Hemisferio Sur",  
+"ruta": "Viajan desde las capas de hielo de la Antártida en verano hacia las costas de Australia, Sudamérica y Sudáfrica en invierno"  
+}  
+\]  
+}  
+}  
+}  
+}

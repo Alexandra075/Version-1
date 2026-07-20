@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Explorador de la Ballena Azul</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.1.1/model-viewer.min.js"></script>
+</head>
+<body>
+    
+    <!-- PANTALLA DE CARGA (Oculta por defecto) -->
+    <div id="pantalla-carga" class="oculto">
+        <div class="loader"></div>
+        <h2>Sumergiéndose en el océano...</h2>
+    </div>
+
+    <!-- CONTENEDOR PRINCIPAL DE SCROLL HORIZONTAL -->
+    <main id="contenedor-scroll">
+        
+        <!-- SECCIÓN 1: PORTADA -->
+        <section id="seccion-portada" class="seccion-pantalla">
+            <div style="position: absolute; width: 100%; height: 100%; opacity: 0.5; pointer-events: none;">
+                <model-viewer src="base_basic_pbr.glb" auto-rotate rotation-per-second="10deg" style="width: 100%; height: 100%;"></model-viewer>
+            </div>
+            <div class="contenido-portada">
+                <h1>Conoce a la Ballena Azul</h1>
+                <p>Explora su majestuosa anatomía, acompáñala en su migración global y descubre los secretos de su profundo canto.</p>
+                <button id="btn-iniciar">Iniciar Exploración</button>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 2: ACÚSTICA Y DATOS GENERALES -->
+        <section id="seccion-acustica" class="seccion-pantalla">
+            <div class="dashboard-container">
+                <aside class="panel-lateral">
+                    <header>
+                        <h1>Balaenoptera musculus</h1>
+                        <p>Datos Generales y Acústica</p>
+                    </header>
+                    <div id="datos-generales-info">
+                        <p>Cargando datos biológicos...</p>
+                    </div>
+                </aside>
+                <div class="area-principal" style="flex-direction: column;">
+                    <h2 style="color: var(--accent-cyan);">Frecuencias Acústicas y la Ballena 52Hz</h2>
+                    <div id="grafica-frecuencias" style="width: 90%; height: 350px;"></div> 
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 3: MAPA Y ALIMENTACIÓN -->
+        <section id="seccion-mapa" class="seccion-pantalla">
+            <div class="dashboard-container">
+                <aside class="panel-lateral">
+                    <header>
+                        <h1>Ruta Migratoria y Dieta</h1>
+                    </header>
+                    <section class="seccion-controles">
+                        <label for="mesSlider">Mes actual: <span id="mesEtiqueta">01</span></label>
+                        <input type="range" id="mesSlider" min="1" max="12" value="1">
+                    </section>
+                    <div class="narrativa">
+                        <h2 id="titulo-tarjeta">Cargando...</h2>
+                        <div id="contenido-tarjeta"><p>Conectando a la base de datos...</p></div>
+                    </div>
+                    <div id="info-card" class="hidden"></div>
+                    <div id="profundidad-info" style="margin-top: 15px; font-weight: bold; color: var(--accent-cyan);"></div>
+                </aside>
+                <div class="area-principal" id="mapa-svg"></div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 4: EXPLORACIÓN 3D MAPEADA -->
+        <section id="seccion-3d" class="seccion-pantalla">
+            <div class="dashboard-container">
+                <aside class="panel-lateral">
+                    <header>
+                        <h1>Anatomía en 3D</h1>
+                        <p>Interactúa con los puntos para conocer más.</p>
+                    </header>
+                </aside>
+                <div class="area-principal">
+                    <model-viewer src="base_basic_pbr.glb" camera-controls auto-rotate shadow-intensity="1" style="width: 100%; height: 100%; background-color: transparent;">
+                    <!-- hotspot-1: z = -0.815m (Atrás) -->
+                    <button class="punto-flotante" slot="hotspot-1" data-position="0.21254594523196513m 0.483903406194949m -0.8150785707763983m" data-normal="0.24137425686451577m 0.9441865007307547m -0.22416583138586288m">
+                        <div class="info-flotante"><strong>Cola</strong><p>Puede llegar a tener un ancho de 5 metros. La mueven para impulsarse.</p></div>
+                    </button>
+                    <!-- hotspot-2: y = 0.634m, z = -0.174m (Arriba, lomo) -->
+                     <button class="punto-flotante" slot="hotspot-2" data-position="0.006019018657907882m 0.6340641009501718m -0.1743651224893292m" data-normal="0.9957906077387175m 0.076024011675642m 0.05119975769568986m">
+                         <div class="info-flotante"><strong>Aleta Dorsal</strong><p>Le ayuda a evitar el balanceo y mantener una trayectoria recta.</p></div>
+                     </button>
+                     <!-- hotspot-3: x = 0.363m, y = 0.089m (Lado derecho, abajo) -->
+                    <button class="punto-flotante" slot="hotspot-3" data-position="0.3636117293645196m 0.08912151982997996m 0.1823286833149326m" data-normal="0.9184537418007861m 0.10154678075902575m 0.38227081433142845m">
+                         <div class="info-flotante"><strong>Aletas pectorales</strong><p>Miden unos 5 metros y les sirven para maniobrar.</p></div>
+                     </button>
+                     <!-- hotspot-4: y = 0.585m, z = 0.529m (Arriba, cabeza) -->
+                     <button class="punto-flotante" slot="hotspot-4" data-position="0.025163447648317572m 0.5854901416909186m 0.5298219074020551m" data-normal="0.442329759049321m 0.8964799119012764m 0.025848632784912454m">
+                         <div class="info-flotante"><strong>Aventadores</strong><p>Los utiliza para respirar. Bajo el agua puede permanecer hasta 20 minutos.</p></div>
+                     </button>
+
+                     <!-- hotspot-5: y = 0.370m, z = 0.646m (Abajo, garganta) -->
+                   <button class="punto-flotante" slot="hotspot-5" data-position="0.06695564655783404m 0.37044032736899923m 0.6462449532530576m" data-normal="0.48235154857321383m -0.7377857755741095m 0.4722384280737141m">
+                        <div class="info-flotante"><strong>Pliegues Gulares</strong><p>Sirven para expandir la garganta durante la alimentación.</p></div>
+                     </button>
+
+                     <!-- hotspot-6: z = 0.878m (Frente, punta de la boca) -->
+                    <button class="punto-flotante" slot="hotspot-6" data-position="0.08502248528817624m 0.5213584758601866m 0.8785804493496523m" data-normal="0.747709606355995m 0.6313510591494036m 0.2057332852843445m">
+                        <div class="info-flotante"><strong>Barbas</strong><p>En lugar de dientes. Retienen al krill mientras el agua sale.</p></div>
+                    </button>
+                    </model-viewer>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script type="module" src="JS/main.js"></script>
+</body>
+</html>
