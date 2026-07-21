@@ -287,3 +287,18 @@ input[type="range"] {
 .punto-flotante[data-visibility-attribute="hidden"] {
     opacity: 0.3;
 }
+
+/* ANIMACIÓN DEL INDICADOR DE SCROLL */
+.scroll-hint {
+    font-size: 1.2rem;
+    color: var(--accent-pink);
+    margin-top: 30px;
+    font-weight: bold;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% { opacity: 0.5; transform: translateX(0); }
+    50% { opacity: 1; transform: translateX(15px); }
+    100% { opacity: 0.5; transform: translateX(0); }
+}

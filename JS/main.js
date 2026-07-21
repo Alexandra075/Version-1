@@ -1,49 +1,25 @@
-// --- JS/main.js ---
+// IMPORTANTE: Agregamos obtenerRegionGeografica a las importaciones
 import { cargarBasesDeDatos } from './datos.js';
-import { inicializarMapa, dibujarPuntos, actualizarFondoPorProfundidad } from './mapa.js';
+import { inicializarMapa, dibujarPuntos, actualizarFondoPorProfundidad, obtenerRegionGeografica } from './mapa.js';
 import { inicializarAcustica } from './acustica.js';
 import { inicializarComparativa } from './comparativa.js';
 
 let appData = null;
 let mapaSvgD3 = null;
 
-// --- MAGIA: CONVERTIR RUEDA DEL MOUSE (VERTICAL) A SCROLL HORIZONTAL ---
-const scrollContainer = document.getElementById('contenedor-scroll');
-scrollContainer.addEventListener('wheel', (evt) => {
-    if(!document.getElementById('pantalla-carga').classList.contains('oculto')) return;
-    evt.preventDefault();
-    scrollContainer.scrollLeft += evt.deltaY;
-});
-
-// --- LÓGICA DE LA PORTADA Y CARGA ---
-document.getElementById('btn-iniciar').addEventListener('click', () => {
-    const pantallaCarga = document.getElementById('pantalla-carga');
-    
-    pantallaCarga.classList.remove('oculto');
-    
-    setTimeout(() => {
-        document.getElementById('seccion-acustica').scrollIntoView({ behavior: 'smooth' });
-        
-        setTimeout(() => {
-            pantallaCarga.classList.add('oculto');
-            llenarDatosGenerales();
-        }, 500);
-
-    }, 1500); 
-});
-
-// --- LÓGICA DE DATOS ---
 function llenarDatosGenerales() {
     if(!appData) return;
-    const bio = appData.fichaTecnica.vistas_interactivas.biometria;
-    const cons = appData.fichaTecnica.vistas_interactivas.conservacion;
+    
+    const datosGenerales = appData.fichaTecnica ? appData.fichaTecnica : appData;
+    const bio = datosGenerales.vistas_interactivas.biometria;
+    const cons = datosGenerales.vistas_interactivas.conservacion;
 
     document.getElementById('datos-generales-info').innerHTML = `
         <p><strong>Nombre Científico:</strong> ${bio.taxonomia_completa.especie}</p>
         <p><strong>Peso Máximo:</strong> ${bio.dimensiones_y_peso.peso_maximo_toneladas_metricas} Toneladas</p>
         <p><strong>Longitud Máxima:</strong> ${bio.dimensiones_y_peso.longitud_maxima_metros} Metros</p>
         <p><strong>Esperanza de Vida:</strong> ${cons.ciclo_vida_y_longevidad.rango_vida_anos}</p>
-        <p><strong>Estado:</strong> <span style="color: #ff007f;">${cons.estatus_y_amenazas.estado_uicn}</span></p>
+        <p><strong>Estado:</strong> <span style="color: var(--accent-pink);">${cons.estatus_y_amenazas.estado_uicn}</span></p>
     `;
 }
 
@@ -53,7 +29,8 @@ function actualizarNarrativa(mesStr) {
     const titulo = document.getElementById('titulo-tarjeta');
     const info = document.getElementById('contenido-tarjeta');
     
-    const migracion = appData.fichaTecnica.vistas_interactivas.conservacion.patrones_migratorios;
+    const datosGenerales = appData.fichaTecnica ? appData.fichaTecnica : appData;
+    const migracion = datosGenerales.vistas_interactivas.conservacion.patrones_migratorios;
 
     if (m >= 1 && m <= 3) {
         titulo.innerText = "Invierno: Zonas Cálidas";
@@ -72,7 +49,8 @@ function actualizarNarrativa(mesStr) {
 
 function mostrarTarjeta(d) {
     if(!appData) return;
-    const estado = appData.fichaTecnica.vistas_interactivas.conservacion.estatus_y_amenazas.estado_uicn;
+    const datosGenerales = appData.fichaTecnica ? appData.fichaTecnica : appData;
+    const estado = datosGenerales.vistas_interactivas.conservacion.estatus_y_amenazas.estado_uicn;
     
     document.getElementById('info-card').classList.remove('hidden');
     document.getElementById('titulo-tarjeta').innerText = "Registro Detectado";
@@ -80,37 +58,101 @@ function mostrarTarjeta(d) {
         <p><strong>Especie:</strong> ${d.especie}</p>
         <p><strong>Fecha:</strong> ${d.fecha}</p>
         <p><strong>Coordenadas:</strong> ${d.lat.toFixed(2)}, ${d.lon.toFixed(2)}</p>
-        <hr style="margin: 10px 0; border: 0; border-top: 1px solid #00e5ff;">
+        <hr style="margin: 10px 0; border: 0; border-top: 1px solid var(--accent-cyan);">
         <p><em>Estatus: ${estado}</em></p>
     `;
 }
 
-document.getElementById('mesSlider').addEventListener('input', (e) => {
-    if(!appData || !mapaSvgD3) return;
-    const mes = e.target.value.toString().padStart(2, '0');
-    document.getElementById('mesEtiqueta').innerText = mes;
-    
-    dibujarPuntos(mapaSvgD3, appData.avistamientos, mes, mostrarTarjeta);
-    actualizarNarrativa(mes);
-    actualizarFondoPorProfundidad(0); 
-});
-
-// --- ARRANQUE DE LA APP ---
-async function iniciarApp() {
-    appData = await cargarBasesDeDatos();
-    
-    if(appData) {
-        // 1. Inicializar Mapa
-        mapaSvgD3 = inicializarMapa("#mapa-svg", appData.mapaMundi);
-        dibujarPuntos(mapaSvgD3, appData.avistamientos, "01", mostrarTarjeta);
-        actualizarNarrativa("01");
+const slider = document.getElementById('mesSlider');
+if (slider) {
+    slider.addEventListener('input', (e) => {
+        if(!appData || !mapaSvgD3) return;
+        const mes = e.target.value.toString().padStart(2, '0');
+        document.getElementById('mesEtiqueta').innerText = mes;
         
-        // 2. Inicializar Acústica pasándole la sección de especies del JSON
-        const datosAcustica = appData.fichaTecnica.vistas_interactivas.acustica.especies;
-        inicializarAcustica(datosAcustica);
+        dibujarPuntos(mapaSvgD3, appData.avistamientos, mes, mostrarTarjeta);
+        actualizarNarrativa(mes);
+    });
+}
 
-        // 3. Inicializar Comparativa 3D
-        inicializarComparativa(datosAcustica);
+function inicializarHoverProfundidad() {
+    const tarjetaSup = document.getElementById('tarjeta-superficial');
+    const tarjetaProf = document.getElementById('tarjeta-profunda');
+    const uiUbicacion = document.getElementById('ubicacion-geografica');
+
+    if (tarjetaSup && tarjetaProf) {
+        
+        // --- TARJETA SUPERFICIAL ---
+        tarjetaSup.addEventListener('mouseenter', () => {
+            const prof = parseInt(tarjetaSup.dataset.prof) || 0;
+            actualizarFondoPorProfundidad(prof);
+            tarjetaSup.style.background = "rgba(0, 229, 255, 0.2)"; 
+            
+            // Calculamos y mostramos la ubicación exacta
+            if(uiUbicacion && tarjetaSup.dataset.lat) {
+                const lat = parseFloat(tarjetaSup.dataset.lat);
+                const lon = parseFloat(tarjetaSup.dataset.lon);
+                uiUbicacion.innerText = obtenerRegionGeografica(lat, lon);
+            }
+        });
+        
+        tarjetaSup.addEventListener('mouseleave', () => {
+            const profActual = parseInt(document.body.dataset.profActual) || 0;
+            actualizarFondoPorProfundidad(profActual);
+            tarjetaSup.style.background = "rgba(0, 229, 255, 0.05)";
+            
+            // Regresamos el texto a la zona general del mes
+            if(uiUbicacion) uiUbicacion.innerText = document.body.dataset.ubicacionActual || "📍 Calculando...";
+        });
+
+        // --- TARJETA PROFUNDA ---
+        tarjetaProf.addEventListener('mouseenter', () => {
+            const prof = parseInt(tarjetaProf.dataset.prof) || 0;
+            actualizarFondoPorProfundidad(prof);
+            tarjetaProf.style.background = "rgba(255, 0, 127, 0.2)"; 
+            
+            // Calculamos y mostramos la ubicación exacta
+            if(uiUbicacion && tarjetaProf.dataset.lat) {
+                const lat = parseFloat(tarjetaProf.dataset.lat);
+                const lon = parseFloat(tarjetaProf.dataset.lon);
+                uiUbicacion.innerText = obtenerRegionGeografica(lat, lon);
+            }
+        });
+        
+        tarjetaProf.addEventListener('mouseleave', () => {
+            const profActual = parseInt(document.body.dataset.profActual) || 0;
+            actualizarFondoPorProfundidad(profActual);
+            tarjetaProf.style.background = "rgba(255, 0, 127, 0.05)";
+            
+            // Regresamos el texto a la zona general del mes
+            if(uiUbicacion) uiUbicacion.innerText = document.body.dataset.ubicacionActual || "📍 Calculando...";
+        });
+    }
+}
+
+async function iniciarApp() {
+    try {
+        appData = await cargarBasesDeDatos();
+        
+        if(appData) {
+            llenarDatosGenerales();
+            
+            if(appData.mapaMundi && appData.avistamientos) {
+                mapaSvgD3 = inicializarMapa("#mapa-svg", appData.mapaMundi);
+                dibujarPuntos(mapaSvgD3, appData.avistamientos, "01", mostrarTarjeta);
+                actualizarNarrativa("01");
+            }
+            
+            const datosGenerales = appData.fichaTecnica ? appData.fichaTecnica : appData;
+            const datosAcustica = datosGenerales.vistas_interactivas.acustica.especies;
+            
+            inicializarAcustica(datosAcustica);
+            inicializarComparativa(datosAcustica);
+            inicializarHoverProfundidad(); 
+        }
+    } catch (error) {
+        console.error("Error crítico al arrancar la app:", error);
+        document.getElementById('datos-generales-info').innerHTML = `<p style="color:red;">Error cargando la base de datos. Revisa la consola.</p>`;
     }
 }
 
