@@ -50,21 +50,21 @@ export function actualizarFondoPorProfundidad(profundidadMaxima) {
 
 // AHORA EXPORTAMOS LA FUNCIÓN PARA PODER USARLA EN EL HOVER
 export function obtenerRegionGeografica(lat, lon) {
-    if (!lat || !lon) return "📍 Ubicación no disponible";
+    if (!lat || !lon) return "Ubicación no disponible";
     
-    if (lat >= 50) return "📍 Golfo de Alaska / Mar de Bering";
-    if (lat >= 42 && lat < 50) return "📍 Costa del Pacífico Noroeste (EEUU)";
-    if (lat >= 32.5 && lat < 42) return "📍 Costa de California (EEUU)";
+    if (lat >= 50) return "Golfo de Alaska / Mar de Bering";
+    if (lat >= 42 && lat < 50) return "Costa del Pacífico Noroeste (EEUU)";
+    if (lat >= 32.5 && lat < 42) return "Costa de California (EEUU)";
     
     if (lat >= 23 && lat < 32.5) {
-        if (lon > -114) return "📍 Golfo de California (Mar de Cortés)";
-        return "📍 Costa Occidental de Baja California (México)";
+        if (lon > -114) return "Golfo de California (Mar de Cortés)";
+        return "Costa Occidental de Baja California (México)";
     }
     
-    if (lat > 5 && lat < 23) return "📍 Pacífico Tropical (Domo de Costa Rica / Sur de México)";
-    if (lat <= 5 && lat >= -5) return "📍 Aguas Ecuatoriales (Islas Galápagos)";
+    if (lat > 5 && lat < 23) return "Pacífico Tropical (Domo de Costa Rica / Sur de México)";
+    if (lat <= 5 && lat >= -5) return "Aguas Ecuatoriales (Islas Galápagos)";
     
-    return "📍 Océano Pacífico Central";
+    return "Océano Pacífico Central";
 }
 
 export function dibujarPuntos(svg, ballenasData, mesStr, funcionAlHacerClic) {
@@ -77,7 +77,7 @@ export function dibujarPuntos(svg, ballenasData, mesStr, funcionAlHacerClic) {
     let maxProf = 0;
     let avgLat = 0;
     let avgLon = 0;
-    let textoUbicacion = "📍 Sin avistamientos registrados este mes";
+    let textoUbicacion = "Sin avistamientos registrados este mes";
     let ballenaSuperficial = null;
     let ballenaProfunda = null;
     
