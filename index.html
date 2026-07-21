@@ -25,21 +25,16 @@
             </div>
         </section>
 
-        <!-- SECCIÓN 2: ACÚSTICA Y DATOS GENERALES -->
+        <!-- SECCIÓN 2: ACÚSTICA (AHORA PANTALLA COMPLETA) -->
         <section id="seccion-acustica" class="seccion-pantalla">
-            <div class="dashboard-container">
-                <aside class="panel-lateral">
-                    <header>
-                        <h1>Balaenoptera musculus</h1>
-                        <p>Datos Generales y Acústica</p>
-                    </header>
-                    <div id="datos-generales-info">
-                        <p>Cargando datos biológicos...</p>
-                    </div>
-                </aside>
-                <div class="area-principal" style="flex-direction: column;">
-                    <h2 style="color: var(--accent-cyan);">Frecuencias Acústicas y la Ballena 52Hz</h2>
-                    <div id="grafica-frecuencias" style="width: 90%; height: 350px;"></div> 
+            <div class="dashboard-container" style="flex-direction: column; padding: 40px;">
+                <header style="text-align: center; margin-bottom: 20px;">
+                    <h1 style="color: var(--accent-cyan); font-size: 2.5rem;">Espectro de Frecuencias Acústicas</h1>
+                    <p style="color: var(--text-secondary); font-size: 1.2rem;">Analiza los picos de canto de cada especie</p>
+                </header>
+                <!-- La gráfica ahora ocupa todo el ancho -->
+                <div class="area-principal" style="width: 100%; flex-grow: 1; border: none; background: transparent; box-shadow: none;">
+                    <div id="grafica-frecuencias" style="width: 100%; height: 100%;"></div> 
                 </div>
             </div>
         </section>
@@ -54,7 +49,7 @@
                     
                     <section class="seccion-controles">
                         <label style="color: var(--accent-cyan); font-weight: bold;">Evolución Anual: Mes <span id="mesEtiqueta">01</span></label>
-                        <!-- NUEVA LÍNEA DE TIEMPO INTERACTIVA -->
+                        <!-- LÍNEA DE TIEMPO INTERACTIVA -->
                         <div class="timeline-container">
                             <div class="timeline-track"></div>
                             <div class="timeline-nodes">
@@ -104,14 +99,20 @@
             </div>
         </section>
 
-        <!-- SECCIÓN 4: EXPLORACIÓN 3D MAPEADA -->
+        <!-- SECCIÓN 4: EXPLORACIÓN 3D (AHORA CON DATOS GENERALES) -->
         <section id="seccion-3d" class="seccion-pantalla">
             <div class="dashboard-container">
                 <aside class="panel-lateral">
                     <header>
-                        <h1>Anatomía en 3D</h1>
-                        <p>Interactúa con los puntos para conocer más.</p>
+                        <h1>Anatomía y Biometría</h1>
+                        <p>Balaenoptera musculus</p>
                     </header>
+                    <!-- AQUI MUDAMOS LOS DATOS BIOLÓGICOS IMPORTANTES -->
+                    <div id="datos-generales-info" style="margin-bottom: 20px;">
+                        <p>Cargando datos biológicos...</p>
+                    </div>
+                    <hr style="border: 0; border-top: 1px solid rgba(0, 229, 255, 0.2); margin-bottom: 20px;">
+                    <p style="color: var(--text-secondary); font-size: 0.9rem;">Interactúa con los puntos para conocer más.</p>
                 </aside>
                 <div class="area-principal">
                     <model-viewer src="base_basic_pbr.glb" camera-controls interaction-prompt="auto" style="width: 100%; height: 100%; background-color: transparent;">
