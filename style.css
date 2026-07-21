@@ -23,7 +23,7 @@ html, body {
     padding: 0;
     height: 100vh;
     width: 100vw;
-    overflow: hidden; /* Corta cualquier scroll fuera del contenedor */
+    overflow: hidden; 
     font-family: 'Segoe UI', system-ui, sans-serif;
     background: radial-gradient(circle at bottom right, #0a192f 0%, #020c1b 100%);
     color: #e2e8f0;
@@ -34,29 +34,27 @@ html, body {
    ========================================= */
 #contenedor-scroll {
     display: flex;
-    flex-direction: row; /* Acomoda las pantallas de izquierda a derecha */
+    flex-direction: row; 
     width: 100vw;
     height: 100vh;
-    overflow-x: scroll; /* Permite el scroll horizontal */
+    overflow-x: scroll; 
     overflow-y: hidden;
-    scroll-snap-type: x mandatory; /* Engancha exactamente en cada pantalla (eje X) */
+    scroll-snap-type: x mandatory; 
     scroll-behavior: smooth;
     
-    /* Ocultar barra en Firefox y Edge */
     scrollbar-width: none;
     -ms-overflow-style: none;
 }
 
-/* Ocultar barra en Chrome/Safari/Opera */
 #contenedor-scroll::-webkit-scrollbar {
     display: none;
 }
 
 .seccion-pantalla {
-    flex-shrink: 0; /* Evita que las pantallas se aplasten */
+    flex-shrink: 0; 
     width: 100vw;
     height: 100vh;
-    scroll-snap-align: start; /* Anclaje horizontal */
+    scroll-snap-align: start; 
     position: relative;
 }
 
@@ -84,53 +82,23 @@ html, body {
 .contenido-portada p {
     font-size: 1.5rem;
     max-width: 600px;
-    margin-bottom: 40px;
+    margin-bottom: 20px;
     line-height: 1.6;
 }
 
-#btn-iniciar {
-    padding: 15px 40px;
+.scroll-hint {
     font-size: 1.2rem;
-    background: var(--accent-cyan);
-    color: #020c1b;
-    border: none;
-    border-radius: 30px;
-    cursor: pointer;
+    color: var(--accent-pink);
+    margin-top: 30px;
     font-weight: bold;
-    box-shadow: 0px 5px 15px rgba(0, 229, 255, 0.4);
-    transition: transform 0.2s;
+    animation: pulse 2s infinite;
 }
 
-#btn-iniciar:hover { transform: scale(1.05); }
-
-#pantalla-carga {
-    position: fixed;
-    top: 0; left: 0; width: 100vw; height: 100vh;
-    background: #020c1b;
-    z-index: 9999;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    transition: opacity 0.8s ease;
+@keyframes pulse {
+    0% { opacity: 0.5; transform: translateX(0); }
+    50% { opacity: 1; transform: translateX(15px); }
+    100% { opacity: 0.5; transform: translateX(0); }
 }
-
-#pantalla-carga.oculto {
-    opacity: 0;
-    pointer-events: none;
-}
-
-.loader {
-    border: 8px solid rgba(0, 229, 255, 0.2);
-    border-top: 8px solid var(--accent-cyan);
-    border-radius: 50%;
-    width: 60px;
-    height: 60px;
-    animation: girar 1s linear infinite;
-    margin-bottom: 20px;
-}
-
-@keyframes girar { 100% { transform: rotate(360deg); } }
 
 /* =========================================
    4. ESTRUCTURA INTERNA (MAPA, PANELES)
@@ -163,19 +131,6 @@ html, body {
     letter-spacing: 1px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     padding-bottom: 15px;
-}
-
-.seccion-controles label {
-    font-weight: 600;
-    color: #ccd6f6;
-    display: block;
-    margin-bottom: 10px;
-}
-
-input[type="range"] {
-    width: 100%;
-    cursor: pointer;
-    accent-color: var(--accent-cyan);
 }
 
 .narrativa h2, #titulo-tarjeta {
@@ -212,25 +167,36 @@ input[type="range"] {
 .current-point {
     fill: var(--accent-cyan);
     stroke: #ffffff;
-    stroke-width: 1.5px;
+    stroke-width: 1px;
     cursor: pointer;
+    opacity: 0.35; 
     transition: all 0.3s ease;
     transform-origin: center;
     transform-box: fill-box;
 }
 
 .current-point:hover {
-    transform: scale(1.5);
+    transform: scale(1.8);
     fill: var(--accent-pink);
+    opacity: 1;
 }
 
 .historical-point {
     fill: #444444;
-    opacity: 0.3;
+    opacity: 0.15; 
+}
+
+/* NUEVA CLASE: Se activa solo con el ratón sobre las tarjetas */
+.highlight-record {
+    fill: var(--accent-pink) !important; 
+    stroke: #ffffff !important;
+    stroke-width: 2px !important;
+    opacity: 1 !important; 
+    transform: scale(1.8); /* Se hace grande automáticamente */
 }
 
 /* =========================================
-   6. HOTSPOTS 3D (Recuperados)
+   6. HOTSPOTS 3D 
    ========================================= */
 .punto-flotante {
     background-color: var(--accent-cyan);
@@ -288,17 +254,71 @@ input[type="range"] {
     opacity: 0.3;
 }
 
-/* ANIMACIÓN DEL INDICADOR DE SCROLL */
-.scroll-hint {
-    font-size: 1.2rem;
-    color: var(--accent-pink);
-    margin-top: 30px;
-    font-weight: bold;
-    animation: pulse 2s infinite;
+/* =========================================
+   7. LÍNEA DE TIEMPO NARRATIVA (CAPÍTULOS)
+   ========================================= */
+.timeline-container {
+    position: relative;
+    width: 100%;
+    margin: 35px 0 25px 0; /* Más espacio para que respire el diseño */
+    display: flex;
+    align-items: center;
 }
 
-@keyframes pulse {
-    0% { opacity: 0.5; transform: translateX(0); }
-    50% { opacity: 1; transform: translateX(15px); }
-    100% { opacity: 0.5; transform: translateX(0); }
+.timeline-track {
+    position: absolute;
+    top: 50%;
+    left: 3%;
+    right: 3%;
+    height: 3px; /* Línea ligeramente más gruesa */
+    background: rgba(0, 229, 255, 0.4); /* Línea más brillante */
+    transform: translateY(-50%);
+    z-index: 1;
+    border-radius: 3px;
+}
+
+.timeline-nodes {
+    display: flex;
+    justify-content: space-between; /* Distribuye los nodos equitativamente */
+    width: 100%;
+    position: relative;
+    z-index: 2;
+}
+
+.timeline-node {
+    appearance: none; /* Elimina el estilo feo por defecto del navegador */
+    -webkit-appearance: none;
+    width: 28px; 
+    height: 28px;
+    min-width: 28px; /* Evita que se apachurren horizontalmente */
+    border-radius: 50% !important; /* Círculos perfectos siempre */
+    background: var(--bg-dark); /* Fondo oscuro para tapar la línea de atrás */
+    border: 2px solid rgba(0, 229, 255, 0.3);
+    color: var(--text-secondary);
+    font-size: 0.8rem;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    padding: 0;
+    margin: 0;
+    font-family: inherit;
+    outline: none;
+}
+
+.timeline-node:hover {
+    border-color: var(--accent-cyan);
+    color: var(--accent-cyan);
+    transform: scale(1.2);
+    background: rgba(0, 229, 255, 0.15);
+}
+
+.timeline-node.activo {
+    background: var(--accent-cyan);
+    border-color: var(--accent-cyan);
+    color: var(--bg-dark) !important;
+    box-shadow: 0 0 15px rgba(0, 229, 255, 0.8);
+    transform: scale(1.25);
 }

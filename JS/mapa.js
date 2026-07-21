@@ -12,8 +12,8 @@ export function inicializarMapa(svgElementId, geoData) {
         .attr("height", "100%");
 
     projection = d3.geoMercator()
-        .center([-125, 35])
-        .scale(600)
+        .center([-115, 33]) 
+        .scale(480)         
         .translate([width / 2, height / 2]);
 
     const path = d3.geoPath().projection(projection);
@@ -48,7 +48,6 @@ export function actualizarFondoPorProfundidad(profundidadMaxima) {
     }
 }
 
-// AHORA EXPORTAMOS LA FUNCIÓN PARA PODER USARLA EN EL HOVER
 export function obtenerRegionGeografica(lat, lon) {
     if (!lat || !lon) return "Ubicación no disponible";
     
@@ -77,7 +76,7 @@ export function dibujarPuntos(svg, ballenasData, mesStr, funcionAlHacerClic) {
     let maxProf = 0;
     let avgLat = 0;
     let avgLon = 0;
-    let textoUbicacion = "Sin avistamientos registrados este mes";
+    let textoUbicacion = "📍 Sin avistamientos registrados este mes";
     let ballenaSuperficial = null;
     let ballenaProfunda = null;
     
@@ -85,7 +84,6 @@ export function dibujarPuntos(svg, ballenasData, mesStr, funcionAlHacerClic) {
         minProf = d3.min(datosMesActual, d => d.profundidad);
         maxProf = d3.max(datosMesActual, d => d.profundidad);
         
-        // Atrapamos a las ballenas responsables de estos récords
         ballenaSuperficial = datosMesActual.find(d => d.profundidad === minProf);
         ballenaProfunda = datosMesActual.find(d => d.profundidad === maxProf);
         
@@ -105,7 +103,6 @@ export function dibujarPuntos(svg, ballenasData, mesStr, funcionAlHacerClic) {
     const tarjetaSup = document.getElementById('tarjeta-superficial');
     const tarjetaProf = document.getElementById('tarjeta-profunda');
     
-    // Pegamos la latitud y longitud exacta en las tarjetas para que el hover las lea
     if(tarjetaSup && ballenaSuperficial) {
         tarjetaSup.dataset.prof = minProf;
         tarjetaSup.dataset.lat = ballenaSuperficial.lat;
@@ -119,19 +116,27 @@ export function dibujarPuntos(svg, ballenasData, mesStr, funcionAlHacerClic) {
     }
 
     document.body.dataset.profActual = maxProf;
-    // Guardamos la ubicación promedio del mes para poder regresar a ella
     document.body.dataset.ubicacionActual = textoUbicacion; 
     
     actualizarFondoPorProfundidad(maxProf);
 
+    // DIBUJO DE PUNTOS CON IDENTIFICADOR DE RÉCORD
     svg.selectAll("circle")
         .data(datosParaDibujar)
         .enter()
         .append("circle")
-        .attr("class", d => (d.fecha.split('-')[1] === mesStr) ? "current-point" : "historical-point")
+        .attr("class", d => {
+            if (d.fecha.split('-')[1] !== mesStr) return "historical-point";
+            
+            let clases = "current-point";
+            // Les ponemos una "etiqueta" invisible a las que rompieron récord
+            if (d === ballenaSuperficial) clases += " punto-superficial";
+            if (d === ballenaProfunda) clases += " punto-profundo";
+            return clases;
+        })
         .attr("cx", d => projection([d.lon, d.lat])[0])
         .attr("cy", d => projection([d.lon, d.lat])[1])
-        .attr("r", d => (d.fecha.split('-')[1] === mesStr) ? 6 : 2)
+        .attr("r", d => (d.fecha.split('-')[1] === mesStr) ? 5 : 2.5) // TODAS DEL MISMO TAMAÑO
         .on("click", (event, d) => {
              funcionAlHacerClic(d);
              document.body.dataset.profActual = d.profundidad;
