@@ -18,12 +18,14 @@
     padding: 0;
 }
 
-html, body {
+html,
+body {
     margin: 0;
     padding: 0;
     height: 100vh;
     width: 100vw;
-    overflow: hidden; 
+    overflow: hidden;
+    /* Corta cualquier scroll fuera del contenedor */
     font-family: 'Segoe UI', system-ui, sans-serif;
     background: radial-gradient(circle at bottom right, #0a192f 0%, #020c1b 100%);
     color: #e2e8f0;
@@ -34,70 +36,207 @@ html, body {
    ========================================= */
 #contenedor-scroll {
     display: flex;
-    flex-direction: row; 
+    flex-direction: row;
+    /* Acomoda las pantallas de izquierda a derecha */
     width: 100vw;
     height: 100vh;
-    overflow-x: scroll; 
+    overflow-x: scroll;
+    /* Permite el scroll horizontal */
     overflow-y: hidden;
-    scroll-snap-type: x mandatory; 
+    scroll-snap-type: x mandatory;
+    /* Engancha exactamente en cada pantalla (eje X) */
     scroll-behavior: smooth;
-    
+
+    /* Ocultar barra en Firefox y Edge */
     scrollbar-width: none;
     -ms-overflow-style: none;
 }
 
+/* Ocultar barra en Chrome/Safari/Opera */
 #contenedor-scroll::-webkit-scrollbar {
     display: none;
 }
 
 .seccion-pantalla {
-    flex-shrink: 0; 
+    flex-shrink: 0;
+    /* Evita que las pantallas se aplasten */
     width: 100vw;
     height: 100vh;
-    scroll-snap-align: start; 
+    scroll-snap-align: start;
+    /* Anclaje horizontal */
     position: relative;
 }
 
 /* =========================================
-   3. PORTADA Y CARGA
+   3. PORTADA Y CARGA 
    ========================================= */
-.contenido-portada {
-    position: relative;
-    z-index: 10;
-    text-align: center;
-    top: 50%;
-    transform: translateY(-50%);
+#seccion-portada {
     display: flex;
-    flex-direction: column;
     align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 10px;
+    background-color: #040914;
+    box-sizing: border-box;
+}
+
+.texto-lateral {
+    flex: 0 0 250px;
+    text-align: left;
+}
+
+.texto-lateral h2 {
+    color: var(--accent-cyan);
+    font-size: 1.8rem;
+    margin: 0;
+    font-weight: bold;
+}
+
+.texto-lateral p {
+    color: #ffffff;
+    font-size: 1.2rem;
+    margin: 5px 0 0 0;
+}
+
+.contenedor-imagen-portada {
+    position: relative;
+    flex: 1;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+
+    background-image: url('portada.png');
+
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 90vh;
+    width: 100%;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+
+.texto-fondo {
+    position: absolute;
+    color: rgba(255, 255, 255, 0.05);
+    font-size: 1.2rem;
+    font-weight: bold;
+    letter-spacing: 4px;
+    pointer-events: none;
+}
+
+.texto-fondo.arriba {
+    top: 15px;
+    right: 20px;
+}
+
+.texto-fondo.abajo {
+    bottom: 15px;
+    right: 20px;
+}
+
+.contenido-portada {
+    background-color: rgba(0, 0, 0, 0.65);
+    
+    backdrop-filter: blur(1px);
+    -webkit-backdrop-filter: blur(2px); 
+    
+    border: 1px solid rgba(255, 255, 255, 0.15); 
+    border-radius: 10px;
+    padding: 40px;
+    text-align: center;
+    max-width: 450px;
+    z-index: 2;
+    box-shadow: 0 8px 32px rgba(1, 15, 43, 0.5); 
 }
 
 .contenido-portada h1 {
-    font-size: 4rem;
+    font-size: 1.8rem;
     color: var(--accent-cyan);
-    margin-bottom: 10px;
-    text-shadow: 0px 0px 20px rgba(0, 229, 255, 0.5);
+    margin-top: 0;
+    margin-bottom: 15px;
 }
 
 .contenido-portada p {
-    font-size: 1.5rem;
-    max-width: 600px;
-    margin-bottom: 20px;
-    line-height: 1.6;
+    font-size: 0.95rem;
+    color: #d1d5db;
+    margin-bottom: 30px;
+    line-height: 1.5;
 }
 
+/* ANIMACIÓN DEL INDICADOR DE SCROLL */
 .scroll-hint {
-    font-size: 1.2rem;
+    font-size: 0.85rem;
     color: var(--accent-pink);
-    margin-top: 30px;
-    font-weight: bold;
+    margin: 0;
+    font-weight: 500;
     animation: pulse 2s infinite;
 }
 
 @keyframes pulse {
-    0% { opacity: 0.5; transform: translateX(0); }
-    50% { opacity: 1; transform: translateX(15px); }
-    100% { opacity: 0.5; transform: translateX(0); }
+    0% {
+        opacity: 0.5;
+        transform: translateX(0);
+    }
+
+    50% {
+        opacity: 1;
+        transform: translateX(15px);
+    }
+
+    100% {
+        opacity: 0.5;
+        transform: translateX(0);
+    }
+}
+
+/* Conservamos la pantalla de carga original */
+#pantalla-carga {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: #020c1b;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 0.8s ease;
+}
+
+#pantalla-carga.oculto {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.loader {
+    border: 8px solid rgba(0, 229, 255, 0.2);
+    border-top: 8px solid var(--accent-cyan);
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    animation: girar 1s linear infinite;
+    margin-bottom: 20px;
+}
+
+@keyframes girar {
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* Fondo para la sección de Acústica */
+#seccion-acustica {
+    background-image: url('hhh.jpg');
+    background-size: cover;
+    background-position: 50% 20%;
+    background-repeat: no-repeat;
+    
+    background-color: var(--bg-dark); 
 }
 
 /* =========================================
@@ -133,13 +272,30 @@ html, body {
     padding-bottom: 15px;
 }
 
-.narrativa h2, #titulo-tarjeta {
+.seccion-controles label {
+    font-weight: 600;
+    color: #ccd6f6;
+    display: block;
+    margin-bottom: 10px;
+}
+
+input[type="range"] {
+    width: 100%;
+    cursor: pointer;
+    accent-color: var(--accent-cyan);
+}
+
+.narrativa h2,
+#titulo-tarjeta {
     font-size: 1.4rem;
     color: var(--accent-cyan);
     margin-bottom: 8px;
 }
 
-.narrativa p, #contenido-tarjeta p, #info-card p, #datos-generales-info p {
+.narrativa p,
+#contenido-tarjeta p,
+#info-card p,
+#datos-generales-info p {
     font-size: 1.15rem;
     line-height: 1.6;
     color: var(--text-primary);
@@ -154,12 +310,52 @@ html, body {
     display: flex;
     justify-content: center;
     align-items: center;
-    box-shadow: inset 0 0 50px rgba(0,0,0,0.5);
+    box-shadow: inset 0 0 50px rgba(0, 0, 0, 0.5);
     position: relative;
     overflow: hidden;
 }
 
-.hidden { display: none !important; }
+.hidden {
+    display: none !important;
+}
+.grid-datos-biologicos {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Crea dos columnas iguales */
+    gap: 12px;
+    margin-top: 15px;
+}
+
+.dato-tarjeta {
+    background: rgba(0, 229, 255, 0.05);
+    border: 1px solid rgba(0, 229, 255, 0.15);
+    border-radius: 8px;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+}
+
+.dato-tarjeta .etiqueta {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 5px;
+}
+
+.dato-tarjeta .valor {
+    font-size: 1rem;
+    color: var(--text-primary);
+    font-weight: bold;
+}
+
+.dato-tarjeta.alerta {
+    background: rgba(255, 0, 127, 0.05);
+    border-color: rgba(255, 0, 127, 0.2);
+}
+
+.dato-tarjeta.alerta .valor {
+    color: var(--accent-pink);
+}
 
 /* =========================================
    5. PUNTOS DEL MAPA SVG
@@ -167,36 +363,25 @@ html, body {
 .current-point {
     fill: var(--accent-cyan);
     stroke: #ffffff;
-    stroke-width: 1px;
+    stroke-width: 1.5px;
     cursor: pointer;
-    opacity: 0.35; 
     transition: all 0.3s ease;
     transform-origin: center;
     transform-box: fill-box;
 }
 
 .current-point:hover {
-    transform: scale(1.8);
+    transform: scale(1.5);
     fill: var(--accent-pink);
-    opacity: 1;
 }
 
 .historical-point {
     fill: #444444;
-    opacity: 0.15; 
-}
-
-/* NUEVA CLASE: Se activa solo con el ratón sobre las tarjetas */
-.highlight-record {
-    fill: var(--accent-pink) !important; 
-    stroke: #ffffff !important;
-    stroke-width: 2px !important;
-    opacity: 1 !important; 
-    transform: scale(1.8); /* Se hace grande automáticamente */
+    opacity: 0.3;
 }
 
 /* =========================================
-   6. HOTSPOTS 3D 
+   6. HOTSPOTS 3D (Recuperados)
    ========================================= */
 .punto-flotante {
     background-color: var(--accent-cyan);
@@ -254,71 +439,28 @@ html, body {
     opacity: 0.3;
 }
 
-/* =========================================
-   7. LÍNEA DE TIEMPO NARRATIVA (CAPÍTULOS)
-   ========================================= */
-.timeline-container {
-    position: relative;
-    width: 100%;
-    margin: 35px 0 25px 0; /* Más espacio para que respire el diseño */
-    display: flex;
-    align-items: center;
-}
-
-.timeline-track {
-    position: absolute;
-    top: 50%;
-    left: 3%;
-    right: 3%;
-    height: 3px; /* Línea ligeramente más gruesa */
-    background: rgba(0, 229, 255, 0.4); /* Línea más brillante */
-    transform: translateY(-50%);
-    z-index: 1;
-    border-radius: 3px;
-}
-
-.timeline-nodes {
-    display: flex;
-    justify-content: space-between; /* Distribuye los nodos equitativamente */
-    width: 100%;
-    position: relative;
-    z-index: 2;
-}
-
-.timeline-node {
-    appearance: none; /* Elimina el estilo feo por defecto del navegador */
-    -webkit-appearance: none;
-    width: 28px; 
-    height: 28px;
-    min-width: 28px; /* Evita que se apachurren horizontalmente */
-    border-radius: 50% !important; /* Círculos perfectos siempre */
-    background: var(--bg-dark); /* Fondo oscuro para tapar la línea de atrás */
-    border: 2px solid rgba(0, 229, 255, 0.3);
-    color: var(--text-secondary);
-    font-size: 0.8rem;
+/* ANIMACIÓN DEL INDICADOR DE SCROLL */
+.scroll-hint {
+    font-size: 1.2rem;
+    color: var(--accent-pink);
+    margin-top: 30px;
     font-weight: bold;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    padding: 0;
-    margin: 0;
-    font-family: inherit;
-    outline: none;
+    animation: pulse 2s infinite;
 }
 
-.timeline-node:hover {
-    border-color: var(--accent-cyan);
-    color: var(--accent-cyan);
-    transform: scale(1.2);
-    background: rgba(0, 229, 255, 0.15);
-}
+@keyframes pulse {
+    0% {
+        opacity: 0.5;
+        transform: translateX(0);
+    }
 
-.timeline-node.activo {
-    background: var(--accent-cyan);
-    border-color: var(--accent-cyan);
-    color: var(--bg-dark) !important;
-    box-shadow: 0 0 15px rgba(0, 229, 255, 0.8);
-    transform: scale(1.25);
+    50% {
+        opacity: 1;
+        transform: translateX(15px);
+    }
+
+    100% {
+        opacity: 0.5;
+        transform: translateX(0);
+    }
 }
