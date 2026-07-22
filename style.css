@@ -104,7 +104,7 @@ body {
     border-radius: 12px;
     border: 1px solid rgba(255, 255, 255, 0.2);
 
-    background-image: url('portada.png');
+    background-image: url('Imagenes/portada.png');
 
     background-size: cover;
     background-position: center;
@@ -231,7 +231,7 @@ body {
 
 /* Fondo para la sección de Acústica */
 #seccion-acustica {
-    background-image: url('hhh.jpg');
+    background-image: url('Imagenes/hhh.jpg');
     background-size: cover;
     background-position: 50% 20%;
     background-repeat: no-repeat;
