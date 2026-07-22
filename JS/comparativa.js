@@ -1,31 +1,38 @@
 export function inicializarComparativa(datosAcusticos) {
-    const asidePanel = document.querySelector('#seccion-3d .panel-lateral');
-    const visor3D = document.querySelector('#seccion-3d model-viewer');
+    const contenedorBotones = document.getElementById('contenedor-botones-comparativa');
+    const visorSecundario = document.getElementById('visor-secundario');
 
-    if (!asidePanel || !visor3D) return;
+    if (!contenedorBotones || !visorSecundario) return;
 
-    // Filtramos para que no genere botón de la ballena 52Hz que no tiene modelo 3D
+    // Filtramos para que no genere botón de la ballena 52Hz
     const especies3D = datosAcusticos.filter(d => d.id !== "52hz");
     
-    // Limpieza de botones previos por si acaso
-    let contenedor = document.getElementById('botones-especies-3d');
-    if(contenedor) contenedor.remove();
+    // --- DICCIONARIO DE MODELOS 3D ---
+    // Aquí enlazas el ID de tu base de datos con el nombre real de tu archivo en tu compu.
+    // IMPORTANTE: Si tus archivos se llaman distinto, cámbialos aquí adentro de las comillas.
+    const archivosModelos = {
+        "minke": "3D/Minke/minke.glb",
+        "jorobada": "3D/Jorobada/jorobada.glb",
+        "azul": "3D/Azul/ballena.glb",
+        "aleta": "3D/Aleta/aleta.glb"
+    };
 
-    const contenedorBotones = document.createElement('div');
-    contenedorBotones.id = 'botones-especies-3d';
-    contenedorBotones.style.display = "flex";
-    contenedorBotones.style.flexDirection = "column";
-    contenedorBotones.style.gap = "10px";
-    contenedorBotones.style.marginTop = "20px";
+    // Formato de Cuadrícula (Grid) para ahorrar espacio
+    contenedorBotones.innerHTML = '';
+    contenedorBotones.style.display = "grid";
+    contenedorBotones.style.gridTemplateColumns = "1fr 1fr"; 
+    contenedorBotones.style.gap = "8px";
+    contenedorBotones.style.marginTop = "15px";
 
     especies3D.forEach((especie) => {
         const btn = document.createElement('button');
         btn.innerText = especie.nombre_comun;
-        btn.style.padding = "10px";
-        btn.style.borderRadius = "8px";
+        btn.style.padding = "8px 5px";
+        btn.style.borderRadius = "6px";
         btn.style.border = "1px solid var(--accent-cyan)";
         btn.style.cursor = "pointer";
         btn.style.fontWeight = "bold";
+        btn.style.fontSize = "0.75rem"; 
         btn.style.transition = "background 0.3s";
         
         if(especie.id === "azul") {
@@ -47,11 +54,10 @@ export function inicializarComparativa(datosAcusticos) {
             btn.style.background = "var(--accent-cyan)";
             btn.style.color = "#021024";
 
-            visor3D.src = `${especie.id}.glb`;
+            // Cambiar el modelo 3D en el visor de acústica usando nuestro diccionario
+            visorSecundario.src = archivosModelos[especie.id];
         });
 
         contenedorBotones.appendChild(btn);
     });
-
-    asidePanel.appendChild(contenedorBotones);
 }

@@ -16,11 +16,7 @@
 
         <!-- SECCIÓN 1: PORTADA -->
         <section id="seccion-portada" class="seccion-pantalla">
-
-
-
             <div class="contenedor-imagen-portada">
-
                 <div class="contenido-portada">
                     <h1>Conoce a la Ballena Azul</h1>
                     <p>Explora su majestuosa anatomía, acompáñala en su migración global y descubre los secretos de su
@@ -30,107 +26,41 @@
             </div>
         </section>
 
-        <!-- SECCIÓN 2: ACÚSTICA Y DATOS GENERALES -->
-        <section id="seccion-acustica" class="seccion-pantalla">
-            <div class="dashboard-container">
-                <aside class="panel-lateral">
-                    <header>
-                        <h1>Balaenoptera musculus</h1>
-                        <p>Datos Generales y Acústica</p>
-                    </header>
-                    <div id="datos-generales-info">
-                        <div class="grid-datos-biologicos">
-                            <div class="dato-tarjeta">
-                                <span class="etiqueta">Peso Máximo</span>
-                                <span class="valor" id="dato-peso">Cargando...</span> <!-- ID agregado -->
-                            </div>
-                            <div class="dato-tarjeta">
-                                <span class="etiqueta">Longitud Máx.</span>
-                                <span class="valor" id="dato-longitud">Cargando...</span> <!-- ID agregado -->
-                            </div>
-                            <div class="dato-tarjeta" style="grid-column: span 2;">
-                                <span class="etiqueta">Esperanza de Vida</span>
-                                <span class="valor" id="dato-vida">Cargando...</span> <!-- ID agregado -->
-                            </div>
-                            <div class="dato-tarjeta alerta" style="grid-column: span 2;">
-                                <span class="etiqueta">Estado de Conservación</span>
-                                <span class="valor" id="dato-estado">Cargando...</span> <!-- ID agregado -->
-                            </div>
-                        </div>
-                    </div>
-                </aside>
-                <div class="area-principal" style="flex-direction: column;">
-                    <h2 style="color: var(--accent-cyan);">Frecuencias Acústicas y la Ballena 52Hz</h2>
-                    <div id="grafica-frecuencias" style="width: 90%; height: 350px;"></div>
-                </div>
-            </div>
-        </section>
-
-        <!-- SECCIÓN 3: MAPA Y ALIMENTACIÓN -->
-        <section id="seccion-mapa" class="seccion-pantalla">
-            <div class="dashboard-container">
-                <aside class="panel-lateral">
-                    <header>
-                        <h1>Ruta Migratoria y Dieta</h1>
-                    </header>
-                    <section class="seccion-controles">
-                        <label for="mesSlider">Mes actual: <span id="mesEtiqueta">01</span></label>
-                        <input type="range" id="mesSlider" min="1" max="12" value="1">
-                    </section>
-                    <div class="narrativa">
-                        <h2 id="titulo-tarjeta">Cargando...</h2>
-                        <div id="contenido-tarjeta">
-                            <p>Conectando a la base de datos...</p>
-                        </div>
-                    </div>
-
-                    <!-- PANEL INTERACTIVO DE PROFUNDIDAD Y UBICACIÓN -->
-                    <div id="profundidad-info" style="margin-top: 25px;">
-                        <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 8px;">Pasa el ratón
-                            sobre los rangos para explorar:</p>
-                        <div style="display: flex; gap: 10px;">
-                            <div id="tarjeta-superficial"
-                                style="background: rgba(0, 229, 255, 0.05); border: 1px solid rgba(0, 229, 255, 0.2); padding: 10px; border-radius: 8px; flex: 1; text-align: center; cursor: pointer; transition: background 0.3s;">
-                                <span
-                                    style="display: block; font-size: 0.75rem; color: #8892b0; text-transform: uppercase; letter-spacing: 1px;">Superficial</span>
-                                <strong id="prof-min" style="color: var(--accent-cyan); font-size: 1.2rem;">0 m</strong>
-                            </div>
-                            <div id="tarjeta-profunda"
-                                style="background: rgba(255, 0, 127, 0.05); border: 1px solid rgba(255, 0, 127, 0.2); padding: 10px; border-radius: 8px; flex: 1; text-align: center; cursor: pointer; transition: background 0.3s;">
-                                <span
-                                    style="display: block; font-size: 0.75rem; color: #8892b0; text-transform: uppercase; letter-spacing: 1px;">Profunda</span>
-                                <strong id="prof-max" style="color: var(--accent-pink); font-size: 1.2rem;">0 m</strong>
-                            </div>
-                        </div>
-                        <div
-                            style="margin-top: 12px; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.1); text-align: center;">
-                            <p id="zona-oceanica"
-                                style="font-size: 0.85rem; color: var(--accent-cyan); font-weight: bold; margin-bottom: 5px;">
-                                Zona Epipelágica</p>
-                            <!-- NUEVO ELEMENTO: UBICACIÓN GEOGRÁFICA -->
-                            <p id="ubicacion-geografica"
-                                style="font-size: 0.95rem; color: var(--text-primary); font-weight: bold;">📍 Calculando
-                                ubicación...</p>
-                        </div>
-                    </div>
-
-                    <div id="info-card" class="hidden"></div>
-                </aside>
-                <div class="area-principal" id="mapa-svg"></div>
-            </div>
-        </section>
-
-        <!-- SECCIÓN 4: EXPLORACIÓN 3D MAPEADA -->
+        <!-- SECCIÓN 2: EXPLORACIÓN 3D Y DATOS BIOLÓGICOS (Página 1) -->
         <section id="seccion-3d" class="seccion-pantalla">
             <div class="dashboard-container">
                 <aside class="panel-lateral">
                     <header>
                         <h1>Anatomía en 3D</h1>
-                        <p>Interactúa con los puntos para conocer más.</p>
+                        <p>Balaenoptera musculus</p>
                     </header>
+                    
+                    <div id="datos-generales-info">
+                        <div class="grid-datos-biologicos">
+                            <div class="dato-tarjeta">
+                                <span class="etiqueta">Peso Máximo</span>
+                                <span class="valor" id="dato-peso">Cargando...</span> 
+                            </div>
+                            <div class="dato-tarjeta">
+                                <span class="etiqueta">Longitud Máx.</span>
+                                <span class="valor" id="dato-longitud">Cargando...</span> 
+                            </div>
+                            <div class="dato-tarjeta" style="grid-column: span 2;">
+                                <span class="etiqueta">Esperanza de Vida</span>
+                                <span class="valor" id="dato-vida">Cargando...</span> 
+                            </div>
+                            <div class="dato-tarjeta alerta" style="grid-column: span 2;">
+                                <span class="etiqueta">Estado de Conservación</span>
+                                <span class="valor" id="dato-estado">Cargando...</span> 
+                            </div>
+                        </div>
+                    </div>
+
+                    <p style="color: var(--text-secondary); font-size: 0.9rem; margin-top: 15px;">Interactúa con los puntos luminosos para conocer los detalles fisionómicos exclusivos de la Ballena Azul.</p>
                 </aside>
                 <div class="area-principal">
-                    <model-viewer src="base_basic_pbr.glb" camera-controls interaction-prompt="auto"
+                    <!-- AQUI CORREGIMOS LA RUTA DEL ARCHIVO -->
+                    <model-viewer src="3D/Azul/ballena.glb" camera-controls interaction-prompt="auto"
                         style="width: 100%; height: 100%; background-color: transparent;">
 
                         <button class="punto-flotante" slot="hotspot-1"
@@ -179,6 +109,87 @@
                 </div>
             </div>
         </section>
+
+        <!-- SECCIÓN 3: ACÚSTICA Y COMPARATIVA (Página 2) -->
+        <section id="seccion-acustica" class="seccion-pantalla">
+            <div class="dashboard-container">
+                <aside class="panel-lateral">
+                    <header>
+                        <h1>Espectro Sonoro</h1>
+                        <p>Frecuencias Acústicas</p>
+                    </header>
+                    <p style="color: var(--text-secondary); font-size: 0.95rem; line-height: 1.5; margin-top: 5px;">
+                        Las ballenas utilizan ondas de baja frecuencia para comunicarse a miles de kilómetros. Pasa el ratón sobre la gráfica para visualizar los picos y reproducir los cantos.
+                    </p>
+                    
+                    <div style="margin-top: 15px; border-top: 1px solid rgba(0, 229, 255, 0.2); padding-top: 15px;">
+                        <h3 style="color: var(--accent-cyan); font-size: 1rem; margin-bottom: 10px;">Visualizador de Especies</h3>
+                        <model-viewer id="visor-secundario" src="3D/Azul/ballena.glb" auto-rotate camera-controls style="width: 100%; height: 200px; border-radius: 12px; background: rgba(0,0,0,0.3); box-shadow: inset 0 0 15px rgba(0,0,0,0.8);"></model-viewer>
+                        
+                        <div id="contenedor-botones-comparativa"></div>
+                    </div>
+                </aside>
+                
+                <div class="area-principal" style="flex-direction: column;">
+                    <h2 style="color: var(--accent-cyan);">Frecuencias Acústicas y la Ballena 52Hz</h2>
+                    <div id="grafica-frecuencias" style="width: 90%; height: 350px;"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 4: MAPA Y ALIMENTACIÓN -->
+        <section id="seccion-mapa" class="seccion-pantalla">
+            <div class="dashboard-container">
+                <aside class="panel-lateral">
+                    <header>
+                        <h1>Ruta Migratoria y Dieta</h1>
+                    </header>
+                    <section class="seccion-controles">
+                        <label for="mesSlider">Mes actual: <span id="mesEtiqueta">01</span></label>
+                        <input type="range" id="mesSlider" min="1" max="12" value="1">
+                    </section>
+                    <div class="narrativa">
+                        <h2 id="titulo-tarjeta">Cargando...</h2>
+                        <div id="contenido-tarjeta">
+                            <p>Conectando a la base de datos...</p>
+                        </div>
+                    </div>
+
+                    <!-- PANEL INTERACTIVO DE PROFUNDIDAD Y UBICACIÓN -->
+                    <div id="profundidad-info" style="margin-top: 25px;">
+                        <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 8px;">Pasa el ratón
+                            sobre los rangos para explorar:</p>
+                        <div style="display: flex; gap: 10px;">
+                            <div id="tarjeta-superficial"
+                                style="background: rgba(0, 229, 255, 0.05); border: 1px solid rgba(0, 229, 255, 0.2); padding: 10px; border-radius: 8px; flex: 1; text-align: center; cursor: pointer; transition: background 0.3s;">
+                                <span
+                                    style="display: block; font-size: 0.75rem; color: #8892b0; text-transform: uppercase; letter-spacing: 1px;">Superficial</span>
+                                <strong id="prof-min" style="color: var(--accent-cyan); font-size: 1.2rem;">0 m</strong>
+                            </div>
+                            <div id="tarjeta-profunda"
+                                style="background: rgba(255, 0, 127, 0.05); border: 1px solid rgba(255, 0, 127, 0.2); padding: 10px; border-radius: 8px; flex: 1; text-align: center; cursor: pointer; transition: background 0.3s;">
+                                <span
+                                    style="display: block; font-size: 0.75rem; color: #8892b0; text-transform: uppercase; letter-spacing: 1px;">Profunda</span>
+                                <strong id="prof-max" style="color: var(--accent-pink); font-size: 1.2rem;">0 m</strong>
+                            </div>
+                        </div>
+                        <div
+                            style="margin-top: 12px; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.1); text-align: center;">
+                            <p id="zona-oceanica"
+                                style="font-size: 0.85rem; color: var(--accent-cyan); font-weight: bold; margin-bottom: 5px;">
+                                Zona Epipelágica</p>
+                            <p id="ubicacion-geografica"
+                                style="font-size: 0.95rem; color: var(--text-primary); font-weight: bold;">📍 Calculando
+                                ubicación...</p>
+                        </div>
+                    </div>
+
+                    <div id="info-card" class="hidden"></div>
+                </aside>
+                <div class="area-principal" id="mapa-svg"></div>
+            </div>
+        </section>
+
     </main>
 
     <script type="module" src="JS/main.js"></script>
