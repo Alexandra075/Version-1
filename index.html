@@ -21,7 +21,7 @@
                     <h1>Conoce a la Ballena Azul</h1>
                     <p>Explora su majestuosa anatomía, acompáñala en su migración global y descubre los secretos de su
                         profundo canto.</p>
-                    <p class="scroll-hint">Scrolle hacia abajo</p>
+                    <p class="scroll-hint">Scrolle hacia abajo ↓</p>
                 </div>
             </div>
         </section>
@@ -189,11 +189,27 @@
             <div class="dashboard-container">
                 <aside class="panel-lateral">
                     <header>
-                        <h1>Ruta Migratoria y Dieta</h1>
+                        <!-- TÍTULO CORREGIDO -->
+                        <h1>Ruta migratoria</h1>
                     </header>
+                    
+                    <!-- NUEVOS BOTONES CIRCULARES PARA LA LÍNEA DE TIEMPO -->
                     <section class="seccion-controles">
-                        <label for="mesSlider">Mes actual: <span id="mesEtiqueta">01</span></label>
-                        <input type="range" id="mesSlider" min="1" max="12" value="1">
+                        <label style="margin-bottom: 8px; display: block; font-size: 0.9rem;">Línea de tiempo (Meses):</label>
+                        <div class="grid-meses">
+                            <button class="btn-mes activo" data-mes="01">Ene</button>
+                            <button class="btn-mes" data-mes="02">Feb</button>
+                            <button class="btn-mes" data-mes="03">Mar</button>
+                            <button class="btn-mes" data-mes="04">Abr</button>
+                            <button class="btn-mes" data-mes="05">May</button>
+                            <button class="btn-mes" data-mes="06">Jun</button>
+                            <button class="btn-mes" data-mes="07">Jul</button>
+                            <button class="btn-mes" data-mes="08">Ago</button>
+                            <button class="btn-mes" data-mes="09">Sep</button>
+                            <button class="btn-mes" data-mes="10">Oct</button>
+                            <button class="btn-mes" data-mes="11">Nov</button>
+                            <button class="btn-mes" data-mes="12">Dic</button>
+                        </div>
                     </section>
                     
                     <div class="narrativa">
@@ -203,31 +219,31 @@
                         </div>
                     </div>
 
-                    <!-- PANEL INTERACTIVO DE PROFUNDIDAD Y UBICACIÓN -->
-                    <div id="profundidad-info" style="margin-top: 25px;">
-                        <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 8px;">Pasa el ratón
+                    <!-- PANEL INTERACTIVO DE PROFUNDIDAD Y UBICACIÓN CON MARGEN AJUSTADO -->
+                    <div id="profundidad-info" style="margin-top: 20px;">
+                        <p style="color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 8px;">Pasa el ratón
                             sobre los rangos para explorar:</p>
                         <div style="display: flex; gap: 10px;">
                             <div id="tarjeta-superficial"
-                                style="background: rgba(0, 229, 255, 0.05); border: 1px solid rgba(0, 229, 255, 0.2); padding: 10px; border-radius: 8px; flex: 1; text-align: center; cursor: pointer; transition: background 0.3s;">
+                                style="background: rgba(0, 229, 255, 0.05); border: 1px solid rgba(0, 229, 255, 0.2); padding: 8px; border-radius: 8px; flex: 1; text-align: center; cursor: pointer; transition: background 0.3s;">
                                 <span
-                                    style="display: block; font-size: 0.75rem; color: #8892b0; text-transform: uppercase; letter-spacing: 1px;">Superficial</span>
-                                <strong id="prof-min" style="color: var(--accent-cyan); font-size: 1.2rem;">0 m</strong>
+                                    style="display: block; font-size: 0.7rem; color: #8892b0; text-transform: uppercase; letter-spacing: 1px;">Superficial</span>
+                                <strong id="prof-min" style="color: var(--accent-cyan); font-size: 1.1rem;">0 m</strong>
                             </div>
                             <div id="tarjeta-profunda"
-                                style="background: rgba(255, 0, 127, 0.05); border: 1px solid rgba(255, 0, 127, 0.2); padding: 10px; border-radius: 8px; flex: 1; text-align: center; cursor: pointer; transition: background 0.3s;">
+                                style="background: rgba(255, 0, 127, 0.05); border: 1px solid rgba(255, 0, 127, 0.2); padding: 8px; border-radius: 8px; flex: 1; text-align: center; cursor: pointer; transition: background 0.3s;">
                                 <span
-                                    style="display: block; font-size: 0.75rem; color: #8892b0; text-transform: uppercase; letter-spacing: 1px;">Profunda</span>
-                                <strong id="prof-max" style="color: var(--accent-pink); font-size: 1.2rem;">0 m</strong>
+                                    style="display: block; font-size: 0.7rem; color: #8892b0; text-transform: uppercase; letter-spacing: 1px;">Profunda</span>
+                                <strong id="prof-max" style="color: var(--accent-pink); font-size: 1.1rem;">0 m</strong>
                             </div>
                         </div>
                         <div
-                            style="margin-top: 12px; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.1); text-align: center;">
+                            style="margin-top: 10px; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.1); text-align: center;">
                             <p id="zona-oceanica"
-                                style="font-size: 0.85rem; color: var(--accent-cyan); font-weight: bold; margin-bottom: 5px;">
+                                style="font-size: 0.8rem; color: var(--accent-cyan); font-weight: bold; margin-bottom: 5px;">
                                 Zona Epipelágica</p>
                             <p id="ubicacion-geografica"
-                                style="font-size: 0.95rem; color: var(--text-primary); font-weight: bold;">Obteniendo información</p>
+                                style="font-size: 0.9rem; color: var(--text-primary); font-weight: bold;">Obteniendo información</p>
                         </div>
                     </div>
 

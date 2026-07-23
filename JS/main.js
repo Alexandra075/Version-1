@@ -51,7 +51,7 @@ function actualizarNarrativa(mesStr) {
     info.innerHTML = `
         <p><strong>Total de avistamientos:</strong> ${totalAvistamientos} registros exactos.</p>
         <p><strong>Concentración principal:</strong> ${regionPrincipal}.</p>
-        <p style="margin-top: 15px; font-size: 0.9rem; color: var(--text-secondary); line-height: 1.4;">
+        <p style="margin-top: 15px; font-size: 0.85rem; color: var(--text-secondary); line-height: 1.4;">
             * Estos datos son extraídos en tiempo real del conjunto de coordenadas geoespaciales analizadas para este mes.
         </p>
     `;
@@ -166,15 +166,25 @@ function mostrarTarjeta(d) {
     `;
 }
 
-const slider = document.getElementById('mesSlider');
-if (slider) {
-    slider.addEventListener('input', (e) => {
-        if(!appData || !mapaSvgD3) return;
-        const mes = e.target.value.toString().padStart(2, '0');
-        document.getElementById('mesEtiqueta').innerText = mes;
-        
-        dibujarPuntos(mapaSvgD3, appData.avistamientos, mes, mostrarTarjeta);
-        actualizarNarrativa(mes);
+// =========================================
+// LÍNEA DE TIEMPO CON BOTONES CIRCULARES
+// =========================================
+const botonesMes = document.querySelectorAll('.btn-mes');
+if (botonesMes.length > 0) {
+    botonesMes.forEach(boton => {
+        boton.addEventListener('click', () => {
+            if(!appData || !mapaSvgD3) return;
+
+            // Iluminar botón activo y apagar los demás
+            botonesMes.forEach(b => b.classList.remove('activo'));
+            boton.classList.add('activo');
+
+            const mesSeleccionado = boton.getAttribute('data-mes');
+            
+            // Actualizar la interfaz
+            dibujarPuntos(mapaSvgD3, appData.avistamientos, mesSeleccionado, mostrarTarjeta);
+            actualizarNarrativa(mesSeleccionado);
+        });
     });
 }
 
@@ -196,13 +206,19 @@ function inicializarHoverProfundidad() {
                 const lat = parseFloat(tarjetaSup.dataset.lat);
                 const lon = parseFloat(tarjetaSup.dataset.lon);
                 uiUbicacion.innerText = obtenerRegionGeografica(lat, lon);
+
+                // NUEVO: Ambos puntos se iluminan de color ROSA para destacar del fondo azul
+                d3.selectAll(".current-point").filter(d => d.lat === lat && d.lon === lon)
+                    .transition().duration(200)
+                    .attr("r", 14)
+                    .style("fill", "var(--accent-pink)");
             }
 
             if(seccionMapa) {
                 seccionMapa.style.transition = "background-image 0.5s ease-in-out";
                 seccionMapa.style.backgroundSize = "cover";
                 seccionMapa.style.backgroundPosition = "center";
-                seccionMapa.style.backgroundImage = "linear-gradient(rgba(2, 12, 27, 0.75), rgba(2, 12, 27, 0.75)), url('https://cdn.pixabay.com/photo/2018/02/16/21/06/blue-whale-3158626_1280.png')";
+                seccionMapa.style.backgroundImage = "linear-gradient(rgba(2, 12, 27, 0.50), rgba(2, 12, 27, 0.50)), url('https://cdn.pixabay.com/photo/2018/02/16/21/06/blue-whale-3158626_1280.png')";
             }
         });
         
@@ -213,6 +229,12 @@ function inicializarHoverProfundidad() {
             
             if(uiUbicacion) uiUbicacion.innerText = document.body.dataset.ubicacionActual || "Obteniendo información";
             if(seccionMapa) seccionMapa.style.backgroundImage = "none";
+
+            // Regresar el punto a la normalidad
+            d3.selectAll(".current-point")
+                .transition().duration(200)
+                .attr("r", 6)
+                .style("fill", null);
         });
 
         // --- TARJETA PROFUNDA ---
@@ -225,14 +247,19 @@ function inicializarHoverProfundidad() {
                 const lat = parseFloat(tarjetaProf.dataset.lat);
                 const lon = parseFloat(tarjetaProf.dataset.lon);
                 uiUbicacion.innerText = obtenerRegionGeografica(lat, lon);
+
+                // NUEVO: Ambos puntos se iluminan de color ROSA para destacar del fondo azul
+                d3.selectAll(".current-point").filter(d => d.lat === lat && d.lon === lon)
+                    .transition().duration(200)
+                    .attr("r", 14)
+                    .style("fill", "var(--accent-pink)");
             }
 
             if(seccionMapa) {
                 seccionMapa.style.transition = "background-image 0.5s ease-in-out";
                 seccionMapa.style.backgroundSize = "cover";
                 seccionMapa.style.backgroundPosition = "center";
-                // Enlace de las medusas bioluminiscentes
-                seccionMapa.style.backgroundImage = "linear-gradient(rgba(2, 12, 27, 0.90), rgba(2, 12, 27, 0.90)), url('Imagenes/profundidad.jpg')";
+                seccionMapa.style.backgroundImage = "linear-gradient(rgba(2, 12, 27, 0.70), rgba(2, 12, 27, 0.70)), url('https://cdn.pixabay.com/photo/2020/03/12/01/49/jellyfish-4923658_1280.jpg')";
             }
         });
         
@@ -243,6 +270,12 @@ function inicializarHoverProfundidad() {
             
             if(uiUbicacion) uiUbicacion.innerText = document.body.dataset.ubicacionActual || "Obteniendo información";
             if(seccionMapa) seccionMapa.style.backgroundImage = "none";
+
+            // Regresar el punto a la normalidad
+            d3.selectAll(".current-point")
+                .transition().duration(200)
+                .attr("r", 6)
+                .style("fill", null);
         });
     }
 }
@@ -273,11 +306,13 @@ async function iniciarApp() {
     }
 }
 
-// --- NUEVO: CONTROL DE SCROLL EXCLUSIVO CON RUEDA Y TOUCHPAD (ARRIBA/ABAJO) ---
+// --- NUEVO: SCROLL EXCLUSIVO CON EXCEPCIÓN CORREGIDA ---
 const contenedorScroll = document.getElementById('contenedor-scroll');
 let scrollEnProgreso = false;
 
 contenedorScroll.addEventListener('wheel', (e) => {
+    // AHORA el scroll horizontal funcionará siempre, A MENOS que el cursor 
+    // esté justo encima de la etiqueta <model-viewer> que permite rotar en 3D
     if (e.target.closest('model-viewer')) {
         return; 
     }

@@ -19,7 +19,11 @@ export function inicializarMapa(svgElementId, geoData) {
     const path = d3.geoPath().projection(projection);
 
     svg.append("g").selectAll("path").data(geoData.features).enter().append("path")
-       .attr("fill", "#2a3b4c").attr("d", path).style("stroke", "#111");
+       // Cambiamos el relleno a un azul marino semi-transparente y el borde a cyan sutil
+       .attr("fill", "rgba(10, 25, 47, 0.8)")
+       .attr("d", path)
+       .style("stroke", "rgba(0, 229, 255, 0.2)")
+       .style("stroke-width", "1px");
 
     return svg;
 }

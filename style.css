@@ -166,17 +166,6 @@ body {
     line-height: 1.5;
 }
 
-/* ANIMACIÓN DEL INDICADOR DE SCROLL */
-.scroll-hint {
-    font-size: 0.85rem;
-    color: var(--accent-pink);
-    margin: 0;
-    font-weight: 500;
-    animation: pulse 2s infinite;
-}
-
-
-
 /* Conservamos la pantalla de carga original */
 #pantalla-carga {
     position: fixed;
@@ -304,6 +293,7 @@ body {
     background-color: #031525; /* Un color oscuro de respaldo por si tarda en cargar */
 }
 
+/* AJUSTES PARA EVITAR BARRAS DE SCROLL */
 .panel-lateral {
     width: 380px;
     flex-shrink: 0;
@@ -311,10 +301,13 @@ body {
     backdrop-filter: blur(12px);
     border: 1px solid rgba(0, 229, 255, 0.2);
     border-radius: var(--border-radius-lg);
-    padding: 30px;
+    
+    /* REGLAS ACTUALIZADAS PARA MANTENER LA ELEGANCIA SIN BARRAS */
+    padding: 25px;
+    gap: 20px;
+    
     display: flex;
     flex-direction: column;
-    gap: 25px;
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
     z-index: 10;
 
@@ -336,39 +329,33 @@ body {
 
 
 .panel-lateral h1 {
-    font-size: 1.3rem;
+    font-size: 1.15rem;
     color: var(--accent-cyan);
     letter-spacing: 1px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    padding-bottom: 15px;
+    padding-bottom: 10px;
 }
 
 .seccion-controles label {
     font-weight: 600;
     color: #ccd6f6;
     display: block;
-    margin-bottom: 10px;
-}
-
-input[type="range"] {
-    width: 100%;
-    cursor: pointer;
-    accent-color: var(--accent-cyan);
+    margin-bottom: 5px;
 }
 
 .narrativa h2,
 #titulo-tarjeta {
-    font-size: 1.4rem;
+    font-size: 1.2rem;
     color: var(--accent-cyan);
-    margin-bottom: 8px;
+    margin-bottom: 5px;
 }
 
 .narrativa p,
 #contenido-tarjeta p,
 #info-card p,
 #datos-generales-info p {
-    font-size: 1.15rem;
-    line-height: 1.6;
+    font-size: 1rem;
+    line-height: 1.5;
     color: var(--text-primary);
     font-weight: 500;
 }
@@ -400,7 +387,7 @@ input[type="range"] {
     background: rgba(0, 229, 255, 0.05);
     border: 1px solid rgba(0, 229, 255, 0.15);
     border-radius: 8px;
-    padding: 12px;
+    padding: 10px;
     display: flex;
     flex-direction: column;
 }
@@ -522,7 +509,7 @@ input[type="range"] {
 @keyframes pulse {
     0% {
         opacity: 0.5;
-        transform: translateX(0);
+        transform: translateY(0);
     }
 
     50% {
@@ -532,7 +519,7 @@ input[type="range"] {
 
     100% {
         opacity: 0.5;
-        transform: translateX(0);
+        transform: translateY(0);
     }
 }
 /* Estilo cuando el panel lateral está oculto */
@@ -542,4 +529,46 @@ input[type="range"] {
 
 .dashboard-container.sin-panel .area-principal {
     width: 100%; /* Hace que el visor 3D ocupe todo el ancho de la pantalla de forma centrada */
+}
+
+/* =========================================
+   7. NUEVOS BOTONES CIRCULARES (MESES)
+   ========================================= */
+.grid-meses {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px; 
+    /* MARGEN AJUSTADO PARA QUE NO QUEDE TAN PEGADO AL TÍTULO PERO NO PROVOQUE SCROLL */
+    margin-bottom: 15px; 
+}
+
+.btn-mes {
+    width: 32px; 
+    height: 32px;
+    border-radius: 50%;
+    border: 1px solid rgba(0, 229, 255, 0.3);
+    background: rgba(10, 25, 47, 0.5);
+    color: var(--text-secondary);
+    font-size: 0.75rem; 
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-mes:hover {
+    border-color: var(--accent-cyan);
+    color: var(--accent-cyan);
+    box-shadow: 0 0 10px rgba(0, 229, 255, 0.3);
+    transform: scale(1.1);
+}
+
+.btn-mes.activo {
+    background: var(--accent-cyan);
+    color: #020c1b;
+    border-color: var(--accent-cyan);
+    box-shadow: 0 0 15px rgba(0, 229, 255, 0.6);
+    transform: scale(1.1);
 }
