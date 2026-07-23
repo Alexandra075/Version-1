@@ -159,4 +159,44 @@ async function iniciarApp() {
     }
 }
 
+// --- NUEVO: CONTROL DE SCROLL EXCLUSIVO CON RUEDA Y TOUCHPAD (ARRIBA/ABAJO) ---
+const contenedorScroll = document.getElementById('contenedor-scroll');
+let scrollEnProgreso = false;
+
+contenedorScroll.addEventListener('wheel', (e) => {
+    // EXCEPCIÓN MAGISTRAL: Si el cursor está sobre cualquier visor 3D, 
+    // ignoramos todo este código para que la rueda sirva de ZOOM.
+    if (e.target.closest('model-viewer')) {
+        return; // Salimos inmediatamente sin mover la página
+    }
+
+    // 1. MATAMOS CUALQUIER COMPORTAMIENTO NATIVO 
+    // (Esto anula el scroll horizontal nativo del touchpad por completo)
+    e.preventDefault(); 
+
+    // 2. Si ya estamos moviendo la pantalla, ignoramos el resto del "dedazo"
+    if (scrollEnProgreso) return; 
+
+    // 3. Evaluamos SOLO el movimiento de arriba/abajo (deltaY). 
+    // Le ponemos un umbral (> 5) para ignorar toques fantasma o temblores mínimos.
+    if (Math.abs(e.deltaY) > 5) {
+        scrollEnProgreso = true;
+        const anchoPantalla = window.innerWidth;
+
+        if (e.deltaY > 0) {
+            // Rueda hacia abajo / Deslizar arriba -> Avanzar a la derecha
+            contenedorScroll.scrollBy({ left: anchoPantalla, behavior: 'smooth' });
+        } else {
+            // Rueda hacia arriba / Deslizar abajo -> Retroceder a la izquierda
+            contenedorScroll.scrollBy({ left: -anchoPantalla, behavior: 'smooth' });
+        }
+
+        // 4. Aumentamos el bloqueo a 850ms. 
+        // Esto le da tiempo a la animación de terminar y evita el "doble salto".
+        setTimeout(() => {
+            scrollEnProgreso = false;
+        }, 850); 
+    }
+}, { passive: false }); // Obligatorio para que preventDefault() funcione
+
 iniciarApp();
