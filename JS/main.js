@@ -1,4 +1,3 @@
-// IMPORTANTE: Agregamos obtenerRegionGeografica a las importaciones
 import { cargarBasesDeDatos } from './datos.js';
 import { inicializarMapa, dibujarPuntos, actualizarFondoPorProfundidad, obtenerRegionGeografica } from './mapa.js';
 import { inicializarAcustica } from './acustica.js';
@@ -14,116 +13,137 @@ function llenarDatosGenerales() {
     const bio = datosGenerales.vistas_interactivas.biometria;
     const cons = datosGenerales.vistas_interactivas.conservacion;
 
-    // Buscamos los IDs específicos que colocamos en los <span> del HTML 
-    // y les inyectamos los datos sin destruir la cuadrícula de CSS
-    
     document.getElementById('dato-peso').innerText = `${bio.dimensiones_y_peso.peso_maximo_toneladas_metricas} Toneladas`;
-    
     document.getElementById('dato-longitud').innerText = `${bio.dimensiones_y_peso.longitud_maxima_metros} Metros`;
-    
     document.getElementById('dato-vida').innerText = cons.ciclo_vida_y_longevidad.rango_vida_anos;
-    
     document.getElementById('dato-estado').innerText = cons.estatus_y_amenazas.estado_uicn;
 }
 
 function actualizarNarrativa(mesStr) {
-    if(!appData) return;
-    const m = parseInt(mesStr);
+    if(!appData || !appData.avistamientos) return;
+    
     const titulo = document.getElementById('titulo-tarjeta');
     const info = document.getElementById('contenido-tarjeta');
     
-    const datosGenerales = appData.fichaTecnica ? appData.fichaTecnica : appData;
-    const migracion = datosGenerales.vistas_interactivas.conservacion.patrones_migratorios;
+    // 1. Filtramos la base de datos para obtener SOLO los avistamientos de este mes exacto
+    const datosMes = appData.avistamientos.filter(d => d.fecha && d.fecha.split('-')[1] === mesStr);
 
-    if (m >= 1 && m <= 3) {
-        titulo.innerText = "Invierno: Zonas Cálidas";
-        info.innerHTML = `<p>${migracion.estacion_invierno.actividad}</p>`;
-    } else if (m >= 4 && m <= 6) {
-        titulo.innerText = "Primavera: Transición";
-        info.innerHTML = `<p>${migracion.comportamiento_estacional}</p>`;
-    } else if (m >= 7 && m <= 9) {
-        titulo.innerText = "Verano: Alimentación";
-        info.innerHTML = `<p>${migracion.estacion_verano.actividad}</p>`;
-    } else {
-        titulo.innerText = "Otoño: El Regreso";
-        info.innerHTML = `<p>Retorno a aguas tropicales para el próximo ciclo reproductivo.</p>`;
+    const mesesNombres = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+    const nombreMes = mesesNombres[parseInt(mesStr) - 1];
+
+    // Si por alguna razón un mes no tiene datos en el TSV, mostramos esto:
+    if (datosMes.length === 0) {
+        titulo.innerText = `Reporte de ${nombreMes}`;
+        info.innerHTML = `<p>Sin registros de avistamientos confirmados en la base de datos para este periodo.</p>`;
+        return;
     }
+
+    // 2. Calculamos los datos reales a partir de los puntos del mapa
+    const totalAvistamientos = datosMes.length;
+    
+    // Sacamos un promedio de las coordenadas para saber dónde está el "banco" principal de ballenas ese mes
+    const avgLat = d3.mean(datosMes, d => d.lat);
+    const avgLon = d3.mean(datosMes, d => d.lon);
+    const regionPrincipal = obtenerRegionGeografica(avgLat, avgLon);
+
+    // 3. Inyectamos los datos dinámicos en la tarjeta
+    titulo.innerText = `Reporte de ${nombreMes}`;
+    info.innerHTML = `
+        <p><strong>Total de avistamientos:</strong> ${totalAvistamientos} registros exactos.</p>
+        <p><strong>Concentración principal:</strong> ${regionPrincipal}.</p>
+        <p style="margin-top: 15px; font-size: 0.9rem; color: var(--text-secondary); line-height: 1.4;">
+            * Estos datos son extraídos en tiempo real del conjunto de coordenadas geoespaciales analizadas para este mes.
+        </p>
+    `;
 }
 
 // =========================================
-// INTERACCIÓN DEL VISUALIZADOR DE ESPECIES (CENTRADOR AUTOMÁTICO)
+// INTERACCIÓN DEL VISUALIZADOR DE ESPECIES 
 // =========================================
 const iniciarVisorEspecies = () => {
     const botonesEspecies = document.querySelectorAll('.btn-especie');
-    const seccionGrande = document.getElementById('seccion-3d'); 
+    const seccionGrande = document.getElementById('seccion-3d');
+    const seccionAcustica = document.getElementById('seccion-acustica');
+    const visorSecundario = document.getElementById('visor-secundario');
+    const visorPrincipal = document.getElementById('visor-principal');
+    const btnExpandir = document.getElementById('btn-expandir-3d');
+    const btnCerrarVista = document.getElementById('btn-cerrar-vista');
 
+    let modeloSeleccionadoActualmente = "3D/Minke/minke.glb"; // Por defecto
+    let nombreSeleccionadoActualmente = "Rorcual Aliblanco (Minke)";
+
+    // 1. Al hacer clic en los botones de especies, SOLO cambiamos el modelo pequeño
     if(botonesEspecies.length > 0) {
         botonesEspecies.forEach(boton => {
             boton.addEventListener('click', (evento) => {
                 evento.preventDefault(); 
-
-                // 1. Pintar el botón activo
+                
+                // Pintar botón activo
                 botonesEspecies.forEach(b => b.classList.remove('activo'));
                 boton.classList.add('activo');
                 
-                // 2. Obtener la ruta y el nombre de la especie
-                const nuevoModelo = boton.getAttribute('data-src');
-                const nombreEspecie = boton.innerText.replace('\n', ' ');
+                // Guardar la especie seleccionada
+                modeloSeleccionadoActualmente = boton.getAttribute('data-src');
+                nombreSeleccionadoActualmente = boton.innerText.replace('\n', ' ');
                 
-                // 3. Actualizar el visor pequeño
-                const marco = document.querySelector('.marco-modelo-3d');
-                if (marco) {
-                    marco.innerHTML = `<model-viewer id="visor-secundario" src="${nuevoModelo}" auto-rotate camera-controls style="width: 100%; height: 100%; background-color: transparent;"></model-viewer>`;
-                }
-
-                // 4. Actualizar el visor GRANDE y controlar la estructura
-                const visorPrincipal = document.getElementById('visor-principal');
-                if (visorPrincipal) {
-                    visorPrincipal.src = nuevoModelo;
-
-                    const puntosFlotantes = visorPrincipal.querySelectorAll('.punto-flotante');
-                    const dashboardContainer = document.querySelector('#seccion-3d .dashboard-container');
-                    const panelLateral = document.querySelector('#seccion-3d .panel-lateral');
-                    const contenedorDatos = document.getElementById('contenedor-datos-biologicos');
-                    const textoInformativo = document.getElementById('texto-informativo-azul');
-                    const subtitulo = document.getElementById('subtitulo-especie');
-
-                    if (nuevoModelo.includes('Azul')) {
-                        // SI ES LA BALLENA AZUL: Mostramos la caja lateral con diseño y dividimos la pantalla
-                        if (dashboardContainer) dashboardContainer.classList.remove('sin-panel');
-                        if (panelLateral) {
-                            panelLateral.style.background = "rgba(10, 25, 47, 0.6)";
-                            panelLateral.style.backdropFilter = "blur(12px)";
-                            panelLateral.style.border = "1px solid rgba(0, 229, 255, 0.2)";
-                            panelLateral.style.boxShadow = "0 20px 40px rgba(0, 0, 0, 0.5)";
-                            panelLateral.style.padding = "30px";
-                        }
-                        puntosFlotantes.forEach(punto => punto.style.display = 'block');
-                        if (contenedorDatos) contenedorDatos.style.display = 'block';
-                        if (textoInformativo) textoInformativo.style.display = 'block';
-                        if (subtitulo) subtitulo.innerText = "Balaenoptera musculus";
-                    } else {
-                        // PARA LAS DEMÁS: Ocultamos la caja por completo y expandimos el visor 3D al centro
-                        if (dashboardContainer) dashboardContainer.classList.add('sin-panel');
-                        if (panelLateral) {
-                            panelLateral.style.background = "transparent";
-                            panelLateral.style.backdropFilter = "none";
-                            panelLateral.style.border = "none";
-                            panelLateral.style.boxShadow = "none";
-                            panelLateral.style.padding = "0px";
-                        }
-                        puntosFlotantes.forEach(punto => punto.style.display = 'none');
-                        if (contenedorDatos) contenedorDatos.style.display = 'none';
-                        if (textoInformativo) textoInformativo.style.display = 'none';
-                        if (subtitulo) subtitulo.innerText = nombreEspecie;
-                    }
-                }
-
-                // 5. Viajar automáticamente a la pantalla principal
-                if (seccionGrande) {
-                    seccionGrande.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'start' });
+                // Actualizar ÚNICAMENTE el visor pequeño
+                if (visorSecundario) {
+                    visorSecundario.src = modeloSeleccionadoActualmente;
                 }
             });
+        });
+    }
+
+    // 2. Función maestra para preparar el visor GRANDE
+    const prepararVisorGrande = (rutaModelo, nombre) => {
+        if (!visorPrincipal) return;
+        visorPrincipal.src = rutaModelo;
+
+        const puntosFlotantes = visorPrincipal.querySelectorAll('.punto-flotante');
+        const dashboardContainer = document.querySelector('#seccion-3d .dashboard-container');
+        const panelLateral = document.querySelector('#seccion-3d .panel-lateral');
+        const contenedorDatos = document.getElementById('contenedor-datos-biologicos');
+        const textoInformativo = document.getElementById('texto-informativo-azul');
+        const subtitulo = document.getElementById('subtitulo-especie');
+
+        if (rutaModelo.includes('Azul')) {
+            // Restaurar diseño original de la Ballena Azul (con panel lateral)
+            if (dashboardContainer) dashboardContainer.classList.remove('sin-panel');
+            if (panelLateral) panelLateral.style.display = "flex";
+            puntosFlotantes.forEach(punto => punto.style.display = 'block');
+            if (contenedorDatos) contenedorDatos.style.display = 'block';
+            if (textoInformativo) textoInformativo.style.display = 'block';
+            if (subtitulo) subtitulo.innerText = "Balaenoptera musculus";
+        } else {
+            // Diseño de Pantalla Completa para las demás ballenas (sin panel)
+            if (dashboardContainer) dashboardContainer.classList.add('sin-panel');
+            if (panelLateral) panelLateral.style.display = "none";
+            puntosFlotantes.forEach(punto => punto.style.display = 'none');
+            if (contenedorDatos) contenedorDatos.style.display = 'none';
+            if (textoInformativo) textoInformativo.style.display = 'none';
+            if (subtitulo) subtitulo.innerText = nombre;
+        }
+    };
+
+    // 3. Botón EXPANDIR (⛶): Configura la pantalla grande y viaja a ella
+    if (btnExpandir && seccionGrande) {
+        btnExpandir.addEventListener('click', () => {
+            prepararVisorGrande(modeloSeleccionadoActualmente, nombreSeleccionadoActualmente);
+            if (btnCerrarVista) btnCerrarVista.classList.remove('hidden'); // Mostramos el botón de cerrar
+            seccionGrande.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'start' });
+        });
+    }
+
+    if (btnCerrarVista && seccionAcustica) {
+        btnCerrarVista.addEventListener('click', () => {
+            btnCerrarVista.classList.add('hidden'); // Ocultamos este botón de nuevo
+            seccionAcustica.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'start' });
+            
+            // Un pequeño truco: esperamos medio segundo a que termine la animación de scroll 
+            // y regresamos la pantalla 1 a la Ballena Azul por defecto para no romper el flujo
+            setTimeout(() => {
+                prepararVisorGrande("3D/Azul/ballena.glb", "Balaenoptera musculus");
+            }, 500); 
         });
     }
 };
@@ -162,6 +182,7 @@ function inicializarHoverProfundidad() {
     const tarjetaSup = document.getElementById('tarjeta-superficial');
     const tarjetaProf = document.getElementById('tarjeta-profunda');
     const uiUbicacion = document.getElementById('ubicacion-geografica');
+    const seccionMapa = document.getElementById('seccion-mapa'); 
 
     if (tarjetaSup && tarjetaProf) {
         
@@ -171,11 +192,17 @@ function inicializarHoverProfundidad() {
             actualizarFondoPorProfundidad(prof);
             tarjetaSup.style.background = "rgba(0, 229, 255, 0.2)"; 
             
-            // Calculamos y mostramos la ubicación exacta
             if(uiUbicacion && tarjetaSup.dataset.lat) {
                 const lat = parseFloat(tarjetaSup.dataset.lat);
                 const lon = parseFloat(tarjetaSup.dataset.lon);
                 uiUbicacion.innerText = obtenerRegionGeografica(lat, lon);
+            }
+
+            if(seccionMapa) {
+                seccionMapa.style.transition = "background-image 0.5s ease-in-out";
+                seccionMapa.style.backgroundSize = "cover";
+                seccionMapa.style.backgroundPosition = "center";
+                seccionMapa.style.backgroundImage = "linear-gradient(rgba(2, 12, 27, 0.75), rgba(2, 12, 27, 0.75)), url('https://cdn.pixabay.com/photo/2018/02/16/21/06/blue-whale-3158626_1280.png')";
             }
         });
         
@@ -184,8 +211,8 @@ function inicializarHoverProfundidad() {
             actualizarFondoPorProfundidad(profActual);
             tarjetaSup.style.background = "rgba(0, 229, 255, 0.05)";
             
-            // Regresamos el texto a la zona general del mes
-            if(uiUbicacion) uiUbicacion.innerText = document.body.dataset.ubicacionActual || "📍 Calculando...";
+            if(uiUbicacion) uiUbicacion.innerText = document.body.dataset.ubicacionActual || "Obteniendo información";
+            if(seccionMapa) seccionMapa.style.backgroundImage = "none";
         });
 
         // --- TARJETA PROFUNDA ---
@@ -194,11 +221,18 @@ function inicializarHoverProfundidad() {
             actualizarFondoPorProfundidad(prof);
             tarjetaProf.style.background = "rgba(255, 0, 127, 0.2)"; 
             
-            // Calculamos y mostramos la ubicación exacta
             if(uiUbicacion && tarjetaProf.dataset.lat) {
                 const lat = parseFloat(tarjetaProf.dataset.lat);
                 const lon = parseFloat(tarjetaProf.dataset.lon);
                 uiUbicacion.innerText = obtenerRegionGeografica(lat, lon);
+            }
+
+            if(seccionMapa) {
+                seccionMapa.style.transition = "background-image 0.5s ease-in-out";
+                seccionMapa.style.backgroundSize = "cover";
+                seccionMapa.style.backgroundPosition = "center";
+                // Enlace de las medusas bioluminiscentes
+                seccionMapa.style.backgroundImage = "linear-gradient(rgba(2, 12, 27, 0.90), rgba(2, 12, 27, 0.90)), url('Imagenes/profundidad.jpg')";
             }
         });
         
@@ -207,8 +241,8 @@ function inicializarHoverProfundidad() {
             actualizarFondoPorProfundidad(profActual);
             tarjetaProf.style.background = "rgba(255, 0, 127, 0.05)";
             
-            // Regresamos el texto a la zona general del mes
-            if(uiUbicacion) uiUbicacion.innerText = document.body.dataset.ubicacionActual || "📍 Calculando...";
+            if(uiUbicacion) uiUbicacion.innerText = document.body.dataset.ubicacionActual || "Obteniendo información";
+            if(seccionMapa) seccionMapa.style.backgroundImage = "none";
         });
     }
 }
@@ -244,39 +278,28 @@ const contenedorScroll = document.getElementById('contenedor-scroll');
 let scrollEnProgreso = false;
 
 contenedorScroll.addEventListener('wheel', (e) => {
-    // EXCEPCIÓN MAGISTRAL: Si el cursor está sobre cualquier visor 3D, 
-    // ignoramos todo este código para que la rueda sirva de ZOOM.
     if (e.target.closest('model-viewer')) {
-        return; // Salimos inmediatamente sin mover la página
+        return; 
     }
 
-    // 1. MATAMOS CUALQUIER COMPORTAMIENTO NATIVO 
-    // (Esto anula el scroll horizontal nativo del touchpad por completo)
     e.preventDefault(); 
 
-    // 2. Si ya estamos moviendo la pantalla, ignoramos el resto del "dedazo"
     if (scrollEnProgreso) return; 
 
-    // 3. Evaluamos SOLO el movimiento de arriba/abajo (deltaY). 
-    // Le ponemos un umbral (> 5) para ignorar toques fantasma o temblores mínimos.
     if (Math.abs(e.deltaY) > 5) {
         scrollEnProgreso = true;
         const anchoPantalla = window.innerWidth;
 
         if (e.deltaY > 0) {
-            // Rueda hacia abajo / Deslizar arriba -> Avanzar a la derecha
             contenedorScroll.scrollBy({ left: anchoPantalla, behavior: 'smooth' });
         } else {
-            // Rueda hacia arriba / Deslizar abajo -> Retroceder a la izquierda
             contenedorScroll.scrollBy({ left: -anchoPantalla, behavior: 'smooth' });
         }
 
-        // 4. Aumentamos el bloqueo a 850ms. 
-        // Esto le da tiempo a la animación de terminar y evita el "doble salto".
         setTimeout(() => {
             scrollEnProgreso = false;
         }, 850); 
     }
-}, { passive: false }); // Obligatorio para que preventDefault() funcione
+}, { passive: false });
 
 iniciarApp();

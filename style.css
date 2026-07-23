@@ -175,22 +175,7 @@ body {
     animation: pulse 2s infinite;
 }
 
-@keyframes pulse {
-    0% {
-        opacity: 0.5;
-        transform: translateX(0);
-    }
 
-    50% {
-        opacity: 1;
-        transform: translateX(15px);
-    }
-
-    100% {
-        opacity: 0.5;
-        transform: translateX(0);
-    }
-}
 
 /* Conservamos la pantalla de carga original */
 #pantalla-carga {
@@ -542,7 +527,7 @@ input[type="range"] {
 
     50% {
         opacity: 1;
-        transform: translateX(15px);
+        transform: translateY(10px);
     }
 
     100% {

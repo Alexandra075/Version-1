@@ -21,7 +21,7 @@
                     <h1>Conoce a la Ballena Azul</h1>
                     <p>Explora su majestuosa anatomía, acompáñala en su migración global y descubre los secretos de su
                         profundo canto.</p>
-                    <p class="scroll-hint">Desliza hacia la derecha para explorar</p>
+                    <p class="scroll-hint">Scrolle hacia abajo</p>
                 </div>
             </div>
         </section>
@@ -82,7 +82,12 @@
                         Interactúa con los puntos luminosos para conocer los detalles fisionómicos exclusivos de la Ballena Azul.
                     </p>
                 </aside>
+                
                 <div class="area-principal">
+                    
+                    <!-- NUEVO BOTÓN DE CERRAR VISTA AMPLIADA (Blanco y minimalista) -->
+                    <button id="btn-cerrar-vista" class="hidden" style="position: absolute; top: 20px; right: 20px; z-index: 50; background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.4); color: #ffffff; border-radius: 8px; padding: 8px 12px; cursor: pointer; font-weight: bold; font-size: 1.2rem; backdrop-filter: blur(5px);" title="Cerrar Vista">✖</button>
+                    
                     <model-viewer id="visor-principal" src="3D/Azul/ballena.glb" camera-controls
                         interaction-prompt="auto" style="width: 100%; height: 100%; background-color: transparent;">
 
@@ -138,8 +143,8 @@
             <div class="dashboard-container">
                 <aside class="panel-lateral">
                     <header>
-                        <h1>Espectro Sonoro</h1>
-                        <p>Frecuencias Acústicas</p>
+                        <h1>Espectro sonoro</h1>
+                        <p>Frecuencias acústicas</p>
                     </header>
                     <p style="color: var(--text-secondary); font-size: 0.95rem; line-height: 1.5; margin-top: 5px;">
                         Las ballenas utilizan ondas de baja frecuencia para comunicarse a miles de kilómetros. Pasa el
@@ -151,9 +156,13 @@
                             Especies</h3>
 
                         <!-- Marco del Modelo 3D -->
-                        <div class="marco-modelo-3d">
+                        <div class="marco-modelo-3d" style="position: relative;">
+                            
+                            <!-- NUEVO BOTÓN DE EXPANDIR -->
+                            <button id="btn-expandir-3d" style="position: absolute; top: 8px; right: 8px; z-index: 10; background: rgba(0, 229, 255, 0.2); border: 1px solid var(--accent-cyan); color: var(--accent-cyan); border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 1.2rem; backdrop-filter: blur(4px);" title="Ver en pantalla completa">⛶</button>
+                            
                             <model-viewer id="visor-secundario" src="3D/Minke/minke.glb" auto-rotate
-                                camera-controls></model-viewer>
+                                camera-controls style="width: 100%; height: 100%; background-color: transparent;"></model-viewer>
                         </div>
 
                         <!-- Cuadrícula de Botones -->
@@ -167,8 +176,9 @@
                     </div>
                 </aside>
 
-                <div class="area-principal" style="flex-direction: column;">
-                    <h2 style="color: var(--accent-cyan);">Frecuencias Acústicas y la Ballena 52Hz</h2>
+                <!-- TEXTO Y RECUADRO CON BLUR PARA MEJORAR LA LECTURA -->
+                <div class="area-principal" style="flex-direction: column; background: rgba(2, 12, 27, 0.65); backdrop-filter: blur(4px);">
+                    <h2 style="color: var(--accent-cyan); text-shadow: 2px 2px 8px rgba(0,0,0,0.9);">Frecuencias Acústicas y la Ballena 52Hz</h2>
                     <div id="grafica-frecuencias" style="width: 90%; height: 350px;"></div>
                 </div>
             </div>
@@ -185,10 +195,11 @@
                         <label for="mesSlider">Mes actual: <span id="mesEtiqueta">01</span></label>
                         <input type="range" id="mesSlider" min="1" max="12" value="1">
                     </section>
+                    
                     <div class="narrativa">
-                        <h2 id="titulo-tarjeta">Cargando...</h2>
+                        <h2 id="titulo-tarjeta">Obteniendo información</h2>
                         <div id="contenido-tarjeta">
-                            <p>Conectando a la base de datos...</p>
+                            <p>Obteniendo información...</p>
                         </div>
                     </div>
 
@@ -216,8 +227,7 @@
                                 style="font-size: 0.85rem; color: var(--accent-cyan); font-weight: bold; margin-bottom: 5px;">
                                 Zona Epipelágica</p>
                             <p id="ubicacion-geografica"
-                                style="font-size: 0.95rem; color: var(--text-primary); font-weight: bold;">📍 Calculando
-                                ubicación...</p>
+                                style="font-size: 0.95rem; color: var(--text-primary); font-weight: bold;">Obteniendo información</p>
                         </div>
                     </div>
 

@@ -25,13 +25,15 @@ export function inicializarAcustica(datosAcusticos) {
         .domain(datosAcusticos.map(d => d.nombre_comun))
         .padding(0.2);
 
+    // TEXTOS DEL EJE X CON BLANCO PURO Y SOMBRA NEGRA
     svg.append("g")
         .attr("transform", `translate(0,${height})`)
         .call(d3.axisBottom(x))
         .selectAll("text")
-        .style("fill", "#b5b8bb")
+        .style("fill", "#ffffff")
         .style("font-size", "14px")
         .style("font-weight", "bold")
+        .style("text-shadow", "2px 2px 5px rgba(0,0,0,1)")
         .attr("transform", "translate(-10,10)rotate(-20)")
         .style("text-anchor", "end");
 
@@ -135,10 +137,16 @@ export function inicializarAcustica(datosAcusticos) {
             document.getElementById("grafica-frecuencias").parentElement.appendChild(infoDiv);
         }
 
+        // 1. Revisamos si el audio actual es el de ESTA ballena y si ya está sonando
+        let textoBoton = "▶ Escuchar";
+        if (reproductorAudio.src.endsWith(d.archivo_audio) && !reproductorAudio.paused) {
+            textoBoton = "⏸ Pausar";
+        }
+
         infoDiv.innerHTML = `
             <h3 style="color: var(--accent-pink); margin-bottom: 10px;">${d.nombre_comun} 
                 <button id="btn-reproducir-audio" style="margin-left:15px; padding: 5px 15px; background: var(--accent-cyan); color: #000; border: none; border-radius: 15px; cursor: pointer; font-weight: bold;">
-                    ▶ Escuchar
+                    ${textoBoton}
                 </button>
             </h3>
             <p style="margin-bottom: 5px; font-size: 14px;"><strong>Frecuencia Real:</strong> ${d.rango_hz}</p>
@@ -148,9 +156,11 @@ export function inicializarAcustica(datosAcusticos) {
         `;
 
         document.getElementById("btn-reproducir-audio").addEventListener('click', function () {
-            if (reproductorAudio.src !== window.location.href + d.archivo_audio && reproductorAudio.src !== d.archivo_audio) {
+            // 2. Comparamos usando endsWith para evitar que se reinicie si es el mismo track
+            if (!reproductorAudio.src.endsWith(d.archivo_audio)) {
                 reproductorAudio.src = d.archivo_audio;
             }
+            
             if (reproductorAudio.paused) {
                 reproductorAudio.play();
                 this.innerText = "⏸ Pausar";
