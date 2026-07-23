@@ -238,6 +238,55 @@ body {
     
     background-color: var(--bg-dark); 
 }
+/* =========================================
+   VISUALIZADOR DE ESPECIES Y BOTONES
+   ========================================= */
+.marco-modelo-3d {
+    background: #020c1b;
+    border-radius: 12px;
+    box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.8);
+    height: 150px; /* Reducimos la altura aquí para que quepan los botones */
+    margin-bottom: 12px;
+    overflow: hidden;
+}
+
+#visor-secundario {
+    width: 100%;
+    height: 100%;
+    background-color: transparent;
+}
+
+.grid-botones-especies {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Dos columnas iguales */
+    gap: 10px;
+}
+
+.btn-especie {
+    background: transparent;
+    border: 1px solid var(--accent-cyan);
+    color: var(--accent-cyan);
+    border-radius: 6px;
+    padding: 10px;
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.3s ease;
+    line-height: 1.2;
+}
+
+.btn-especie:hover {
+    box-shadow: 0 0 10px rgba(0, 229, 255, 0.3);
+}
+
+/* Estado activo del botón */
+.btn-especie.activo {
+    background: var(--accent-cyan);
+    color: #020c1b; /* Texto oscuro para contrastar con el fondo claro */
+    box-shadow: 0 0 15px rgba(0, 229, 255, 0.4);
+}
 
 /* =========================================
    4. ESTRUCTURA INTERNA (MAPA, PANELES)
@@ -247,6 +296,27 @@ body {
     height: 100vh;
     padding: 20px;
     gap: 25px;
+}
+.tarjeta-boton {
+    text-decoration: none; /* Quita la línea de subrayado */
+    color: inherit; /* Mantiene los colores rosados que ya programaste */
+    display: block; 
+}
+
+/* Efecto opcional para que parezca un botón cuando pasas el cursor */
+.tarjeta-boton:hover .tu-clase-de-tarjeta-rosa {
+    transform: scale(1.02); /* Se agranda un poquito */
+    box-shadow: 0 0 15px rgba(255, 0, 128, 0.5); /* Brillo rosa extra */
+    transition: all 0.3s ease;
+    cursor: pointer; /* Cambia el cursor a una mano */
+}
+/* estilo del modelo 3d */
+#seccion-3d {
+    background-image: url("Imagenes/fondo\ mar.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: #031525; /* Un color oscuro de respaldo por si tarda en cargar */
 }
 
 .panel-lateral {
@@ -262,7 +332,23 @@ body {
     gap: 25px;
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
     z-index: 10;
+
+    overflow-y: auto; 
+    overflow-x: hidden;
 }
+/* Estilo de la barra de scroll del panel lateral */
+.panel-lateral::-webkit-scrollbar {
+    width: 6px;
+}
+.panel-lateral::-webkit-scrollbar-track {
+    background: rgba(10, 25, 47, 0.3);
+    border-radius: 10px;
+}
+.panel-lateral::-webkit-scrollbar-thumb {
+    background: var(--accent-cyan);
+    border-radius: 10px;
+}
+
 
 .panel-lateral h1 {
     font-size: 1.3rem;
@@ -463,4 +549,12 @@ input[type="range"] {
         opacity: 0.5;
         transform: translateX(0);
     }
+}
+/* Estilo cuando el panel lateral está oculto */
+.dashboard-container.sin-panel .panel-lateral {
+    display: none; /* Oculta por completo el espacio del panel izquierdo */
+}
+
+.dashboard-container.sin-panel .area-principal {
+    width: 100%; /* Hace que el visor 3D ocupe todo el ancho de la pantalla de forma centrada */
 }

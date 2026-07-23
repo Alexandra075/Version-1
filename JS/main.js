@@ -50,6 +50,86 @@ function actualizarNarrativa(mesStr) {
     }
 }
 
+// =========================================
+// INTERACCIÓN DEL VISUALIZADOR DE ESPECIES (CENTRADOR AUTOMÁTICO)
+// =========================================
+const iniciarVisorEspecies = () => {
+    const botonesEspecies = document.querySelectorAll('.btn-especie');
+    const seccionGrande = document.getElementById('seccion-3d'); 
+
+    if(botonesEspecies.length > 0) {
+        botonesEspecies.forEach(boton => {
+            boton.addEventListener('click', (evento) => {
+                evento.preventDefault(); 
+
+                // 1. Pintar el botón activo
+                botonesEspecies.forEach(b => b.classList.remove('activo'));
+                boton.classList.add('activo');
+                
+                // 2. Obtener la ruta y el nombre de la especie
+                const nuevoModelo = boton.getAttribute('data-src');
+                const nombreEspecie = boton.innerText.replace('\n', ' ');
+                
+                // 3. Actualizar el visor pequeño
+                const marco = document.querySelector('.marco-modelo-3d');
+                if (marco) {
+                    marco.innerHTML = `<model-viewer id="visor-secundario" src="${nuevoModelo}" auto-rotate camera-controls style="width: 100%; height: 100%; background-color: transparent;"></model-viewer>`;
+                }
+
+                // 4. Actualizar el visor GRANDE y controlar la estructura
+                const visorPrincipal = document.getElementById('visor-principal');
+                if (visorPrincipal) {
+                    visorPrincipal.src = nuevoModelo;
+
+                    const puntosFlotantes = visorPrincipal.querySelectorAll('.punto-flotante');
+                    const dashboardContainer = document.querySelector('#seccion-3d .dashboard-container');
+                    const panelLateral = document.querySelector('#seccion-3d .panel-lateral');
+                    const contenedorDatos = document.getElementById('contenedor-datos-biologicos');
+                    const textoInformativo = document.getElementById('texto-informativo-azul');
+                    const subtitulo = document.getElementById('subtitulo-especie');
+
+                    if (nuevoModelo.includes('Azul')) {
+                        // SI ES LA BALLENA AZUL: Mostramos la caja lateral con diseño y dividimos la pantalla
+                        if (dashboardContainer) dashboardContainer.classList.remove('sin-panel');
+                        if (panelLateral) {
+                            panelLateral.style.background = "rgba(10, 25, 47, 0.6)";
+                            panelLateral.style.backdropFilter = "blur(12px)";
+                            panelLateral.style.border = "1px solid rgba(0, 229, 255, 0.2)";
+                            panelLateral.style.boxShadow = "0 20px 40px rgba(0, 0, 0, 0.5)";
+                            panelLateral.style.padding = "30px";
+                        }
+                        puntosFlotantes.forEach(punto => punto.style.display = 'block');
+                        if (contenedorDatos) contenedorDatos.style.display = 'block';
+                        if (textoInformativo) textoInformativo.style.display = 'block';
+                        if (subtitulo) subtitulo.innerText = "Balaenoptera musculus";
+                    } else {
+                        // PARA LAS DEMÁS: Ocultamos la caja por completo y expandimos el visor 3D al centro
+                        if (dashboardContainer) dashboardContainer.classList.add('sin-panel');
+                        if (panelLateral) {
+                            panelLateral.style.background = "transparent";
+                            panelLateral.style.backdropFilter = "none";
+                            panelLateral.style.border = "none";
+                            panelLateral.style.boxShadow = "none";
+                            panelLateral.style.padding = "0px";
+                        }
+                        puntosFlotantes.forEach(punto => punto.style.display = 'none');
+                        if (contenedorDatos) contenedorDatos.style.display = 'none';
+                        if (textoInformativo) textoInformativo.style.display = 'none';
+                        if (subtitulo) subtitulo.innerText = nombreEspecie;
+                    }
+                }
+
+                // 5. Viajar automáticamente a la pantalla principal
+                if (seccionGrande) {
+                    seccionGrande.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'start' });
+                }
+            });
+        });
+    }
+};
+
+setTimeout(iniciarVisorEspecies, 500);
+
 function mostrarTarjeta(d) {
     if(!appData) return;
     const datosGenerales = appData.fichaTecnica ? appData.fichaTecnica : appData;
