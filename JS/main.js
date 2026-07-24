@@ -365,4 +365,30 @@ contenedorScroll.addEventListener('wheel', (e) => {
     }
 }, { passive: false });
 
+window.addEventListener('keydown', (e) => {
+    if (e.key === "ArrowLeft" || e.key === "ArrowRight") {
+        e.preventDefault();
+        return;
+    }
+
+    if (e.key === "ArrowDown" || e.key === "ArrowUp") {
+        e.preventDefault();
+
+        if (scrollEnProgreso) return;
+
+        const anchoPantalla = window.innerWidth;
+        scrollEnProgreso = true;
+
+        if (e.key === "ArrowDown") {
+            contenedorScroll.scrollBy({ left: anchoPantalla, behavior: 'smooth' });
+        } else if (e.key === "ArrowUp") {
+            contenedorScroll.scrollBy({ left: -anchoPantalla, behavior: 'smooth' });
+        }
+
+        setTimeout(() => {
+            scrollEnProgreso = false;
+        }, 850);
+    }
+}, { passive: false });
+
 iniciarApp();
