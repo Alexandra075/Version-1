@@ -19,7 +19,6 @@ export function inicializarMapa(svgElementId, geoData) {
     const path = d3.geoPath().projection(projection);
 
     svg.append("g").selectAll("path").data(geoData.features).enter().append("path")
-       // Cambiamos el relleno a un azul marino semi-transparente y el borde a cyan sutil
        .attr("fill", "rgba(10, 25, 47, 0.8)")
        .attr("d", path)
        .style("stroke", "rgba(0, 229, 255, 0.2)")
@@ -52,7 +51,6 @@ export function actualizarFondoPorProfundidad(profundidadMaxima) {
     }
 }
 
-// LIMPIEZA DE EMOJIS EN LAS REGIONES
 export function obtenerRegionGeografica(lat, lon) {
     if (!lat || !lon) return "Ubicación no disponible";
     
@@ -60,7 +58,7 @@ export function obtenerRegionGeografica(lat, lon) {
     if (lat >= 42 && lat < 50) return "Costa del Pacífico Noroeste (EEUU)";
     if (lat >= 32.5 && lat < 42) return "Costa de California (EEUU)";
     
-    if (lat >= 23 && lat < 32.5) {
+    if (lat >= 22.7 && lat < 32.5) {
         if (lon > -114) return "Golfo de California (Mar de Cortés)";
         return "Costa Occidental de Baja California (México)";
     }
@@ -88,8 +86,7 @@ export function dibujarPuntos(svg, ballenasData, mesStr, funcionAlHacerClic) {
     if (datosMesActual.length > 0) {
         minProf = d3.min(datosMesActual, d => d.profundidad);
         maxProf = d3.max(datosMesActual, d => d.profundidad);
-        
-        // Atrapamos a las ballenas responsables de estos récords
+
         ballenaSuperficial = datosMesActual.find(d => d.profundidad === minProf);
         ballenaProfunda = datosMesActual.find(d => d.profundidad === maxProf);
         
@@ -109,7 +106,6 @@ export function dibujarPuntos(svg, ballenasData, mesStr, funcionAlHacerClic) {
     const tarjetaSup = document.getElementById('tarjeta-superficial');
     const tarjetaProf = document.getElementById('tarjeta-profunda');
     
-    // Pegamos la latitud y longitud exacta en las tarjetas para que el hover las lea
     if(tarjetaSup && ballenaSuperficial) {
         tarjetaSup.dataset.prof = minProf;
         tarjetaSup.dataset.lat = ballenaSuperficial.lat;
@@ -123,7 +119,6 @@ export function dibujarPuntos(svg, ballenasData, mesStr, funcionAlHacerClic) {
     }
 
     document.body.dataset.profActual = maxProf;
-    // Guardamos la ubicación promedio del mes para poder regresar a ella
     document.body.dataset.ubicacionActual = textoUbicacion; 
     
     actualizarFondoPorProfundidad(maxProf);

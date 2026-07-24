@@ -13,20 +13,17 @@
 <body>
 
     <main id="contenedor-scroll">
-
-        <!-- SECCIÓN 1: PORTADA -->
         <section id="seccion-portada" class="seccion-pantalla">
             <div class="contenedor-imagen-portada">
                 <div class="contenido-portada">
                     <h1>Conoce a la Ballena Azul</h1>
                     <p>Explora su majestuosa anatomía, acompáñala en su migración global y descubre los secretos de su
                         profundo canto.</p>
-                    <p class="scroll-hint">Scrolle hacia abajo ↓</p>
+                    <p class="scroll-hint">Iniciar viaje</p>
                 </div>
             </div>
         </section>
 
-        <!-- SECCIÓN 2: EXPLORACIÓN 3D Y DATOS BIOLÓGICOS (Página 1) -->
         <section id="seccion-3d" class="seccion-pantalla">
             <div class="dashboard-container">
                 <aside class="panel-lateral">
@@ -39,7 +36,6 @@
 
                     <div id="contenedor-datos-biologicos">
                         <div class="grid-datos-biologicos">
-                        <!-- Tarjeta 1 -->
                         <div class="dato-tarjeta">
                             <div class="cabecera-tarjeta">
                                 <span class="etiqueta">Peso Máximo</span>
@@ -47,8 +43,6 @@
                             </div>
                             <span class="valor" id="dato-peso">150 Toneladas</span>
                         </div>
-
-                        <!-- Tarjeta 2 -->
                         <div class="dato-tarjeta">
                             <div class="cabecera-tarjeta">
                                 <span class="etiqueta">Longitud Máx.</span>
@@ -56,8 +50,6 @@
                             </div>
                             <span class="valor" id="dato-longitud">33.5 Metros</span>
                         </div>
-
-                        <!-- Tarjeta 3 (Doble ancho) -->
                         <div class="dato-tarjeta" style="grid-column: span 2;">
                             <div class="cabecera-tarjeta">
                                 <span class="etiqueta">Esperanza de Vida</span>
@@ -66,8 +58,6 @@
                             <span class="valor" id="dato-vida">80 - 90 años (máximo estimado mediante capas de cerumen
                                 del oído en 110 años)</span>
                         </div>
-
-                        <!-- Tarjeta 4 Alerta (Rosa) -->
                         <div class="dato-tarjeta alerta" style="grid-column: span 2;"
                             onclick="window.location.href='#mapa-svg';">
                             <div class="cabecera-tarjeta">
@@ -87,14 +77,10 @@
                 </aside>
                 
                 <div class="area-principal">
-                    
-                    <!-- NUEVO BOTÓN DE CERRAR VISTA AMPLIADA (Blanco y minimalista) -->
                     <button id="btn-cerrar-vista" class="hidden" style="position: absolute; top: 20px; right: 20px; z-index: 50; background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.4); color: #ffffff; border-radius: 8px; padding: 8px 12px; cursor: pointer; font-weight: bold; font-size: 1.2rem; backdrop-filter: blur(5px);" title="Cerrar Vista">✖</button>
                     
                     <model-viewer id="visor-principal" src="3D/Azul/ballena.glb" camera-controls
                         interaction-prompt="auto" style="width: 100%; height: 100%; background-color: transparent;">
-
-                        <!-- PUNTOS LADO ORIGINAL -->
                         <button class="punto-flotante" slot="hotspot-1"
                             data-position="0.21254594523196513m 0.483903406194949m -0.8150785707763983m"
                             data-normal="0.24137425686451577m 0.9441865007307547m -0.22416583138586288m">
@@ -184,7 +170,6 @@
             </div>
         </section>
 
-        <!-- SECCIÓN 3: ACÚSTICA Y COMPARATIVA (Página 2) -->
         <section id="seccion-acustica" class="seccion-pantalla">
             <div class="dashboard-container">
                 <aside class="panel-lateral">
@@ -200,36 +185,24 @@
                     <div style="margin-top: 15px; border-top: 1px solid rgba(0, 229, 255, 0.2); padding-top: 15px;">
                         <h3 style="color: var(--accent-cyan); font-size: 1.1rem; margin-bottom: 15px;">Visualizador de
                             Especies</h3>
-
-                        <!-- Marco del Modelo 3D -->
                         <div class="marco-modelo-3d" style="position: relative;">
-                            
-                            <!-- NUEVO BOTÓN DE EXPANDIR -->
                             <button id="btn-expandir-3d" style="position: absolute; top: 8px; right: 8px; z-index: 10; background: rgba(0, 229, 255, 0.2); border: 1px solid var(--accent-cyan); color: var(--accent-cyan); border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 1.2rem; backdrop-filter: blur(4px);" title="Ver en pantalla completa">⛶</button>
-                            
-                            <!-- NUEVO: OVERLAY TEXTO 52HZ -->
                             <div id="texto-52hz" class="hidden" style="position: absolute; top:0; left:0; width:100%; height:100%; display:flex; align-items:center; justify-content:center; padding: 15px; text-align:center; background: rgba(2, 12, 27, 0.9); color: var(--text-primary); z-index: 5; flex-direction: column; border-radius: 12px;">
                                 <span style="font-size: 2rem; margin-bottom: 8px;">📡</span>
                                 <span style="font-size: 0.85rem; line-height: 1.4;">Esta especie no cuenta con registro visual.<br>Su reconocimiento se basa únicamente en la frecuencia acústica de <strong style="color: var(--accent-pink);">52Hz</strong>.</span>
                             </div>
-
                             <model-viewer id="visor-secundario" src="3D/Minke/minke.glb" auto-rotate
                                 camera-controls style="width: 100%; height: 100%; background-color: transparent;"></model-viewer>
                         </div>
-
-                        <!-- Cuadrícula de Botones CENTRALIZADOS -->
                         <div class="grid-botones-especies">
                             <button class="btn-especie activo" data-id="minke" data-src="3D/Minke/minke.glb">Rorcual Aliblanco</button>
                             <button class="btn-especie" data-id="jorobada" data-src="3D/Jorobada/jorobada.glb">Ballena Jorobada</button>
-                            <!-- Botón 52Hz que abarca 2 columnas para equilibrar la estética -->
                             <button class="btn-especie" data-id="52hz" data-src="none" style="grid-column: span 2; border-color: var(--accent-pink); color: var(--accent-pink);">Ballena Solitaria (52Hz)</button>
                             <button class="btn-especie" data-id="azul" data-src="3D/Azul/ballena.glb">Ballena Azul</button>
                             <button class="btn-especie" data-id="aleta" data-src="3D/Aleta/aleta.glb">Ballena de Aleta</button>
                         </div>
                     </div>
                 </aside>
-
-                <!-- TEXTO Y RECUADRO CON BLUR PARA MEJORAR LA LECTURA -->
                 <div class="area-principal" style="flex-direction: column; background: rgba(2, 12, 27, 0.65); backdrop-filter: blur(4px);">
                     <h2 style="color: var(--accent-cyan); text-shadow: 2px 2px 8px rgba(0,0,0,0.9);">Frecuencias Acústicas y la Ballena 52Hz</h2>
                     <div id="grafica-frecuencias" style="width: 90%; height: 350px;"></div>
@@ -237,16 +210,12 @@
             </div>
         </section>
 
-        <!-- SECCIÓN 4: MAPA Y ALIMENTACIÓN -->
         <section id="seccion-mapa" class="seccion-pantalla">
             <div class="dashboard-container">
                 <aside class="panel-lateral">
                     <header>
-                        <!-- TÍTULO CORREGIDO -->
                         <h1>Ruta migratoria</h1>
                     </header>
-                    
-                    <!-- NUEVOS BOTONES CIRCULARES PARA LA LÍNEA DE TIEMPO -->
                     <section class="seccion-controles">
                         <label style="margin-bottom: 8px; display: block; font-size: 0.9rem;">Línea de tiempo (Meses):</label>
                         <div class="grid-meses">
@@ -271,8 +240,6 @@
                             <p>Obteniendo información...</p>
                         </div>
                     </div>
-
-                    <!-- PANEL INTERACTIVO DE PROFUNDIDAD Y UBICACIÓN CON MARGEN AJUSTADO -->
                     <div id="profundidad-info" style="margin-top: 20px;">
                         <p style="color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 8px;">Pasa el ratón
                             sobre los rangos para explorar:</p>

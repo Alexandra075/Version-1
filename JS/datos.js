@@ -1,4 +1,4 @@
-// --- JS/datos.js ---
+
 export async function cargarBasesDeDatos() {
     try {
         const [geoData, ballenasTsv, datosGenerales] = await Promise.all([
@@ -7,7 +7,6 @@ export async function cargarBasesDeDatos() {
             fetch("data/datos_generales.json").then(res => res.json())
         ]);
 
-        // Limpiamos los datos del mapa y simulamos una profundidad (0 a 500m)
         const ballenasData = ballenasTsv
             .filter(d => d.decimalLatitude && d.decimalLongitude && d.eventDate)
             .map(d => ({

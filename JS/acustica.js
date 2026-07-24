@@ -43,13 +43,9 @@ export function inicializarAcustica(datosAcusticos) {
         .style("fill", "#fbfcfd")
         .style("font-size", "12px");
 
-    // =========================================
-    // EXPOSICIÓN GLOBAL PARA SINCRONIZAR CON BOTONES
-    // =========================================
     window.mostrarFichaAcusticaGlobal = function(idSeleccionado) {
         const especieInfo = datosAcusticos.find(d => d.id === idSeleccionado);
         if(especieInfo) {
-            // Resaltar visualmente la línea correspondiente y apagar las demás
             svg.selectAll(".onda-grafica")
                 .style("opacity", d => d.id === idSeleccionado ? 1 : 0.4)
                 .attr("fill", d => {
@@ -84,23 +80,21 @@ export function inicializarAcustica(datosAcusticos) {
             .data(datosAcusticos)
             .enter()
             .append("path")
-            .attr("class", "onda-grafica") // Asignamos clase para controlarla
+            .attr("class", "onda-grafica")
             .attr("transform", d => `translate(${x(d.nombre_comun)}, 0)`)
             .attr("d", d => generarTrazadoReal(d, x.bandwidth()))
             .attr("fill", d => d.id === "52hz" ? "rgba(255, 0, 127, 0.4)" : "rgba(0, 229, 255, 0.4)")
             .attr("stroke", d => d.id === "52hz" ? "var(--accent-pink)" : "var(--accent-cyan)")
             .attr("stroke-width", 2)
-            .style("opacity", 0.4) // Por defecto empezamos apagadas
+            .style("opacity", 0.4)
             .style("cursor", "pointer")
             .style("transition", "all 0.3s ease")
-            // Ahora si el usuario hace CLIC en la gráfica, se simula un clic en el botón general
             .on("click", function(event, d) {
                 const btn = document.querySelector(`.btn-especie[data-id="${d.id}"]`);
                 if(btn) btn.click();
             });
     }
 
-    // Dibujamos las gráficas y luego seleccionamos la primera ballena por defecto
     dibujarGraficasReales().then(() => {
         setTimeout(() => {
             if(window.mostrarFichaAcusticaGlobal) {

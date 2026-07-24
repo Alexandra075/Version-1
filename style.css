@@ -1,6 +1,3 @@
-/* =========================================
-   1. VARIABLES Y RESETEO
-   ========================================= */
 :root {
     --bg-dark: #020c1b;
     --bg-light: #0a192f;
@@ -25,69 +22,36 @@ body {
     height: 100vh;
     width: 100vw;
     overflow: hidden;
-    /* Corta cualquier scroll fuera del contenedor */
     font-family: 'Segoe UI', system-ui, sans-serif;
     background: radial-gradient(circle at bottom right, #0a192f 0%, #020c1b 100%);
     color: #e2e8f0;
 }
 
-.caja-luminiscente {
-    /* Fondo oscuro semitransparente */
-    background: rgba(10, 25, 47, 0.7) !important;
-    
-    /* Efecto de cristal */
-    backdrop-filter: blur(15px) !important;
-    -webkit-backdrop-filter: blur(15px) !important;
-    
-    /* Borde delgado y brillante (forzado) */
-    border: 1px solid rgba(0, 229, 255, 0.5) !important;
-    border-radius: 20px !important;
-    
-    /* Sombras forzadas para el brillo neón */
-    box-shadow: 
-        0 15px 35px rgba(0, 0, 0, 0.6), 
-        0 0 25px rgba(0, 229, 255, 0.4) !important;
-}
-
-/* =========================================
-   2. NADO HORIZONTAL Y SIN BARRAS
-   ========================================= */
 #contenedor-scroll {
     display: flex;
     flex-direction: row;
-    /* Acomoda las pantallas de izquierda a derecha */
     width: 100vw;
     height: 100vh;
     overflow-x: scroll;
-    /* Permite el scroll horizontal */
     overflow-y: hidden;
     scroll-snap-type: x mandatory;
-    /* Engancha exactamente en cada pantalla (eje X) */
     scroll-behavior: smooth;
-
-    /* Ocultar barra en Firefox y Edge */
     scrollbar-width: none;
     -ms-overflow-style: none;
 }
 
-/* Ocultar barra en Chrome/Safari/Opera */
 #contenedor-scroll::-webkit-scrollbar {
     display: none;
 }
 
 .seccion-pantalla {
     flex-shrink: 0;
-    /* Evita que las pantallas se aplasten */
     width: 100vw;
     height: 100vh;
     scroll-snap-align: start;
-    /* Anclaje horizontal */
     position: relative;
 }
 
-/* =========================================
-   3. PORTADA Y CARGA 
-   ========================================= */
 #seccion-portada {
     display: flex;
     align-items: center;
@@ -98,32 +62,12 @@ body {
     box-sizing: border-box;
 }
 
-.texto-lateral {
-    flex: 0 0 250px;
-    text-align: left;
-}
-
-.texto-lateral h2 {
-    color: var(--accent-cyan);
-    font-size: 1.8rem;
-    margin: 0;
-    font-weight: bold;
-}
-
-.texto-lateral p {
-    color: #ffffff;
-    font-size: 1.2rem;
-    margin: 5px 0 0 0;
-}
-
 .contenedor-imagen-portada {
     position: relative;
     flex: 1;
     border-radius: 12px;
     border: 1px solid rgba(255, 255, 255, 0.2);
-
     background-image: url('Imagenes/portada.png');
-
     background-size: cover;
     background-position: center;
     display: flex;
@@ -135,32 +79,10 @@ body {
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
 }
 
-
-.texto-fondo {
-    position: absolute;
-    color: rgba(255, 255, 255, 0.05);
-    font-size: 1.2rem;
-    font-weight: bold;
-    letter-spacing: 4px;
-    pointer-events: none;
-}
-
-.texto-fondo.arriba {
-    top: 15px;
-    right: 20px;
-}
-
-.texto-fondo.abajo {
-    bottom: 15px;
-    right: 20px;
-}
-
 .contenido-portada {
     background-color: rgba(0, 0, 0, 0.65);
-    
     backdrop-filter: blur(1px);
     -webkit-backdrop-filter: blur(2px); 
-    
     border: 1px solid rgba(255, 255, 255, 0.15); 
     border-radius: 10px;
     padding: 40px;
@@ -184,60 +106,19 @@ body {
     line-height: 1.5;
 }
 
-/* Conservamos la pantalla de carga original */
-#pantalla-carga {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background: #020c1b;
-    z-index: 9999;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    transition: opacity 0.8s ease;
-}
-
-#pantalla-carga.oculto {
-    opacity: 0;
-    pointer-events: none;
-}
-
-.loader {
-    border: 8px solid rgba(0, 229, 255, 0.2);
-    border-top: 8px solid var(--accent-cyan);
-    border-radius: 50%;
-    width: 60px;
-    height: 60px;
-    animation: girar 1s linear infinite;
-    margin-bottom: 20px;
-}
-
-@keyframes girar {
-    100% {
-        transform: rotate(360deg);
-    }
-}
-
-/* Fondo para la sección de Acústica */
 #seccion-acustica {
     background-image: url('Imagenes/hhh.jpg');
     background-size: cover;
     background-position: 50% 20%;
     background-repeat: no-repeat;
-    
     background-color: var(--bg-dark); 
 }
-/* =========================================
-   VISUALIZADOR DE ESPECIES Y BOTONES
-   ========================================= */
+
 .marco-modelo-3d {
     background: #020c1b;
     border-radius: 12px;
     box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.8);
-    height: 150px; /* Reducimos la altura aquí para que quepan los botones */
+    height: 150px;
     margin-bottom: 12px;
     overflow: hidden;
 }
@@ -250,7 +131,7 @@ body {
 
 .grid-botones-especies {
     display: grid;
-    grid-template-columns: 1fr 1fr; /* Dos columnas iguales */
+    grid-template-columns: 1fr 1fr;
     gap: 10px;
 }
 
@@ -273,45 +154,27 @@ body {
     box-shadow: 0 0 10px rgba(0, 229, 255, 0.3);
 }
 
-/* Estado activo del botón */
 .btn-especie.activo {
     background: var(--accent-cyan);
-    color: #020c1b; /* Texto oscuro para contrastar con el fondo claro */
+    color: #020c1b;
     box-shadow: 0 0 15px rgba(0, 229, 255, 0.4);
 }
 
-/* =========================================
-   4. ESTRUCTURA INTERNA (MAPA, PANELES)
-   ========================================= */
 .dashboard-container {
     display: flex;
     height: 100vh;
     padding: 20px;
     gap: 25px;
 }
-.tarjeta-boton {
-    text-decoration: none; /* Quita la línea de subrayado */
-    color: inherit; /* Mantiene los colores rosados que ya programaste */
-    display: block; 
-}
 
-/* Efecto opcional para que parezca un botón cuando pasas el cursor */
-.tarjeta-boton:hover .tu-clase-de-tarjeta-rosa {
-    transform: scale(1.02); /* Se agranda un poquito */
-    box-shadow: 0 0 15px rgba(255, 0, 128, 0.5); /* Brillo rosa extra */
-    transition: all 0.3s ease;
-    cursor: pointer; /* Cambia el cursor a una mano */
-}
-/* estilo del modelo 3d */
 #seccion-3d {
     background-image: url("Imagenes/fondo\ mar.jpg");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    background-color: #031525; /* Un color oscuro de respaldo por si tarda en cargar */
+    background-color: #031525;
 }
 
-/* AJUSTES PARA EVITAR BARRAS DE SCROLL */
 .panel-lateral {
     width: 380px;
     flex-shrink: 0;
@@ -319,32 +182,29 @@ body {
     backdrop-filter: blur(12px);
     border: 1px solid rgba(0, 229, 255, 0.2);
     border-radius: var(--border-radius-lg);
-    
-    /* REGLAS ACTUALIZADAS PARA MANTENER LA ELEGANCIA SIN BARRAS */
     padding: 25px;
     gap: 20px;
-    
     display: flex;
     flex-direction: column;
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
     z-index: 10;
-
     overflow-y: auto; 
     overflow-x: hidden;
 }
-/* Estilo de la barra de scroll del panel lateral */
+
 .panel-lateral::-webkit-scrollbar {
     width: 6px;
 }
+
 .panel-lateral::-webkit-scrollbar-track {
     background: rgba(10, 25, 47, 0.3);
     border-radius: 10px;
 }
+
 .panel-lateral::-webkit-scrollbar-thumb {
     background: var(--accent-cyan);
     border-radius: 10px;
 }
-
 
 .panel-lateral h1 {
     font-size: 1.15rem;
@@ -370,8 +230,7 @@ body {
 
 .narrativa p,
 #contenido-tarjeta p,
-#info-card p,
-#datos-generales-info p {
+#info-card p {
     font-size: 1rem;
     line-height: 1.5;
     color: var(--text-primary);
@@ -394,9 +253,10 @@ body {
 .hidden {
     display: none !important;
 }
+
 .grid-datos-biologicos {
     display: grid;
-    grid-template-columns: 1fr 1fr; /* Crea dos columnas iguales */
+    grid-template-columns: 1fr 1fr;
     gap: 12px;
     margin-top: 15px;
 }
@@ -434,7 +294,6 @@ body {
 }
 
 #seccion-mapa {
-    /* El gradiente oscuro asegura que la imagen no opaque tu mapa de D3.js */
     background-image: linear-gradient(rgba(2, 12, 27, 0.3), rgba(2, 12, 27, 0.85)), url('Imagenes/fondo1.png'); 
     background-size: cover;
     background-position: center;
@@ -443,9 +302,6 @@ body {
     transition: background-image 0.5s ease-in-out;
 }
 
-/* =========================================
-   5. PUNTOS DEL MAPA SVG
-   ========================================= */
 .current-point {
     fill: var(--accent-cyan);
     stroke: #ffffff;
@@ -466,14 +322,11 @@ body {
     opacity: 0.3;
 }
 
-/* =========================================
-   6. HOTSPOTS 3D (Recuperados)
-   ========================================= */
 .punto-flotante {
-    background-color: rgba(0, 229, 255, 0.4); /* Color cian semi-transparente */
+    background-color: rgba(0, 229, 255, 0.4);
     border-radius: 50%;
-    border: 1px solid rgba(0, 229, 255, 0.8); /* Bordecito para definir la forma */
-    box-shadow: 0 0 8px rgba(0, 229, 255, 0.3); /* Un resplandor muy, muy suave */
+    border: 1px solid rgba(0, 229, 255, 0.8);
+    box-shadow: 0 0 8px rgba(0, 229, 255, 0.3);
     box-sizing: border-box;
     cursor: pointer;
     height: 18px;
@@ -484,7 +337,7 @@ body {
 
 .punto-flotante:hover {
     transform: scale(1.3);
-    background-color: rgba(255, 0, 127, 0.6); /* Cambia a rosa sutil al pasar el ratón */
+    background-color: rgba(255, 0, 127, 0.6);
     border: 1px solid rgba(255, 0, 127, 0.9);
     box-shadow: 0 0 12px rgba(255, 0, 127, 0.5); 
 }
@@ -526,7 +379,6 @@ body {
     opacity: 0.3;
 }
 
-/* ANIMACIÓN DEL INDICADOR DE SCROLL */
 .scroll-hint {
     font-size: 1.2rem;
     color: var(--accent-pink);
@@ -540,34 +392,28 @@ body {
         opacity: 0.5;
         transform: translateY(0);
     }
-
     50% {
         opacity: 1;
         transform: translateY(10px);
     }
-
     100% {
         opacity: 0.5;
         transform: translateY(0);
     }
 }
-/* Estilo cuando el panel lateral está oculto */
+
 .dashboard-container.sin-panel .panel-lateral {
-    display: none; /* Oculta por completo el espacio del panel izquierdo */
+    display: none;
 }
 
 .dashboard-container.sin-panel .area-principal {
-    width: 100%; /* Hace que el visor 3D ocupe todo el ancho de la pantalla de forma centrada */
+    width: 100%;
 }
 
-/* =========================================
-   7. NUEVOS BOTONES CIRCULARES (MESES)
-   ========================================= */
 .grid-meses {
     display: flex;
     flex-wrap: wrap;
     gap: 6px; 
-    /* MARGEN AJUSTADO PARA QUE NO QUEDE TAN PEGADO AL TÍTULO PERO NO PROVOQUE SCROLL */
     margin-bottom: 15px; 
 }
 
@@ -597,8 +443,7 @@ body {
 .btn-mes.activo {
     background: var(--accent-cyan);
     color: #020c1b;
-    border-color: var(--accent-cyan); /* ← Aquí se cierra el color correctamente */
-    /* Aquí entra el código que me pasaste para darle el brillo y tamaño al botón activo */
+    border-color: var(--accent-cyan);
     box-shadow: 0 0 15px rgba(0, 229, 255, 0.6);
     transform: scale(1.1);
 }

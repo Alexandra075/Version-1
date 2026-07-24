@@ -24,28 +24,23 @@ function actualizarNarrativa(mesStr) {
     const titulo = document.getElementById('titulo-tarjeta');
     const info = document.getElementById('contenido-tarjeta');
 
-    // 1. Filtramos la base de datos para obtener SOLO los avistamientos de este mes exacto
     const datosMes = appData.avistamientos.filter(d => d.fecha && d.fecha.split('-')[1] === mesStr);
 
     const mesesNombres = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
     const nombreMes = mesesNombres[parseInt(mesStr) - 1];
 
-    // Si por alguna razón un mes no tiene datos en el TSV, mostramos esto:
     if (datosMes.length === 0) {
         titulo.innerText = `Reporte de ${nombreMes}`;
         info.innerHTML = `<p>Sin registros de avistamientos confirmados en la base de datos para este periodo.</p>`;
         return;
     }
 
-    // 2. Calculamos los datos reales a partir de los puntos del mapa
     const totalAvistamientos = datosMes.length;
 
-    // Sacamos un promedio de las coordenadas para saber dónde está el "banco" principal de ballenas ese mes
     const avgLat = d3.mean(datosMes, d => d.lat);
     const avgLon = d3.mean(datosMes, d => d.lon);
     const regionPrincipal = obtenerRegionGeografica(avgLat, avgLon);
 
-    // 3. Inyectamos los datos dinámicos en la tarjeta
     titulo.innerText = `Reporte de ${nombreMes}`;
     info.innerHTML = `
         <p><strong>Total de avistamientos:</strong> ${totalAvistamientos} registros exactos.</p>
@@ -56,14 +51,9 @@ function actualizarNarrativa(mesStr) {
     `;
 }
 
-
-// =========================================
-// BOTÓN INTERRUPTOR PARA EL ESQUELETO 3D
-// =========================================
 const iniciarBotonEsqueleto = () => {
     const btnToggleEsqueleto = document.getElementById('btn-toggle-esqueleto');
     const visorPrincipal = document.getElementById('visor-principal');
-    // Seleccionamos los puntos de la ballena azul para ocultarlos cuando se vea el esqueleto
     const puntosFlotantes = document.querySelectorAll('#visor-principal .punto-flotante');
 
     if (btnToggleEsqueleto && visorPrincipal) {
@@ -73,30 +63,20 @@ const iniciarBotonEsqueleto = () => {
             mostrandoEsqueleto = !mostrandoEsqueleto;
 
             if (mostrandoEsqueleto) {
-                // 1. Cargamos el modelo del esqueleto con la ruta exacta de tu carpeta
                 visorPrincipal.src = "3D/Esqueleto/base_basic_pbr.glb"; 
-                
-                // 2. Cambiamos el estilo del botón a Rosa
                 btnToggleEsqueleto.innerHTML = " Volver a la Ballena Azul";
                 btnToggleEsqueleto.style.background = "rgba(255, 0, 127, 0.1)";
                 btnToggleEsqueleto.style.borderColor = "var(--accent-pink)";
                 btnToggleEsqueleto.style.color = "var(--accent-pink)";
                 btnToggleEsqueleto.style.boxShadow = "0 0 15px rgba(255, 0, 127, 0.4)";
-                
-                // 3. Ocultamos los puntos celestes
                 puntosFlotantes.forEach(punto => punto.style.display = 'none');
             } else {
-                // 1. Regresamos al modelo original de la ballena azul
                 visorPrincipal.src = "3D/Azul/ballena.glb";
-                
-                // 2. Regresamos el estilo del botón a Cyan
                 btnToggleEsqueleto.innerHTML = " Ver Esqueleto Óseo";
                 btnToggleEsqueleto.style.background = "rgba(0, 229, 255, 0.05)";
                 btnToggleEsqueleto.style.borderColor = "var(--accent-cyan)";
                 btnToggleEsqueleto.style.color = "var(--accent-cyan)";
                 btnToggleEsqueleto.style.boxShadow = "none";
-                
-                // 3. Mostramos los puntos de nuevo
                 puntosFlotantes.forEach(punto => punto.style.display = 'block');
             }
         });
@@ -105,9 +85,6 @@ const iniciarBotonEsqueleto = () => {
 
 setTimeout(iniciarBotonEsqueleto, 600);
 
-// =========================================
-// INTERACCIÓN DEL VISUALIZADOR DE ESPECIES (NUEVA LÓGICA CENTRALIZADA)
-// =========================================
 const iniciarVisorEspecies = () => {
     const botonesEspecies = document.querySelectorAll('.btn-especie');
     const seccionGrande = document.getElementById('seccion-3d');
@@ -117,10 +94,9 @@ const iniciarVisorEspecies = () => {
     const btnExpandir = document.getElementById('btn-expandir-3d');
     const btnCerrarVista = document.getElementById('btn-cerrar-vista');
 
-    let modeloSeleccionadoActualmente = "3D/Minke/minke.glb"; // Por defecto
+    let modeloSeleccionadoActualmente = "3D/Minke/minke.glb";
     let nombreSeleccionadoActualmente = "Rorcual Aliblanco (Minke)";
 
-    // 1. Al hacer clic en los botones de especies
     if (botonesEspecies.length > 0) {
         botonesEspecies.forEach(boton => {
             boton.addEventListener('click', (evento) => {
@@ -129,8 +105,6 @@ const iniciarVisorEspecies = () => {
                 const especieId = boton.getAttribute('data-id');
                 modeloSeleccionadoActualmente = boton.getAttribute('data-src');
                 nombreSeleccionadoActualmente = boton.innerText.replace('\n', ' ');
-
-                // Pintar botón activo y resetear los demás
                 botonesEspecies.forEach(b => {
                     b.classList.remove('activo');
                     if(b.getAttribute('data-id') === '52hz') {
@@ -151,7 +125,6 @@ const iniciarVisorEspecies = () => {
                     boton.style.color = '#020c1b';
                 }
 
-                // 2. Controlar la visibilidad (Mostrar modelo 3D o Texto de 52Hz)
                 if (especieId === '52hz') {
                     if (visorSecundario) visorSecundario.style.display = 'none';
                     document.getElementById('texto-52hz').classList.remove('hidden');
@@ -165,7 +138,6 @@ const iniciarVisorEspecies = () => {
                     if (btnExpandir) btnExpandir.style.display = 'block';
                 }
 
-                // 3. DISPARAR LA ACTUALIZACIÓN DE LA TARJETA Y GRÁFICA ACÚSTICA
                 if(window.mostrarFichaAcusticaGlobal) {
                     window.mostrarFichaAcusticaGlobal(especieId);
                 }
@@ -173,7 +145,6 @@ const iniciarVisorEspecies = () => {
         });
     }
 
-    // Función maestra para preparar el visor GRANDE
     const prepararVisorGrande = (rutaModelo, nombre) => {
         if (!visorPrincipal) return;
         visorPrincipal.src = rutaModelo;
@@ -202,7 +173,6 @@ const iniciarVisorEspecies = () => {
         }
     };
 
-    // Botón EXPANDIR (⛶)
     if (btnExpandir && seccionGrande) {
         btnExpandir.addEventListener('click', () => {
             prepararVisorGrande(modeloSeleccionadoActualmente, nombreSeleccionadoActualmente);
@@ -211,7 +181,6 @@ const iniciarVisorEspecies = () => {
         });
     }
 
-    // Botón CERRAR VISTA
     if (btnCerrarVista && seccionAcustica) {
         btnCerrarVista.addEventListener('click', () => {
             btnCerrarVista.classList.add('hidden'); 
@@ -241,22 +210,16 @@ function mostrarTarjeta(d) {
     `;
 }
 
-// =========================================
-// LÍNEA DE TIEMPO CON BOTONES CIRCULARES
-// =========================================
 const botonesMes = document.querySelectorAll('.btn-mes');
 if (botonesMes.length > 0) {
     botonesMes.forEach(boton => {
         boton.addEventListener('click', () => {
             if (!appData || !mapaSvgD3) return;
-
-            // Iluminar botón activo y apagar los demás
             botonesMes.forEach(b => b.classList.remove('activo'));
             boton.classList.add('activo');
 
             const mesSeleccionado = boton.getAttribute('data-mes');
 
-            // Actualizar la interfaz
             dibujarPuntos(mapaSvgD3, appData.avistamientos, mesSeleccionado, mostrarTarjeta);
             actualizarNarrativa(mesSeleccionado);
         });
@@ -271,7 +234,6 @@ function inicializarHoverProfundidad() {
 
     if (tarjetaSup && tarjetaProf) {
 
-        // --- TARJETA SUPERFICIAL ---
         tarjetaSup.addEventListener('mouseenter', () => {
             const prof = parseInt(tarjetaSup.dataset.prof) || 0;
             actualizarFondoPorProfundidad(prof);
@@ -282,7 +244,6 @@ function inicializarHoverProfundidad() {
                 const lon = parseFloat(tarjetaSup.dataset.lon);
                 uiUbicacion.innerText = obtenerRegionGeografica(lat, lon);
 
-                // Ambos puntos se iluminan de color ROSA
                 d3.selectAll(".current-point").filter(d => d.lat === lat && d.lon === lon)
                     .transition().duration(200)
                     .attr("r", 14)
@@ -305,14 +266,12 @@ function inicializarHoverProfundidad() {
             if (uiUbicacion) uiUbicacion.innerText = document.body.dataset.ubicacionActual || "Obteniendo información";
             if (seccionMapa) seccionMapa.style.backgroundImage = "";
 
-            // Regresar el punto a la normalidad
             d3.selectAll(".current-point")
                 .transition().duration(200)
                 .attr("r", 6)
                 .style("fill", null);
         });
 
-        // --- TARJETA PROFUNDA ---
         tarjetaProf.addEventListener('mouseenter', () => {
             const prof = parseInt(tarjetaProf.dataset.prof) || 0;
             actualizarFondoPorProfundidad(prof);
@@ -323,7 +282,6 @@ function inicializarHoverProfundidad() {
                 const lon = parseFloat(tarjetaProf.dataset.lon);
                 uiUbicacion.innerText = obtenerRegionGeografica(lat, lon);
 
-                // Ambos puntos se iluminan de color ROSA
                 d3.selectAll(".current-point").filter(d => d.lat === lat && d.lon === lon)
                     .transition().duration(200)
                     .attr("r", 14)
@@ -346,7 +304,6 @@ function inicializarHoverProfundidad() {
             if (uiUbicacion) uiUbicacion.innerText = document.body.dataset.ubicacionActual || "Obteniendo información";
             if (seccionMapa) seccionMapa.style.backgroundImage = "";
 
-            // Regresar el punto a la normalidad
             d3.selectAll(".current-point")
                 .transition().duration(200)
                 .attr("r", 6)
@@ -372,7 +329,6 @@ async function iniciarApp() {
             const datosAcustica = datosGenerales.vistas_interactivas.acustica.especies;
 
             inicializarAcustica(datosAcustica);
-            // Ya no llamamos a comparativa.js porque centralizamos la lógica
             inicializarHoverProfundidad();
         }
     } catch (error) {
