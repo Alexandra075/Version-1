@@ -7,8 +7,8 @@ let appData = null;
 let mapaSvgD3 = null;
 
 function llenarDatosGenerales() {
-    if(!appData) return;
-    
+    if (!appData) return;
+
     const datosGenerales = appData.fichaTecnica ? appData.fichaTecnica : appData;
     const bio = datosGenerales.vistas_interactivas.biometria;
     const cons = datosGenerales.vistas_interactivas.conservacion;
@@ -20,11 +20,11 @@ function llenarDatosGenerales() {
 }
 
 function actualizarNarrativa(mesStr) {
-    if(!appData || !appData.avistamientos) return;
-    
+    if (!appData || !appData.avistamientos) return;
+
     const titulo = document.getElementById('titulo-tarjeta');
     const info = document.getElementById('contenido-tarjeta');
-    
+
     // 1. Filtramos la base de datos para obtener SOLO los avistamientos de este mes exacto
     const datosMes = appData.avistamientos.filter(d => d.fecha && d.fecha.split('-')[1] === mesStr);
 
@@ -40,7 +40,7 @@ function actualizarNarrativa(mesStr) {
 
     // 2. Calculamos los datos reales a partir de los puntos del mapa
     const totalAvistamientos = datosMes.length;
-    
+
     // Sacamos un promedio de las coordenadas para saber dónde está el "banco" principal de ballenas ese mes
     const avgLat = d3.mean(datosMes, d => d.lat);
     const avgLon = d3.mean(datosMes, d => d.lon);
@@ -56,6 +56,56 @@ function actualizarNarrativa(mesStr) {
         </p>
     `;
 }
+
+
+// =========================================
+// BOTÓN INTERRUPTOR PARA EL ESQUELETO 3D
+// =========================================
+const iniciarBotonEsqueleto = () => {
+    const btnToggleEsqueleto = document.getElementById('btn-toggle-esqueleto');
+    const visorPrincipal = document.getElementById('visor-principal');
+    // Seleccionamos los puntos de la ballena azul para ocultarlos cuando se vea el esqueleto
+    const puntosFlotantes = document.querySelectorAll('#visor-principal .punto-flotante');
+
+    if (btnToggleEsqueleto && visorPrincipal) {
+        let mostrandoEsqueleto = false;
+
+        btnToggleEsqueleto.addEventListener('click', () => {
+            mostrandoEsqueleto = !mostrandoEsqueleto;
+
+            if (mostrandoEsqueleto) {
+                // 1. Cargamos el modelo del esqueleto con la ruta exacta de tu carpeta
+                visorPrincipal.src = "3D/Esqueleto/base_basic_pbr.glb"; 
+                
+                // 2. Cambiamos el estilo del botón a Rosa
+                btnToggleEsqueleto.innerHTML = " Volver a la Ballena Azul";
+                btnToggleEsqueleto.style.background = "rgba(255, 0, 127, 0.1)";
+                btnToggleEsqueleto.style.borderColor = "var(--accent-pink)";
+                btnToggleEsqueleto.style.color = "var(--accent-pink)";
+                btnToggleEsqueleto.style.boxShadow = "0 0 15px rgba(255, 0, 127, 0.4)";
+                
+                // 3. Ocultamos los puntos celestes
+                puntosFlotantes.forEach(punto => punto.style.display = 'none');
+            } else {
+                // 1. Regresamos al modelo original de la ballena azul
+                visorPrincipal.src = "3D/Azul/ballena.glb";
+                
+                // 2. Regresamos el estilo del botón a Cyan
+                btnToggleEsqueleto.innerHTML = " Ver Esqueleto Óseo";
+                btnToggleEsqueleto.style.background = "rgba(0, 229, 255, 0.05)";
+                btnToggleEsqueleto.style.borderColor = "var(--accent-cyan)";
+                btnToggleEsqueleto.style.color = "var(--accent-cyan)";
+                btnToggleEsqueleto.style.boxShadow = "none";
+                
+                // 3. Mostramos los puntos de nuevo
+                puntosFlotantes.forEach(punto => punto.style.display = 'block');
+            }
+        });
+    }
+};
+
+// Iniciar esta función después de un breve retraso
+setTimeout(iniciarBotonEsqueleto, 600);
 
 // =========================================
 // INTERACCIÓN DEL VISUALIZADOR DE ESPECIES 
@@ -73,19 +123,19 @@ const iniciarVisorEspecies = () => {
     let nombreSeleccionadoActualmente = "Rorcual Aliblanco (Minke)";
 
     // 1. Al hacer clic en los botones de especies, SOLO cambiamos el modelo pequeño
-    if(botonesEspecies.length > 0) {
+    if (botonesEspecies.length > 0) {
         botonesEspecies.forEach(boton => {
             boton.addEventListener('click', (evento) => {
-                evento.preventDefault(); 
-                
+                evento.preventDefault();
+
                 // Pintar botón activo
                 botonesEspecies.forEach(b => b.classList.remove('activo'));
                 boton.classList.add('activo');
-                
+
                 // Guardar la especie seleccionada
                 modeloSeleccionadoActualmente = boton.getAttribute('data-src');
                 nombreSeleccionadoActualmente = boton.innerText.replace('\n', ' ');
-                
+
                 // Actualizar ÚNICAMENTE el visor pequeño
                 if (visorSecundario) {
                     visorSecundario.src = modeloSeleccionadoActualmente;
@@ -138,12 +188,12 @@ const iniciarVisorEspecies = () => {
         btnCerrarVista.addEventListener('click', () => {
             btnCerrarVista.classList.add('hidden'); // Ocultamos este botón de nuevo
             seccionAcustica.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'start' });
-            
+
             // Un pequeño truco: esperamos medio segundo a que termine la animación de scroll 
             // y regresamos la pantalla 1 a la Ballena Azul por defecto para no romper el flujo
             setTimeout(() => {
                 prepararVisorGrande("3D/Azul/ballena.glb", "Balaenoptera musculus");
-            }, 500); 
+            }, 500);
         });
     }
 };
@@ -151,10 +201,10 @@ const iniciarVisorEspecies = () => {
 setTimeout(iniciarVisorEspecies, 500);
 
 function mostrarTarjeta(d) {
-    if(!appData) return;
+    if (!appData) return;
     const datosGenerales = appData.fichaTecnica ? appData.fichaTecnica : appData;
     const estado = datosGenerales.vistas_interactivas.conservacion.estatus_y_amenazas.estado_uicn;
-    
+
     document.getElementById('info-card').classList.remove('hidden');
     document.getElementById('titulo-tarjeta').innerText = "Registro Detectado";
     document.getElementById('contenido-tarjeta').innerHTML = `
@@ -173,14 +223,14 @@ const botonesMes = document.querySelectorAll('.btn-mes');
 if (botonesMes.length > 0) {
     botonesMes.forEach(boton => {
         boton.addEventListener('click', () => {
-            if(!appData || !mapaSvgD3) return;
+            if (!appData || !mapaSvgD3) return;
 
             // Iluminar botón activo y apagar los demás
             botonesMes.forEach(b => b.classList.remove('activo'));
             boton.classList.add('activo');
 
             const mesSeleccionado = boton.getAttribute('data-mes');
-            
+
             // Actualizar la interfaz
             dibujarPuntos(mapaSvgD3, appData.avistamientos, mesSeleccionado, mostrarTarjeta);
             actualizarNarrativa(mesSeleccionado);
@@ -192,17 +242,17 @@ function inicializarHoverProfundidad() {
     const tarjetaSup = document.getElementById('tarjeta-superficial');
     const tarjetaProf = document.getElementById('tarjeta-profunda');
     const uiUbicacion = document.getElementById('ubicacion-geografica');
-    const seccionMapa = document.getElementById('seccion-mapa'); 
+    const seccionMapa = document.getElementById('seccion-mapa');
 
     if (tarjetaSup && tarjetaProf) {
-        
+
         // --- TARJETA SUPERFICIAL ---
         tarjetaSup.addEventListener('mouseenter', () => {
             const prof = parseInt(tarjetaSup.dataset.prof) || 0;
             actualizarFondoPorProfundidad(prof);
-            tarjetaSup.style.background = "rgba(0, 229, 255, 0.2)"; 
-            
-            if(uiUbicacion && tarjetaSup.dataset.lat) {
+            tarjetaSup.style.background = "rgba(0, 229, 255, 0.2)";
+
+            if (uiUbicacion && tarjetaSup.dataset.lat) {
                 const lat = parseFloat(tarjetaSup.dataset.lat);
                 const lon = parseFloat(tarjetaSup.dataset.lon);
                 uiUbicacion.innerText = obtenerRegionGeografica(lat, lon);
@@ -214,21 +264,21 @@ function inicializarHoverProfundidad() {
                     .style("fill", "var(--accent-pink)");
             }
 
-            if(seccionMapa) {
+            if (seccionMapa) {
                 seccionMapa.style.transition = "background-image 0.5s ease-in-out";
                 seccionMapa.style.backgroundSize = "cover";
                 seccionMapa.style.backgroundPosition = "center";
                 seccionMapa.style.backgroundImage = "linear-gradient(rgba(2, 12, 27, 0.50), rgba(2, 12, 27, 0.50)), url('https://cdn.pixabay.com/photo/2018/02/16/21/06/blue-whale-3158626_1280.png')";
             }
         });
-        
+
         tarjetaSup.addEventListener('mouseleave', () => {
             const profActual = parseInt(document.body.dataset.profActual) || 0;
             actualizarFondoPorProfundidad(profActual);
             tarjetaSup.style.background = "rgba(0, 229, 255, 0.05)";
-            
-            if(uiUbicacion) uiUbicacion.innerText = document.body.dataset.ubicacionActual || "Obteniendo información";
-            if(seccionMapa) seccionMapa.style.backgroundImage = "none";
+
+            if (uiUbicacion) uiUbicacion.innerText = document.body.dataset.ubicacionActual || "Obteniendo información";
+            if (seccionMapa) seccionMapa.style.backgroundImage = "";
 
             // Regresar el punto a la normalidad
             d3.selectAll(".current-point")
@@ -241,9 +291,9 @@ function inicializarHoverProfundidad() {
         tarjetaProf.addEventListener('mouseenter', () => {
             const prof = parseInt(tarjetaProf.dataset.prof) || 0;
             actualizarFondoPorProfundidad(prof);
-            tarjetaProf.style.background = "rgba(255, 0, 127, 0.2)"; 
-            
-            if(uiUbicacion && tarjetaProf.dataset.lat) {
+            tarjetaProf.style.background = "rgba(255, 0, 127, 0.2)";
+
+            if (uiUbicacion && tarjetaProf.dataset.lat) {
                 const lat = parseFloat(tarjetaProf.dataset.lat);
                 const lon = parseFloat(tarjetaProf.dataset.lon);
                 uiUbicacion.innerText = obtenerRegionGeografica(lat, lon);
@@ -255,21 +305,21 @@ function inicializarHoverProfundidad() {
                     .style("fill", "var(--accent-pink)");
             }
 
-            if(seccionMapa) {
+            if (seccionMapa) {
                 seccionMapa.style.transition = "background-image 0.5s ease-in-out";
                 seccionMapa.style.backgroundSize = "cover";
                 seccionMapa.style.backgroundPosition = "center";
                 seccionMapa.style.backgroundImage = "linear-gradient(rgba(2, 12, 27, 0.70), rgba(2, 12, 27, 0.70)), url('https://cdn.pixabay.com/photo/2020/03/12/01/49/jellyfish-4923658_1280.jpg')";
             }
         });
-        
+
         tarjetaProf.addEventListener('mouseleave', () => {
             const profActual = parseInt(document.body.dataset.profActual) || 0;
             actualizarFondoPorProfundidad(profActual);
             tarjetaProf.style.background = "rgba(255, 0, 127, 0.05)";
-            
-            if(uiUbicacion) uiUbicacion.innerText = document.body.dataset.ubicacionActual || "Obteniendo información";
-            if(seccionMapa) seccionMapa.style.backgroundImage = "none";
+
+            if (uiUbicacion) uiUbicacion.innerText = document.body.dataset.ubicacionActual || "Obteniendo información";
+            if (seccionMapa) seccionMapa.style.backgroundImage = "";
 
             // Regresar el punto a la normalidad
             d3.selectAll(".current-point")
@@ -280,25 +330,27 @@ function inicializarHoverProfundidad() {
     }
 }
 
+
+
 async function iniciarApp() {
     try {
         appData = await cargarBasesDeDatos();
-        
-        if(appData) {
+
+        if (appData) {
             llenarDatosGenerales();
-            
-            if(appData.mapaMundi && appData.avistamientos) {
+
+            if (appData.mapaMundi && appData.avistamientos) {
                 mapaSvgD3 = inicializarMapa("#mapa-svg", appData.mapaMundi);
                 dibujarPuntos(mapaSvgD3, appData.avistamientos, "01", mostrarTarjeta);
                 actualizarNarrativa("01");
             }
-            
+
             const datosGenerales = appData.fichaTecnica ? appData.fichaTecnica : appData;
             const datosAcustica = datosGenerales.vistas_interactivas.acustica.especies;
-            
+
             inicializarAcustica(datosAcustica);
             inicializarComparativa(datosAcustica);
-            inicializarHoverProfundidad(); 
+            inicializarHoverProfundidad();
         }
     } catch (error) {
         console.error("Error crítico al arrancar la app:", error);
@@ -314,12 +366,12 @@ contenedorScroll.addEventListener('wheel', (e) => {
     // AHORA el scroll horizontal funcionará siempre, A MENOS que el cursor 
     // esté justo encima de la etiqueta <model-viewer> que permite rotar en 3D
     if (e.target.closest('model-viewer')) {
-        return; 
+        return;
     }
 
-    e.preventDefault(); 
+    e.preventDefault();
 
-    if (scrollEnProgreso) return; 
+    if (scrollEnProgreso) return;
 
     if (Math.abs(e.deltaY) > 5) {
         scrollEnProgreso = true;
@@ -333,7 +385,7 @@ contenedorScroll.addEventListener('wheel', (e) => {
 
         setTimeout(() => {
             scrollEnProgreso = false;
-        }, 850); 
+        }, 850);
     }
 }, { passive: false });
 

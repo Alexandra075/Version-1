@@ -31,6 +31,24 @@ body {
     color: #e2e8f0;
 }
 
+.caja-luminiscente {
+    /* Fondo oscuro semitransparente */
+    background: rgba(10, 25, 47, 0.7) !important;
+    
+    /* Efecto de cristal */
+    backdrop-filter: blur(15px) !important;
+    -webkit-backdrop-filter: blur(15px) !important;
+    
+    /* Borde delgado y brillante (forzado) */
+    border: 1px solid rgba(0, 229, 255, 0.5) !important;
+    border-radius: 20px !important;
+    
+    /* Sombras forzadas para el brillo neón */
+    box-shadow: 
+        0 15px 35px rgba(0, 0, 0, 0.6), 
+        0 0 25px rgba(0, 229, 255, 0.4) !important;
+}
+
 /* =========================================
    2. NADO HORIZONTAL Y SIN BARRAS
    ========================================= */
@@ -415,6 +433,16 @@ body {
     color: var(--accent-pink);
 }
 
+#seccion-mapa {
+    /* El gradiente oscuro asegura que la imagen no opaque tu mapa de D3.js */
+    background-image: linear-gradient(rgba(2, 12, 27, 0.3), rgba(2, 12, 27, 0.3)), url('Imagenes/fondo1.png'); 
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: var(--bg-dark);
+    transition: background-image 0.5s ease-in-out;
+}
+
 /* =========================================
    5. PUNTOS DEL MAPA SVG
    ========================================= */
@@ -568,7 +596,8 @@ body {
 .btn-mes.activo {
     background: var(--accent-cyan);
     color: #020c1b;
-    border-color: var(--accent-cyan);
+    border-color: var(--accent-cyan); /* ← Aquí se cierra el color correctamente */
+    /* Aquí entra el código que me pasaste para darle el brillo y tamaño al botón activo */
     box-shadow: 0 0 15px rgba(0, 229, 255, 0.6);
     transform: scale(1.1);
 }
