@@ -331,9 +331,12 @@ async function iniciarApp() {
             inicializarAcustica(datosAcustica);
             inicializarHoverProfundidad();
         }
-    } catch (error) {
+    }  catch (error) {
         console.error("Error crítico al arrancar la app:", error);
-        document.getElementById('datos-generales-info').innerHTML = `<p style="color:red;">Error cargando la base de datos. Revisa la consola.</p>`;
+        const contenedorFalla = document.getElementById('contenedor-datos-biologicos');
+        if (contenedorFalla) {
+            contenedorFalla.innerHTML = `<p style="color:var(--accent-pink); font-weight:bold;">Error cargando la base de datos. Verifica la conexión.</p>`;
+        }
     }
 }
 
