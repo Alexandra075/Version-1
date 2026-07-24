@@ -1,7 +1,7 @@
 let projection;
 
-const COLOR_SUPERFICIE = { r: 10, g: 150, b: 180 }; 
-const COLOR_ABISAL = { r: 2, g: 8, b: 20 };      
+const COLOR_SUPERFICIE = { r: 10, g: 150, b: 180 };
+const COLOR_ABISAL = { r: 2, g: 8, b: 20 };
 
 export function inicializarMapa(svgElementId, geoData) {
     const width = 800;
@@ -28,7 +28,7 @@ export function inicializarMapa(svgElementId, geoData) {
 }
 
 export function actualizarFondoPorProfundidad(profundidadMaxima) {
-    const maxProfundidad = 500; 
+    const maxProfundidad = 500;
     const profSegura = Math.min(Math.max(profundidadMaxima, 0), maxProfundidad);
     const porcentaje = profSegura / maxProfundidad;
 
@@ -38,7 +38,7 @@ export function actualizarFondoPorProfundidad(profundidadMaxima) {
 
     document.body.style.transition = "background 1s ease";
     document.body.style.background = `rgb(${r}, ${g}, ${b})`;
-    
+
     const etiquetaZona = document.getElementById('zona-oceanica');
     if(etiquetaZona) {
         if (profSegura <= 200) {
@@ -53,25 +53,26 @@ export function actualizarFondoPorProfundidad(profundidadMaxima) {
 
 export function obtenerRegionGeografica(lat, lon) {
     if (!lat || !lon) return "Ubicación no disponible";
-    
-    if (lat >= 50) return "Golfo de Alaska / Mar de Bering";
-    if (lat >= 42 && lat < 50) return "Costa del Pacífico Noroeste (EEUU)";
+
+    if (lat >= 54) return "Golfo de Alaska / Mar de Bering";
+    if (lat >= 49 && lat < 54) return "Costa Pacífica de Canadá (Columbia Británica)";
+    if (lat >= 42 && lat < 49) return "Costa del Pacífico Noroeste (EEUU)";
     if (lat >= 32.5 && lat < 42) return "Costa de California (EEUU)";
-    
+
     if (lat >= 22.7 && lat < 32.5) {
         if (lon > -114) return "Golfo de California (Mar de Cortés)";
         return "Costa Occidental de Baja California (México)";
     }
-    
-    if (lat > 5 && lat < 23) return "Pacífico Tropical (Domo de Costa Rica / Sur de México)";
+
+    if (lat > 5 && lat < 22.7) return "Pacífico Tropical (Domo de Costa Rica / Sur de México)";
     if (lat <= 5 && lat >= -5) return "Aguas Ecuatoriales (Islas Galápagos)";
-    
+
     return "Océano Pacífico Central";
 }
 
 export function dibujarPuntos(svg, ballenasData, mesStr, funcionAlHacerClic) {
     svg.selectAll("circle").remove();
-    
+
     const datosParaDibujar = ballenasData.filter(d => d.fecha && d.fecha.split('-')[1] <= mesStr);
     const datosMesActual = datosParaDibujar.filter(d => d.fecha.split('-')[1] === mesStr);
 
@@ -82,14 +83,14 @@ export function dibujarPuntos(svg, ballenasData, mesStr, funcionAlHacerClic) {
     let textoUbicacion = "Sin avistamientos registrados este mes";
     let ballenaSuperficial = null;
     let ballenaProfunda = null;
-    
+
     if (datosMesActual.length > 0) {
         minProf = d3.min(datosMesActual, d => d.profundidad);
         maxProf = d3.max(datosMesActual, d => d.profundidad);
 
         ballenaSuperficial = datosMesActual.find(d => d.profundidad === minProf);
         ballenaProfunda = datosMesActual.find(d => d.profundidad === maxProf);
-        
+
         avgLat = d3.mean(datosMesActual, d => d.lat);
         avgLon = d3.mean(datosMesActual, d => d.lon);
         textoUbicacion = obtenerRegionGeografica(avgLat, avgLon);
@@ -98,20 +99,20 @@ export function dibujarPuntos(svg, ballenasData, mesStr, funcionAlHacerClic) {
     const uiMin = document.getElementById('prof-min');
     const uiMax = document.getElementById('prof-max');
     const uiUbicacion = document.getElementById('ubicacion-geografica');
-    
+
     if(uiMin) uiMin.innerText = `${minProf} m`;
     if(uiMax) uiMax.innerText = `${maxProf} m`;
     if(uiUbicacion) uiUbicacion.innerText = textoUbicacion;
 
     const tarjetaSup = document.getElementById('tarjeta-superficial');
     const tarjetaProf = document.getElementById('tarjeta-profunda');
-    
+
     if(tarjetaSup && ballenaSuperficial) {
         tarjetaSup.dataset.prof = minProf;
         tarjetaSup.dataset.lat = ballenaSuperficial.lat;
         tarjetaSup.dataset.lon = ballenaSuperficial.lon;
     }
-    
+
     if(tarjetaProf && ballenaProfunda) {
         tarjetaProf.dataset.prof = maxProf;
         tarjetaProf.dataset.lat = ballenaProfunda.lat;
@@ -119,8 +120,8 @@ export function dibujarPuntos(svg, ballenasData, mesStr, funcionAlHacerClic) {
     }
 
     document.body.dataset.profActual = maxProf;
-    document.body.dataset.ubicacionActual = textoUbicacion; 
-    
+    document.body.dataset.ubicacionActual = textoUbicacion;
+
     actualizarFondoPorProfundidad(maxProf);
 
     svg.selectAll("circle")
