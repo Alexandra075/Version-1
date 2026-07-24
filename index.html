@@ -94,6 +94,7 @@
                     <model-viewer id="visor-principal" src="3D/Azul/ballena.glb" camera-controls
                         interaction-prompt="auto" style="width: 100%; height: 100%; background-color: transparent;">
 
+                        <!-- PUNTOS LADO ORIGINAL -->
                         <button class="punto-flotante" slot="hotspot-1"
                             data-position="0.21254594523196513m 0.483903406194949m -0.8150785707763983m"
                             data-normal="0.24137425686451577m 0.9441865007307547m -0.22416583138586288m">
@@ -136,6 +137,50 @@
                                 <p>En lugar de dientes. Retienen al krill mientras el agua sale.</p>
                             </div>
                         </button>
+
+                        <!-- PUNTOS LADO ESPEJEADO (Eje X negativo) -->
+                        <button class="punto-flotante" slot="hotspot-7"
+                            data-position="-0.21254594523196513m 0.483903406194949m -0.8150785707763983m"
+                            data-normal="-0.24137425686451577m 0.9441865007307547m -0.22416583138586288m">
+                            <div class="info-flotante"><strong>Cola</strong>
+                                <p>Puede llegar a tener un ancho de 5 metros. La mueven para impulsarse.</p>
+                            </div>
+                        </button>
+                        <button class="punto-flotante" slot="hotspot-8"
+                            data-position="-0.006019018657907882m 0.6340641009501718m -0.1743651224893292m"
+                            data-normal="-0.9957906077387175m 0.076024011675642m 0.05119975769568986m">
+                            <div class="info-flotante"><strong>Aleta Dorsal</strong>
+                                <p>Le ayuda a evitar el balanceo y mantener una trayectoria recta.</p>
+                            </div>
+                        </button>
+                        <button class="punto-flotante" slot="hotspot-9"
+                            data-position="-0.3636117293645196m 0.08912151982997996m 0.1823286833149326m"
+                            data-normal="-0.9184537418007861m 0.10154678075902575m 0.38227081433142845m">
+                            <div class="info-flotante"><strong>Aletas pectorales</strong>
+                                <p>Miden unos 5 metros y les sirven para maniobrar.</p>
+                            </div>
+                        </button>
+                        <button class="punto-flotante" slot="hotspot-10"
+                            data-position="-0.025163447648317572m 0.5854901416909186m 0.5298219074020551m"
+                            data-normal="-0.442329759049321m 0.8964799119012764m 0.025848632784912454m">
+                            <div class="info-flotante"><strong>Aventadores</strong>
+                                <p>Los utiliza para respirar. Bajo el agua puede permanecer hasta 20 minutos.</p>
+                            </div>
+                        </button>
+                        <button class="punto-flotante" slot="hotspot-11"
+                            data-position="-0.06695564655783404m 0.37044032736899923m 0.6462449532530576m"
+                            data-normal="-0.48235154857321383m -0.7377857755741095m 0.4722384280737141m">
+                            <div class="info-flotante"><strong>Pliegues Gulares</strong>
+                                <p>Sirven para expandir la garganta durante la alimentación.</p>
+                            </div>
+                        </button>
+                        <button class="punto-flotante" slot="hotspot-12"
+                            data-position="-0.08502248528817624m 0.5213584758601866m 0.8785804493496523m"
+                            data-normal="-0.747709606355995m 0.6313510591494036m 0.2057332852843445m">
+                            <div class="info-flotante"><strong>Barbas</strong>
+                                <p>En lugar de dientes. Retienen al krill mientras el agua sale.</p>
+                            </div>
+                        </button>
                     </model-viewer>
                 </div>
             </div>
@@ -164,17 +209,24 @@
                             <!-- NUEVO BOTÓN DE EXPANDIR -->
                             <button id="btn-expandir-3d" style="position: absolute; top: 8px; right: 8px; z-index: 10; background: rgba(0, 229, 255, 0.2); border: 1px solid var(--accent-cyan); color: var(--accent-cyan); border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 1.2rem; backdrop-filter: blur(4px);" title="Ver en pantalla completa">⛶</button>
                             
+                            <!-- NUEVO: OVERLAY TEXTO 52HZ -->
+                            <div id="texto-52hz" class="hidden" style="position: absolute; top:0; left:0; width:100%; height:100%; display:flex; align-items:center; justify-content:center; padding: 15px; text-align:center; background: rgba(2, 12, 27, 0.9); color: var(--text-primary); z-index: 5; flex-direction: column; border-radius: 12px;">
+                                <span style="font-size: 2rem; margin-bottom: 8px;">📡</span>
+                                <span style="font-size: 0.85rem; line-height: 1.4;">Esta especie no cuenta con registro visual.<br>Su reconocimiento se basa únicamente en la frecuencia acústica de <strong style="color: var(--accent-pink);">52Hz</strong>.</span>
+                            </div>
+
                             <model-viewer id="visor-secundario" src="3D/Minke/minke.glb" auto-rotate
                                 camera-controls style="width: 100%; height: 100%; background-color: transparent;"></model-viewer>
                         </div>
 
-                        <!-- Cuadrícula de Botones -->
+                        <!-- Cuadrícula de Botones CENTRALIZADOS -->
                         <div class="grid-botones-especies">
-                            <button class="btn-especie activo" data-src="3D/Minke/minke.glb">Rorcual
-                                Aliblanco<br>(Minke)</button>
-                            <button class="btn-especie" data-src="3D/Jorobada/jorobada.glb">Ballena Jorobada</button>
-                            <button class="btn-especie" data-src="3D/Azul/ballena.glb">Ballena Azul</button>
-                            <button class="btn-especie" data-src="3D/Aleta/aleta.glb">Ballena de Aleta</button>
+                            <button class="btn-especie activo" data-id="minke" data-src="3D/Minke/minke.glb">Rorcual Aliblanco</button>
+                            <button class="btn-especie" data-id="jorobada" data-src="3D/Jorobada/jorobada.glb">Ballena Jorobada</button>
+                            <!-- Botón 52Hz que abarca 2 columnas para equilibrar la estética -->
+                            <button class="btn-especie" data-id="52hz" data-src="none" style="grid-column: span 2; border-color: var(--accent-pink); color: var(--accent-pink);">Ballena Solitaria (52Hz)</button>
+                            <button class="btn-especie" data-id="azul" data-src="3D/Azul/ballena.glb">Ballena Azul</button>
+                            <button class="btn-especie" data-id="aleta" data-src="3D/Aleta/aleta.glb">Ballena de Aleta</button>
                         </div>
                     </div>
                 </aside>

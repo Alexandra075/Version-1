@@ -435,7 +435,7 @@ body {
 
 #seccion-mapa {
     /* El gradiente oscuro asegura que la imagen no opaque tu mapa de D3.js */
-    background-image: linear-gradient(rgba(2, 12, 27, 0.3), rgba(2, 12, 27, 0.3)), url('Imagenes/fondo1.png'); 
+    background-image: linear-gradient(rgba(2, 12, 27, 0.3), rgba(2, 12, 27, 0.85)), url('Imagenes/fondo1.png'); 
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;

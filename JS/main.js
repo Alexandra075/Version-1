@@ -1,7 +1,6 @@
 import { cargarBasesDeDatos } from './datos.js';
 import { inicializarMapa, dibujarPuntos, actualizarFondoPorProfundidad, obtenerRegionGeografica } from './mapa.js';
 import { inicializarAcustica } from './acustica.js';
-import { inicializarComparativa } from './comparativa.js';
 
 let appData = null;
 let mapaSvgD3 = null;
@@ -104,11 +103,10 @@ const iniciarBotonEsqueleto = () => {
     }
 };
 
-// Iniciar esta función después de un breve retraso
 setTimeout(iniciarBotonEsqueleto, 600);
 
 // =========================================
-// INTERACCIÓN DEL VISUALIZADOR DE ESPECIES 
+// INTERACCIÓN DEL VISUALIZADOR DE ESPECIES (NUEVA LÓGICA CENTRALIZADA)
 // =========================================
 const iniciarVisorEspecies = () => {
     const botonesEspecies = document.querySelectorAll('.btn-especie');
@@ -122,29 +120,60 @@ const iniciarVisorEspecies = () => {
     let modeloSeleccionadoActualmente = "3D/Minke/minke.glb"; // Por defecto
     let nombreSeleccionadoActualmente = "Rorcual Aliblanco (Minke)";
 
-    // 1. Al hacer clic en los botones de especies, SOLO cambiamos el modelo pequeño
+    // 1. Al hacer clic en los botones de especies
     if (botonesEspecies.length > 0) {
         botonesEspecies.forEach(boton => {
             boton.addEventListener('click', (evento) => {
                 evento.preventDefault();
 
-                // Pintar botón activo
-                botonesEspecies.forEach(b => b.classList.remove('activo'));
-                boton.classList.add('activo');
-
-                // Guardar la especie seleccionada
+                const especieId = boton.getAttribute('data-id');
                 modeloSeleccionadoActualmente = boton.getAttribute('data-src');
                 nombreSeleccionadoActualmente = boton.innerText.replace('\n', ' ');
 
-                // Actualizar ÚNICAMENTE el visor pequeño
-                if (visorSecundario) {
-                    visorSecundario.src = modeloSeleccionadoActualmente;
+                // Pintar botón activo y resetear los demás
+                botonesEspecies.forEach(b => {
+                    b.classList.remove('activo');
+                    if(b.getAttribute('data-id') === '52hz') {
+                        b.style.background = 'transparent';
+                        b.style.color = 'var(--accent-pink)';
+                    } else {
+                        b.style.background = 'transparent';
+                        b.style.color = 'var(--accent-cyan)';
+                    }
+                });
+                
+                boton.classList.add('activo');
+                if(especieId === '52hz') {
+                    boton.style.background = 'var(--accent-pink)';
+                    boton.style.color = '#020c1b';
+                } else {
+                    boton.style.background = 'var(--accent-cyan)';
+                    boton.style.color = '#020c1b';
+                }
+
+                // 2. Controlar la visibilidad (Mostrar modelo 3D o Texto de 52Hz)
+                if (especieId === '52hz') {
+                    if (visorSecundario) visorSecundario.style.display = 'none';
+                    document.getElementById('texto-52hz').classList.remove('hidden');
+                    if (btnExpandir) btnExpandir.style.display = 'none';
+                } else {
+                    if (visorSecundario) {
+                        visorSecundario.style.display = 'block';
+                        visorSecundario.src = modeloSeleccionadoActualmente;
+                    }
+                    document.getElementById('texto-52hz').classList.add('hidden');
+                    if (btnExpandir) btnExpandir.style.display = 'block';
+                }
+
+                // 3. DISPARAR LA ACTUALIZACIÓN DE LA TARJETA Y GRÁFICA ACÚSTICA
+                if(window.mostrarFichaAcusticaGlobal) {
+                    window.mostrarFichaAcusticaGlobal(especieId);
                 }
             });
         });
     }
 
-    // 2. Función maestra para preparar el visor GRANDE
+    // Función maestra para preparar el visor GRANDE
     const prepararVisorGrande = (rutaModelo, nombre) => {
         if (!visorPrincipal) return;
         visorPrincipal.src = rutaModelo;
@@ -157,7 +186,6 @@ const iniciarVisorEspecies = () => {
         const subtitulo = document.getElementById('subtitulo-especie');
 
         if (rutaModelo.includes('Azul')) {
-            // Restaurar diseño original de la Ballena Azul (con panel lateral)
             if (dashboardContainer) dashboardContainer.classList.remove('sin-panel');
             if (panelLateral) panelLateral.style.display = "flex";
             puntosFlotantes.forEach(punto => punto.style.display = 'block');
@@ -165,7 +193,6 @@ const iniciarVisorEspecies = () => {
             if (textoInformativo) textoInformativo.style.display = 'block';
             if (subtitulo) subtitulo.innerText = "Balaenoptera musculus";
         } else {
-            // Diseño de Pantalla Completa para las demás ballenas (sin panel)
             if (dashboardContainer) dashboardContainer.classList.add('sin-panel');
             if (panelLateral) panelLateral.style.display = "none";
             puntosFlotantes.forEach(punto => punto.style.display = 'none');
@@ -175,22 +202,20 @@ const iniciarVisorEspecies = () => {
         }
     };
 
-    // 3. Botón EXPANDIR (⛶): Configura la pantalla grande y viaja a ella
+    // Botón EXPANDIR (⛶)
     if (btnExpandir && seccionGrande) {
         btnExpandir.addEventListener('click', () => {
             prepararVisorGrande(modeloSeleccionadoActualmente, nombreSeleccionadoActualmente);
-            if (btnCerrarVista) btnCerrarVista.classList.remove('hidden'); // Mostramos el botón de cerrar
+            if (btnCerrarVista) btnCerrarVista.classList.remove('hidden'); 
             seccionGrande.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'start' });
         });
     }
 
+    // Botón CERRAR VISTA
     if (btnCerrarVista && seccionAcustica) {
         btnCerrarVista.addEventListener('click', () => {
-            btnCerrarVista.classList.add('hidden'); // Ocultamos este botón de nuevo
+            btnCerrarVista.classList.add('hidden'); 
             seccionAcustica.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'start' });
-
-            // Un pequeño truco: esperamos medio segundo a que termine la animación de scroll 
-            // y regresamos la pantalla 1 a la Ballena Azul por defecto para no romper el flujo
             setTimeout(() => {
                 prepararVisorGrande("3D/Azul/ballena.glb", "Balaenoptera musculus");
             }, 500);
@@ -257,7 +282,7 @@ function inicializarHoverProfundidad() {
                 const lon = parseFloat(tarjetaSup.dataset.lon);
                 uiUbicacion.innerText = obtenerRegionGeografica(lat, lon);
 
-                // NUEVO: Ambos puntos se iluminan de color ROSA para destacar del fondo azul
+                // Ambos puntos se iluminan de color ROSA
                 d3.selectAll(".current-point").filter(d => d.lat === lat && d.lon === lon)
                     .transition().duration(200)
                     .attr("r", 14)
@@ -298,7 +323,7 @@ function inicializarHoverProfundidad() {
                 const lon = parseFloat(tarjetaProf.dataset.lon);
                 uiUbicacion.innerText = obtenerRegionGeografica(lat, lon);
 
-                // NUEVO: Ambos puntos se iluminan de color ROSA para destacar del fondo azul
+                // Ambos puntos se iluminan de color ROSA
                 d3.selectAll(".current-point").filter(d => d.lat === lat && d.lon === lon)
                     .transition().duration(200)
                     .attr("r", 14)
@@ -330,8 +355,6 @@ function inicializarHoverProfundidad() {
     }
 }
 
-
-
 async function iniciarApp() {
     try {
         appData = await cargarBasesDeDatos();
@@ -349,7 +372,7 @@ async function iniciarApp() {
             const datosAcustica = datosGenerales.vistas_interactivas.acustica.especies;
 
             inicializarAcustica(datosAcustica);
-            inicializarComparativa(datosAcustica);
+            // Ya no llamamos a comparativa.js porque centralizamos la lógica
             inicializarHoverProfundidad();
         }
     } catch (error) {
@@ -358,13 +381,10 @@ async function iniciarApp() {
     }
 }
 
-// --- NUEVO: SCROLL EXCLUSIVO CON EXCEPCIÓN CORREGIDA ---
 const contenedorScroll = document.getElementById('contenedor-scroll');
 let scrollEnProgreso = false;
 
 contenedorScroll.addEventListener('wheel', (e) => {
-    // AHORA el scroll horizontal funcionará siempre, A MENOS que el cursor 
-    // esté justo encima de la etiqueta <model-viewer> que permite rotar en 3D
     if (e.target.closest('model-viewer')) {
         return;
     }
